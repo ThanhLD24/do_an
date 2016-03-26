@@ -1,0 +1,127 @@
+@CHARSET "UTF-8";
+
+.container {
+	max-width: 940px;
+	margin-bottom:10px;
+	
+}
+
+.container {
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+@media ( min-width : 768px) {
+	.container {
+		width: 750px;
+	}
+}
+
+@media ( min-width : 992px) {
+	.container {
+		width: 970px;
+	}
+}
+
+@media ( min-width : 1200px) {
+	.container {
+		width: 1170px;
+	}
+}
+
+.search_form {
+	margin-top: 5px;
+	margin-left: auto;
+	height: 110px;
+	background-color: #F5F5F5;
+	padding: 10px 0px 60px 70px;
+}
+
+.ten_changduong {
+	margin: 10px 0px 10px 0px;
+	font-weight: bold;
+	color: red;
+}
+
+#result_table {
+	margin-top: 10px;
+}
+
+.table.table_result .tr_second {
+	height: 100px;
+}
+
+.table.table_result tr th:hover {
+	cursor: pointer;
+}
+
+.uk-navbar {
+	/* background-color: #A6B9FC; */
+	
+}
+
+.text_menu {
+	font-weight: bold;
+	color: white;
+}
+
+.text_menu.active {
+	color: black;
+}
+
+#result_table tr td {
+	align: center;
+}
+
+.button_selectseat {
+	margin-top: 10px;
+}
+
+.clear:after {
+	content: ".";
+	display: inherit;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+#selected-seats li {
+	list-style-type: none;
+}
+
+.seat_detail {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.uk-icon-check.detailseat {
+	color: green;
+}
+
+.result_form {
+	margin-top: 10px;
+}
+
+#div-left {
+	
+	
+	float: left;
+}
+
+#div-right {
+	
+	float: left;
+}
+.booking-details.pay{
+	margin:5px;
+}
+
+
+/* tien trinh*/
+
+
+.tien-trinh{
+	margin-top:20px;
+	margin-bottom:10px;
+}
