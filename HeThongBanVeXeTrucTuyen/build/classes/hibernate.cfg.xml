@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/bus_managerment?useUnicode=true&amp;characterEncoding=utf8</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="connection.password">12345</property>
+        <property name="connection.pool_size">1</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.defaultNChar">true</property>  
+        <property name="show_sql">true</property>
+<!--         <property name="hbm2ddl.auto">update</property> -->
+                
+		<mapping class="thanhld.appcode.model.Account" />
+		<mapping class="thanhld.appcode.model.Bus" />
+		<mapping class="thanhld.appcode.model.BusStation" />
+		<mapping class="thanhld.appcode.model.CancelOrderTicket" />
+		<mapping class="thanhld.appcode.model.Carrier" />
+		<mapping class="thanhld.appcode.model.Employee" />
+		<mapping class="thanhld.appcode.model.Feedback" />
+		<mapping class="thanhld.appcode.model.Job" />
+		<mapping class="thanhld.appcode.model.News" />
+		<mapping class="thanhld.appcode.model.OrderTicket" />
+		<mapping class="thanhld.appcode.model.Province" />
+		<mapping class="thanhld.appcode.model.Route" />
+		<mapping class="thanhld.appcode.model.RouteDetail" />
+		<mapping class="thanhld.appcode.model.Ticket" />
+		<mapping class="thanhld.appcode.model.SeatOrder" />			
+    </session-factory>
+</hibernate-configuration>
