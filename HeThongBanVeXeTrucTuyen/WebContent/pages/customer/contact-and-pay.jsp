@@ -1139,6 +1139,12 @@
 					Tổng tiền: <b><span id="total">0</span> VNĐ</b>
 					<div style=""><button class="uk-button uk-button-primary" type="submit">Đặt chỗ &raquo;</button></div>
 					 -->
+					 <%
+					 Province provinceStart = (Province) session.getAttribute("provinceStart");
+						Province provinceEnd = (Province) session.getAttribute("provinceEnd");
+						Route route = (Route) session.getAttribute("route");
+						Carrier carrier = (Carrier) session.getAttribute("carrier");
+					 %>
 					<div style="min-width: 250px">
 						<div class="box-module book-detail-info">
 							<div class="module-heading">Chi tiết đặt chỗ</div>
@@ -1151,11 +1157,17 @@
 											<tbody>
 												<tr>
 													<td>Nhà xe:</td>
-													<td></td>
+													<td><%=carrier.getCarrierName() %></td>
+												</tr>
+												<tr>
+													<td>Chặng: </td>
+													<td itemprop="name"><%=provinceStart.getProvinceName()%>
+					<i class="uk-icon-long-arrow-right"></i>
+					<%=provinceEnd.getProvinceName()%></td>
 												</tr>
 												<tr>
 													<td>Tuyến:</td>
-													<td itemprop="name">Hà Nội - Hà Tĩnh</td>
+													<td itemprop="name"><%=route.getRouteDescription() %></td>
 												</tr>
 												<tr>
 													<td>Ngày:</td>

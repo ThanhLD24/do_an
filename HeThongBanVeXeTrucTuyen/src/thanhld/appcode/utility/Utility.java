@@ -158,6 +158,18 @@ public class Utility {
 		String chuoi = Utility.replaceString(chuoiGhe.toString());
 		return chuoi;
 	}
+	
+	public static int layTongSoGheDuocDat(String chuoiGhe){
+		int count=0;
+		for(int i=0; i<chuoiGhe.length(); i++){
+			if(String.valueOf(chuoiGhe.charAt(i)).equals(",")){
+				count++;
+			}
+		}
+		
+		return count;
+		
+	}
 	public static void main(String[] args) {
 		SeatOrderDAOImpl so = new SeatOrderDAOImpl();
 		System.out.println(Utility.layGheDaDuocDat(so.getSeatOrderByCondition(1, 1, 4)));

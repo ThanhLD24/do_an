@@ -1,3 +1,5 @@
+<%@page import="thanhld.appcode.dao.SeatOrderDAOImpl"%>
+<%@page import="thanhld.appcode.dao.SeatOrderDAO"%>
 <%@page import="thanhld.appcode.dao.RouteDetailDAOImpl"%>
 <%@page import="thanhld.appcode.dao.RouteDetailDAO"%>
 <%@page import="thanhld.appcode.model.RouteDetail"%>
@@ -101,6 +103,7 @@
 		</div>
 		</nav> </header>
 		<main id="main"> <%
+				SeatOrderDAO seatOrderDAO = new SeatOrderDAOImpl();
  	List<Ticket> listTicket = (List) session.getAttribute("listTicket");
 	RouteDetailDAO routeDetailDAO = new RouteDetailDAOImpl();
 	int originPlaceId = Integer.valueOf(session.getAttribute("orginPlace").toString());
@@ -108,6 +111,8 @@
  	Province provinceStart = (Province) ObjectManager
  			.getObjectById(originPlaceId, Province.class);
  	Province provinceEnd = (Province) ObjectManager.getObjectById(destinationPlaceId, Province.class);
+ 	session.setAttribute("provinceStart", provinceStart);
+ 	session.setAttribute("provinceEnd", provinceEnd);
  %>
 
 		<div class="container" style="max-width: 940px;">
@@ -443,6 +448,9 @@
 								//out.print(numberOriginPlace+"----"+numberDestinationPlace);
 								ArrayList<Integer> listPrice = Utility.splitPrice(ticket.getTicketPrice());
 								int priceTotal = Utility.getPrice(numberOriginPlace, numberDestinationPlace, listPrice);
+								String chuoiGheBiDat = Utility.layGheDaDuocDat(
+										seatOrderDAO.getSeatOrderByCondition(ticket.getTicketId(), numberOriginPlace, numberDestinationPlace));
+								int tongGheDaDat = Utility.layTongSoGheDuocDat(chuoiGheBiDat);
 						%>
 
 						<tr class="tr_second">
@@ -464,7 +472,7 @@
 								<div><%=Utility.parseToDateFormat(ticket.getTicketDestinationTime())%></div>
 								<div><%=busStationDestination.getBusStationName()%></div>
 							</td>
-							<td align="center" style="vertical-align: center;"><%=ticket.getTicketCount()%></td>
+							<td align="center" style="vertical-align: center;"><%=bus.getBusCapacity()-tongGheDaDat%>/<%=bus.getBusCapacity()%></td>
 							<td align="center"><div><%=priceTotal%></div>
 							<div class="button_selectseat">
 							<form name="formSelectBus" action="<%=request.getContextPath() %>/BusController?type=<%=Variables.SELECT_BUS%>" method="post">

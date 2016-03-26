@@ -1,5 +1,7 @@
 
 
+<%@page import="thanhld.appcode.model.Province"%>
+<%@page import="thanhld.appcode.model.Carrier"%>
 <%@page import="thanhld.appcode.dao.SeatOrderDAOImpl"%>
 <%@page import="thanhld.appcode.dao.SeatOrderDAO"%>
 <%@page import="thanhld.appcode.model.SeatOrder"%>
@@ -383,17 +385,19 @@
 			-->
 			<%
 				SeatOrderDAO seatOrderDAO = new SeatOrderDAOImpl();
-				int ticketId = Integer.parseInt(session.getAttribute("ticketId").toString());
-				int busId = Integer.parseInt(session.getAttribute("busId").toString());
+				
+				
 				int numberOriginPlace = Integer.parseInt(session.getAttribute("numberOriginPlace").toString());
 				int numberDestinationPlace = Integer.parseInt(session.getAttribute("numberDestinationPlace").toString());
 				int priceTotal = Integer.parseInt(session.getAttribute("priceTotal").toString());
-				Bus bus = (Bus) ObjectManager.getObjectById(busId, Bus.class);
-				Ticket ticket = (Ticket) ObjectManager.getObjectById(ticketId, Ticket.class);
-				Route route = (Route) ObjectManager.getObjectById(ticket.getRouteId(), Route.class);
-
+				Bus bus = (Bus)session.getAttribute("bus");
+				Ticket ticket = (Ticket) session.getAttribute("ticket");
+				Route route = (Route) session.getAttribute("route");
+				Carrier carrier = (Carrier) session.getAttribute("carrier");
 				String chuoiGheBiDat = Utility.layGheDaDuocDat(
-						seatOrderDAO.getSeatOrderByCondition(ticketId, numberOriginPlace, numberDestinationPlace));
+						seatOrderDAO.getSeatOrderByCondition(ticket.getTicketId(), numberOriginPlace, numberDestinationPlace));
+				Province provinceStart = (Province) session.getAttribute("provinceStart");
+				Province provinceEnd = (Province) session.getAttribute("provinceEnd");
 			%>
 			<div class="result_form" style="">
 
@@ -430,11 +434,17 @@
 											<tbody>
 												<tr>
 													<td>Nhà xe:</td>
-													<td></td>
+													<td><%=carrier.getCarrierName() %></td>
+												</tr>
+												<tr>
+													<td>Chặng: </td>
+													<td itemprop="name"><%=provinceStart.getProvinceName()%>
+					<i class="uk-icon-long-arrow-right"></i>
+					<%=provinceEnd.getProvinceName()%></td>
 												</tr>
 												<tr>
 													<td>Tuyến:</td>
-													<td itemprop="name"><%=route.getRouteDescription()%></td>
+													<td itemprop="name"><%=route.getRouteDescription() %></td>
 												</tr>
 												<tr>
 													<td>Ngày:</td>

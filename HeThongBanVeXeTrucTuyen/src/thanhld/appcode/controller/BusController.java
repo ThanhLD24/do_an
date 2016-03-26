@@ -18,7 +18,10 @@ import com.mysql.jdbc.Util;
 
 import thanhld.appcode.dao.TicketDAO;
 import thanhld.appcode.dao.TicketDAOImpl;
+import thanhld.appcode.model.Bus;
+import thanhld.appcode.model.Carrier;
 import thanhld.appcode.model.OrderTicket;
+import thanhld.appcode.model.Route;
 import thanhld.appcode.model.SeatOrder;
 import thanhld.appcode.model.Ticket;
 import thanhld.appcode.utility.ObjectManager;
@@ -70,7 +73,10 @@ public class BusController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		int type = Integer.parseInt(request.getParameter("type"));
 		RequestDispatcher dispatcher = null;
-
+		Ticket ticket = new Ticket();
+		Bus bus = new Bus();
+		Route route = new Route();
+		Carrier carrier = new Carrier();
 		TicketDAO ticketDAO = new TicketDAOImpl();
 
 		List<Ticket> listTicket = new ArrayList<Ticket>();
@@ -90,7 +96,7 @@ public class BusController extends HttpServlet {
 		int priceTotal = 0;
 		int numberOriginPlace = 0;
 		int numberDestinationPlace = 0;
-		
+		int totalSeat = 0;
 		switch (type) {
 		case Variables.SEARCH_TICKET:
 			orginPlace = request.getParameter("txtOrgin");
@@ -114,11 +120,19 @@ public class BusController extends HttpServlet {
 			priceTotal = Integer.parseInt(request.getParameter("txtPrice"));
 			numberOriginPlace = Integer.parseInt(request.getParameter("txtNumberOriginPlace"));
 			numberDestinationPlace = Integer.parseInt(request.getParameter("txtNumberDestinationPlace"));
+			ticket = (Ticket) ObjectManager.getObjectById(ticketId, Ticket.class);
+			bus = (Bus) ObjectManager.getObjectById(busId, Bus.class);
+			route = (Route) ObjectManager.getObjectById(ticket.getRouteId(), Route.class);
+			carrier = (Carrier) ObjectManager.getObjectById(bus.getCarrierId(), Carrier.class);
 			session.setAttribute("ticketId", ticketId);
 			session.setAttribute("busId", busId);
 			session.setAttribute("numberOriginPlace", numberOriginPlace);
 			session.setAttribute("numberDestinationPlace", numberDestinationPlace);
 			session.setAttribute("priceTotal", priceTotal);
+			session.setAttribute("ticket", ticket);
+			session.setAttribute("bus", bus);
+			session.setAttribute("route", route);
+			session.setAttribute("carrier", carrier);
 			dispatcher = request.getRequestDispatcher("/selectseat");
 			dispatcher.forward(request, response);
 			break;
@@ -141,6 +155,7 @@ public class BusController extends HttpServlet {
 			ticketId = Integer.parseInt(session.getAttribute("ticketId").toString());
 			numberOriginPlace = Integer.parseInt(session.getAttribute("numberOriginPlace").toString());
 			numberDestinationPlace =Integer.parseInt(session.getAttribute("numberDestinationPlace").toString());
+			int seatCountInt =Integer.parseInt(session.getAttribute("seatCount").toString());
 			
 			sessionShortId = session.getId().substring(0,6);
 			OrderTicket orderTicket = new OrderTicket();
@@ -173,8 +188,11 @@ public class BusController extends HttpServlet {
 			seatOrder.setOrderTicketId(sessionShortId);
 			seatOrder.setSeat(session.getAttribute("listSeat").toString());
 			seatOrder.setRoutes(Utility.phanChangDuong(numberOriginPlace, numberDestinationPlace));
+			ticket = (Ticket)session.getAttribute("ticket");
+			ticket.setTicketCount(ticket.getTicketCount()-seatCountInt);
 			try {
-				ObjectManager.addObject((Object)seatOrder);
+				ObjectManager.addObject(seatOrder);
+				ObjectManager.update(ticket);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
