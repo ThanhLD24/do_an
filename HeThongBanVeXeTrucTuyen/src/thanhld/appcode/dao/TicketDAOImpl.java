@@ -33,7 +33,8 @@ public class TicketDAOImpl implements TicketDAO {
 	        sqlQuery.append(" AND T.ROUTE_ID IN (SELECT rd2.ROUTE_ID FROM ROUTE_DETAIL rd2 WHERE rd2.PROVINCE_ID ="+startPlace+") ");
 	        sqlQuery.append(" AND (SELECT rd3.NUMBERCIAL_ORDER FROM ROUTE_DETAIL rd3 ");
 	        sqlQuery.append(" WHERE rd3.ROUTE_ID =t.ROUTE_ID AND rd3.PROVINCE_ID ="+endPlace+")>(SELECT rd4.NUMBERCIAL_ORDER FROM ROUTE_DETAIL rd4 WHERE  rd4.ROUTE_ID =t.ROUTE_ID AND rd4.PROVINCE_ID ="+startPlace+")");
-	        sqlQuery.append(" and date(t.TICKET_ORIGIN_TIME)= '"+date+"'"); 
+	       /* sqlQuery.append(" and date(t.TICKET_ORIGIN_TIME)= '"+date+"'");*/
+	        sqlQuery.append(" AND (SELECT DETAIL_DATE FROM TICKET_DETAIL td WHERE t.TICKET_ID=td.TICKET_ID AND td.PROVINCE_ID= "+startPlace+" )= '"+date+"'");
 	        System.out.println(sqlQuery.toString());
 	        Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(Ticket.class);
 	        List<Ticket> listTicket = query.list();

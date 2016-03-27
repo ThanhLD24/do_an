@@ -170,14 +170,14 @@ public class Utility {
 		return count;
 		
 	}
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		SeatOrderDAOImpl so = new SeatOrderDAOImpl();
 		System.out.println(Utility.layGheDaDuocDat(so.getSeatOrderByCondition(1, 1, 4)));
 		System.out.println(Utility.phanChangDuong(1, 5));
 		for(String k : Utility.phanChangDuongRaMang(1, 5)){
 			System.out.println(k);
 		}
-	}
+	}*/
 	/*
 	 * public static void main(String[] args) {
 	 * 

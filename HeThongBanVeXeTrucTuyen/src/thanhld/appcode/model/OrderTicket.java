@@ -20,7 +20,7 @@ public class OrderTicket implements Serializable{
 	private String orderTicketId;
 	
 	@Column(name = "TICKET_ID")
-	private Integer ticketId;
+	private String ticketId;
 	
 	@Column(name = "PASSENGER_NAME_TITLE")
 	private String passengerNameTitle;
@@ -72,11 +72,11 @@ public class OrderTicket implements Serializable{
 		this.orderTicketId = orderTicketId;
 	}
 
-	public Integer getTicketId() {
+	public String getTicketId() {
 		return ticketId;
 	}
 
-	public void setTicketId(Integer ticketId) {
+	public void setTicketId(String ticketId) {
 		this.ticketId = ticketId;
 	}
 
@@ -192,7 +192,7 @@ public class OrderTicket implements Serializable{
 		this.orderTicketOther = orderTicketOther;
 	}
 
-	public OrderTicket(String orderTicketId, Integer ticketId, String passengerNameTitle, String passengerName,
+	public OrderTicket(String orderTicketId, String ticketId, String passengerNameTitle, String passengerName,
 			String passengerEmail, String passengerAddress, String passengerGender, String passengerPhone,
 			String orderTicketSeat, Integer orderTicketTotalSeat, String orderTicketTotalPrice, String orderTicketTime,
 			String orderTicketExpiredTime, String orderTicketPaidDate, Boolean orderTicketStatus,

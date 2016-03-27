@@ -17,7 +17,7 @@ public class SeatOrderDAOImpl implements SeatOrderDAO {
 	Transaction transaction = null;
 	StringBuilder sqlQuery= null;
 	@Override
-	public List<SeatOrder> getSeatOrderByCondition(int ticketId, int numberOriginPlace, int numberDestinationPlace) {
+	public List<SeatOrder> getSeatOrderByCondition(String ticketId, int numberOriginPlace, int numberDestinationPlace) {
 		// TODO Auto-generated method stub
 		session = HibernateUtils.getSessionFactory().openSession();
 		ArrayList<String> listChang = new ArrayList<String>();
@@ -25,7 +25,7 @@ public class SeatOrderDAOImpl implements SeatOrderDAO {
         transaction = session.beginTransaction();
         sqlQuery = new StringBuilder();
         sqlQuery.append(" select * from SEAT_ORDER s ");
-        sqlQuery.append(" WHERE s.TICKET_ID ="+ticketId+" AND ");
+        sqlQuery.append(" WHERE s.TICKET_ID ='"+ticketId+"' AND ");
         sqlQuery.append(" (ROUTES LIKE '%"+listChang.get(0)+"%' ");
         for(int i=1; i<listChang.size();i++){
         	sqlQuery.append(" OR ROUTES LIKE '%"+listChang.get(i)+"%' ");

@@ -28,6 +28,7 @@
 		<mapping class="thanhld.appcode.model.Route" />
 		<mapping class="thanhld.appcode.model.RouteDetail" />
 		<mapping class="thanhld.appcode.model.Ticket" />
+		<mapping class="thanhld.appcode.model.TicketDetail" />
 		<mapping class="thanhld.appcode.model.SeatOrder" />			
     </session-factory>
 </hibernate-configuration>

@@ -91,7 +91,7 @@ public class BusController extends HttpServlet {
 		String notes ="";
 		String totalMoney = "";
 		String sessionShortId="";
-		int ticketId = 0;
+		String ticketId = "";
 		int busId = 0;
 		int priceTotal = 0;
 		int numberOriginPlace = 0;
@@ -115,7 +115,7 @@ public class BusController extends HttpServlet {
 		 * response.sendRedirect(request.getContextPath() + "/searchresult");
 		 */
 		case Variables.SELECT_BUS:
-			ticketId = Integer.parseInt(request.getParameter("txtTicketId"));
+			ticketId = request.getParameter("txtTicketId");
 			busId = Integer.parseInt(request.getParameter("txtBusId"));
 			priceTotal = Integer.parseInt(request.getParameter("txtPrice"));
 			numberOriginPlace = Integer.parseInt(request.getParameter("txtNumberOriginPlace"));
@@ -152,7 +152,7 @@ public class BusController extends HttpServlet {
 			fullName = request.getParameter("txtHoTen");
 			phoneNumber=request.getParameter("txtSdt");
 			notes = request.getParameter("txtGhiChu");
-			ticketId = Integer.parseInt(session.getAttribute("ticketId").toString());
+			ticketId = session.getAttribute("ticketId").toString();
 			numberOriginPlace = Integer.parseInt(session.getAttribute("numberOriginPlace").toString());
 			numberDestinationPlace =Integer.parseInt(session.getAttribute("numberDestinationPlace").toString());
 			int seatCountInt =Integer.parseInt(session.getAttribute("seatCount").toString());

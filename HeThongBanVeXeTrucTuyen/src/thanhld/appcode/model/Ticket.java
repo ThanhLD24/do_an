@@ -17,9 +17,8 @@ public class Ticket implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "TICKET_ID")
-	private Integer ticketId;
+	private String ticketId;
 	
 	@Column(name = "TICKET_STATE")
 	private String ticketState;
@@ -78,11 +77,11 @@ public class Ticket implements Serializable{
 	@Column(name = "TICKET_END_SELL_DATE")
 	private String ticketEndSellDate;
 
-	public Integer getTicketId() {
+	public String getTicketId() {
 		return ticketId;
 	}
 
-	public void setTicketId(Integer ticketId) {
+	public void setTicketId(String ticketId) {
 		this.ticketId = ticketId;
 	}
 
@@ -238,7 +237,7 @@ public class Ticket implements Serializable{
 		this.ticketEndSellDate = ticketEndSellDate;
 	}
 
-	public Ticket(Integer ticketId, String ticketState, Integer employeeId, Integer routeId, Integer busId,
+	public Ticket(String ticketId, String ticketState, Integer employeeId, Integer routeId, Integer busId,
 			Integer ticketDriverEmployeeId, Integer ticketExtraDriverEmployeeId, String ticketOriginTime,
 			Integer ticketOriginBusStationId, String ticketDestinationTime, Integer ticketDestinationBusStationId,
 			String ticketPrice, String ticketTax, String ticketSale, String ticketFitmentPrice, String ticketCurrency,
@@ -266,32 +265,6 @@ public class Ticket implements Serializable{
 		this.ticketEndSellDate = ticketEndSellDate;
 	}
 
-	public Ticket(String ticketState, Integer employeeId, Integer routeId, Integer busId,
-			Integer ticketDriverEmployeeId, Integer ticketExtraDriverEmployeeId, String ticketOriginTime,
-			Integer ticketOriginBusStationId, String ticketDestinationTime, Integer ticketDestinationBusStationId,
-			String ticketPrice, String ticketTax, String ticketSale, String ticketFitmentPrice, String ticketCurrency,
-			Boolean ticketAvailable, Integer ticketCount, String ticketStartSellDate, String ticketEndSellDate) {
-		super();
-		this.ticketState = ticketState;
-		this.employeeId = employeeId;
-		this.routeId = routeId;
-		this.busId = busId;
-		this.ticketDriverEmployeeId = ticketDriverEmployeeId;
-		this.ticketExtraDriverEmployeeId = ticketExtraDriverEmployeeId;
-		this.ticketOriginTime = ticketOriginTime;
-		this.ticketOriginBusStationId = ticketOriginBusStationId;
-		this.ticketDestinationTime = ticketDestinationTime;
-		this.ticketDestinationBusStationId = ticketDestinationBusStationId;
-		this.ticketPrice = ticketPrice;
-		this.ticketTax = ticketTax;
-		this.ticketSale = ticketSale;
-		this.ticketFitmentPrice = ticketFitmentPrice;
-		this.ticketCurrency = ticketCurrency;
-		this.ticketAvailable = ticketAvailable;
-		this.ticketCount = ticketCount;
-		this.ticketStartSellDate = ticketStartSellDate;
-		this.ticketEndSellDate = ticketEndSellDate;
-	}
 
 	public Ticket() {
 		super();

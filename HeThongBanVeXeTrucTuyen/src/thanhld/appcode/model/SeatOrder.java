@@ -24,7 +24,7 @@ public class SeatOrder implements Serializable {
 	private Integer seatOrderId;
 
 	@Column(name = "TICKET_ID")
-	private Integer ticketId;
+	private String ticketId;
 
 	@Column(name = "ORDER_TICKET_ID")
 	private String orderTicketId;
@@ -43,11 +43,11 @@ public class SeatOrder implements Serializable {
 		this.seatOrderId = seatOrderId;
 	}
 
-	public Integer getTicketId() {
+	public String getTicketId() {
 		return ticketId;
 	}
 
-	public void setTicketId(Integer ticketId) {
+	public void setTicketId(String ticketId) {
 		this.ticketId = ticketId;
 	}
 
@@ -75,7 +75,7 @@ public class SeatOrder implements Serializable {
 		this.orderTicketId = orderTicketId;
 	}
 
-	public SeatOrder(Integer ticketId, String orderTicketId, String seat, String routes) {
+	public SeatOrder(String ticketId, String orderTicketId, String seat, String routes) {
 		super();
 		this.ticketId = ticketId;
 		this.orderTicketId = orderTicketId;
@@ -83,7 +83,7 @@ public class SeatOrder implements Serializable {
 		this.routes = routes;
 	}
 
-	public SeatOrder(Integer seatOrderId, Integer ticketId, String orderTicketId, String seat, String routes) {
+	public SeatOrder(Integer seatOrderId, String ticketId, String orderTicketId, String seat, String routes) {
 		super();
 		this.seatOrderId = seatOrderId;
 		this.ticketId = ticketId;

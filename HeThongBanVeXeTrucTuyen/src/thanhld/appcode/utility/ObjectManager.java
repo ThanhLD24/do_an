@@ -21,6 +21,16 @@ public class ObjectManager {
 		return obj;
 
 	}
+	
+	public static Object getObjectById(String id, Class clas) {
+		Session session =HibernateUtils.getSessionFactory().openSession();
+		Transaction trans = session.beginTransaction();
+		Object obj = session.get(clas, id);
+		trans.commit();
+		session.flush();
+		return obj;
+
+	} 
 	public static void update(Object obj) {
 		Session session = HibernateUtils.getSessionFactory().openSession();
 		Transaction trans = session.beginTransaction();
