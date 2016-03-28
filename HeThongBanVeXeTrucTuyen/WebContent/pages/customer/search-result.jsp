@@ -1,3 +1,6 @@
+<%@page import="thanhld.appcode.dao.TicketDetailDAOImpl"%>
+<%@page import="thanhld.appcode.dao.TicketDetailDAO"%>
+<%@page import="thanhld.appcode.model.TicketDetail"%>
 <%@page import="thanhld.appcode.dao.SeatOrderDAOImpl"%>
 <%@page import="thanhld.appcode.dao.SeatOrderDAO"%>
 <%@page import="thanhld.appcode.dao.RouteDetailDAOImpl"%>
@@ -40,7 +43,8 @@
 	href="<%=request.getContextPath()%>/css/mystyle.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/bootstrap.min.css">
-<link href="<%=request.getContextPath()%>/css/progress-wizard.min.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/css/progress-wizard.min.css"
+	rel="stylesheet">
 
 <script>
 	var baseUrl = '';
@@ -103,6 +107,7 @@
 		</div>
 		</nav> </header>
 		<main id="main"> <%
+		TicketDetailDAO ticketDetailDAO = new TicketDetailDAOImpl();
 				SeatOrderDAO seatOrderDAO = new SeatOrderDAOImpl();
  	List<Ticket> listTicket = (List) session.getAttribute("listTicket");
 	RouteDetailDAO routeDetailDAO = new RouteDetailDAOImpl();
@@ -116,34 +121,27 @@
  %>
 
 		<div class="container" style="max-width: 940px;">
-		<!-- start process bar -->
-		<div class="tien-trinh">
-		 <ul class="progress-indicator">
-            <li class="completed">
-                <span class="bubble"></span>
-                Tìm chuyến <i class="uk-icon-check-circle"></i><br><small></small>
-            </li>
-            <li class="active">
-                <span class="bubble"></span>
-                Chọn chuyến <i class="uk-icon-cogs"></i><br><small></small>
-            </li>
-            <li class="">
-                <span class="bubble"></span>
-                Chọn chỗ  <i class="uk-icon-times-circle-o"></i><br><small></small>
-            </li>
-            <li>
-                <span class="bubble"></span>
-               Điền thông tin  <i class="uk-icon-times-circle-o"></i>
-            </li>
-            <li>
-                <span class="bubble"></span>
-               Xác nhận  <i class="uk-icon-times-circle-o"></i>
-            </li>
-        </ul>
-        </div>
-		<!-- end process bar -->
-		
-		<!-- 
+			<!-- start process bar -->
+			<div class="tien-trinh">
+				<ul class="progress-indicator">
+					<li class="completed"><span class="bubble"></span> Tìm chuyến
+						<i class="uk-icon-check-circle"></i><br>
+					<small></small></li>
+					<li class="active"><span class="bubble"></span> Chọn chuyến <i
+						class="uk-icon-cogs"></i><br>
+					<small></small></li>
+					<li class=""><span class="bubble"></span> Chọn chỗ <i
+						class="uk-icon-times-circle-o"></i><br>
+					<small></small></li>
+					<li><span class="bubble"></span> Điền thông tin <i
+						class="uk-icon-times-circle-o"></i></li>
+					<li><span class="bubble"></span> Xác nhận <i
+						class="uk-icon-times-circle-o"></i></li>
+				</ul>
+			</div>
+			<!-- end process bar -->
+
+			<!-- 
 			<div class="search_form">
 				<script
 					src="<%=request.getContextPath()%>/js/geo-location/js/geo-min.js"
@@ -438,10 +436,6 @@
 						%>
 						<%
 							Bus bus = (Bus) ObjectManager.getObjectById(ticket.getBusId(), Bus.class);
-								BusStation busStationOrigin = (BusStation) ObjectManager
-										.getObjectById(ticket.getTicketOriginBusStationId(), BusStation.class);
-								BusStation busStationDestination = (BusStation) ObjectManager
-										.getObjectById(ticket.getTicketDestinationBusStationId(), BusStation.class);
 								Carrier carrier = (Carrier) ObjectManager.getObjectById(bus.getCarrierId(), Carrier.class);
 								int numberOriginPlace = routeDetailDAO.getNumberOrderByCondition(ticket.getRouteId(), originPlaceId);
 								int numberDestinationPlace = routeDetailDAO.getNumberOrderByCondition(ticket.getRouteId(), destinationPlaceId);
@@ -451,6 +445,12 @@
 								String chuoiGheBiDat = Utility.layGheDaDuocDat(
 										seatOrderDAO.getSeatOrderByCondition(ticket.getTicketId(), numberOriginPlace, numberDestinationPlace));
 								int tongGheDaDat = Utility.layTongSoGheDuocDat(chuoiGheBiDat);
+								TicketDetail ticketDetailStart = ticketDetailDAO.getTicketDetailByTicketId(ticket.getTicketId(),originPlaceId );
+								TicketDetail ticketDetailEnd = ticketDetailDAO.getTicketDetailByTicketId(ticket.getTicketId(),destinationPlaceId );
+								BusStation busStationOrigin = (BusStation) ObjectManager
+										.getObjectById(ticketDetailStart.getBusStationId(), BusStation.class);
+								BusStation busStationDestination = (BusStation) ObjectManager
+										.getObjectById(ticketDetailEnd.getBusStationId(), BusStation.class);
 						%>
 
 						<tr class="tr_second">
@@ -463,30 +463,37 @@
 							<td align="center"><%=bus.getBusType()%></td>
 							<td align="left"><%=bus.getBusFeature()%></td>
 							<td align="center">
-								<div><%=Utility.parseToTimeFormat(ticket.getTicketOriginTime())%></div>
-								<div><%=Utility.parseToDateFormat(ticket.getTicketOriginTime())%></div>
+								<div><%=ticketDetailStart.getDetailTime()%></div>
+								<div><%=ticketDetailStart.getDetailDate()%></div>
 								<div><%=busStationOrigin.getBusStationName()%></div>
 							</td>
 							<td align="center">
-								<div><%=Utility.parseToTimeFormat(ticket.getTicketDestinationTime())%></div>
-								<div><%=Utility.parseToDateFormat(ticket.getTicketDestinationTime())%></div>
+								<div><%=ticketDetailEnd.getDetailTime()%></div>
+								<div><%=ticketDetailEnd.getDetailDate()%></div>
 								<div><%=busStationDestination.getBusStationName()%></div>
 							</td>
 							<td align="center" style="vertical-align: center;"><%=bus.getBusCapacity()-tongGheDaDat%>/<%=bus.getBusCapacity()%></td>
 							<td align="center"><div><%=priceTotal%></div>
-							<div class="button_selectseat">
-							<form name="formSelectBus" action="<%=request.getContextPath() %>/BusController?type=<%=Variables.SELECT_BUS%>" method="post">
-							<input type="hidden" value="<%=ticket.getTicketId()%>" id="txtTicketId" name="txtTicketId">
-							<input type="hidden" value="<%=bus.getBusId()%>" id="txtBusId" name="txtBusId">
-							<input type="hidden" value="<%=priceTotal%>" id="txtPrice" name="txtPrice">
-							<input type="hidden" value="<%=numberOriginPlace%>" id="txtNumberOriginPlace" name="txtNumberOriginPlace">
-							<input type="hidden" value="<%=numberDestinationPlace%>" id="txtNumberDestinationPlace" name="txtNumberDestinationPlace">
-							<button
-									class="uk-button uk-button-success uk-button-small"
-									type="submit">
-									Chọn chỗ <i class="uk-icon-angle-down"></i>
-								</button>
-							</form></div></td>
+								<div class="button_selectseat">
+									<form name="formSelectBus"
+										action="<%=request.getContextPath() %>/BusController?type=<%=Variables.SELECT_BUS%>"
+										method="post">
+										<input type="hidden" value="<%=ticket.getTicketId()%>"
+											id="txtTicketId" name="txtTicketId"> <input
+											type="hidden" value="<%=bus.getBusId()%>" id="txtBusId"
+											name="txtBusId"> <input type="hidden"
+											value="<%=priceTotal%>" id="txtPrice" name="txtPrice">
+										<input type="hidden" value="<%=numberOriginPlace%>"
+											id="txtNumberOriginPlace" name="txtNumberOriginPlace">
+										<input type="hidden" value="<%=numberDestinationPlace%>"
+											id="txtNumberDestinationPlace"
+											name="txtNumberDestinationPlace">
+										<button class="uk-button uk-button-success uk-button-small"
+											type="submit">
+											Chọn chỗ <i class="uk-icon-angle-down"></i>
+										</button>
+									</form>
+								</div></td>
 						</tr>
 
 
