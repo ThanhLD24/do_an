@@ -63,6 +63,7 @@ public class BusController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("text/html; charset=UTF-8");
 		// TODO Auto-generated method stub
 		/*response.getWriter().append("Served at: ").append(request.getContextPath());*/
 		String id = request.getParameter("id");
@@ -74,6 +75,20 @@ public class BusController extends HttpServlet {
 		JsonArray jsonArray = element.getAsJsonArray();
 		response.setContentType("application/json");
 		response.getWriter().print(jsonArray);
+		
+		/*int specialityId = Integer.parseInt(request.getParameter("SpecialityId"));
+		
+		ArrayList<Doctor> list = new ArrayList<>();		
+		Doctor d1= new Doctor("1", "A");
+		Doctor d2= new Doctor("2", "B");
+		list.add(d1);
+		list.add(d2);	
+
+		String doctors = null;
+
+		doctors = new Gson().toJson(list);
+		response.setContentType("application/json");
+		response.getWriter().write(doctors);*/
 	}
 
 	/**

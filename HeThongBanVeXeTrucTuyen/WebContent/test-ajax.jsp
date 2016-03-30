@@ -12,13 +12,16 @@
 		
 		$("#target").change(function(event) {
 			var id = $(this).val();
+			/* alert(id); */
 			$.get('BusController', {
 				// Parameter to be sent to server side
 				id : id
 			}, function(jsonResponse) {
+				var select = $('#des');
+				select.find('option').remove();
 				$.each(jsonResponse, function(index, value) {
 // 					 $("#" + index).html(value);
-					alert(index);
+					/* alert(index); */
 					$("#des").append( 
 			           $("<option></option>")
 			               .text(value['busStationName'])
@@ -28,6 +31,28 @@
 				});
 				
 			});}); 
+// $('.hihi').hide();
+// 		$('#target').change(
+// 				function(event) {
+// 					var specialityId = $(this).val();							
+// 					$.get('busController', {
+// 						SpecialityId : specialityId
+// 					}, function(response) {
+// 						var select = $('#des');
+// 						select.find('option').remove();
+// 						$("#des").append('<option value="" selected disabled>---</option>');
+// 						select.find('option').remove();					
+// 						$.each(response,
+// 								function(index, value) {
+// 							$('.hihi').show();
+// 									$('<option>').val(value.id)
+// 											.text(value.name)
+// 											.appendTo(select); 
+// 								});
+// 					});									
+					
+
+// 				});
 		
 		
 		
@@ -41,9 +66,10 @@
 		<option value="3">Ha Nam</option>
 		<option value="4">Ninh Binh</option>
 	</select>
+	
 	<select id="des" name="des">
 	</select>
-
+<div class="hihi">DKKKKMMMM</div>
 	
 </body>
 </html>
