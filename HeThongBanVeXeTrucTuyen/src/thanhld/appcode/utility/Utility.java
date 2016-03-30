@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.print.attribute.standard.DateTimeAtCompleted;
+
 import thanhld.appcode.dao.SeatOrderDAOImpl;
 import thanhld.appcode.model.SeatOrder;
 
@@ -169,6 +171,40 @@ public class Utility {
 		
 		return count;
 		
+	}
+	
+	public static boolean compareDateTime(String date){
+		boolean check =false;
+		Date dateOrigin =null;
+		Date dateNow =null;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		Date dateN = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    	try {
+			dateOrigin = sdf.parse(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	try {
+			dateNow = sdf.parse(dateFormat.format(dateN));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	if(dateNow.compareTo(dateOrigin)>=0){
+    		check = true;
+    		//date hien tai sau date han -> het han
+    	}
+    	if(dateNow.compareTo(dateOrigin)<0){
+    		check = false;
+    		// -> van dang ban
+    	}
+    	return check;
+	}
+	public static void main(String[] args) {
+		
+		System.out.println(Utility.compareDateTime("2016-03-30 9:23:30"));
 	}
 /*	public static void main(String[] args) {
 		SeatOrderDAOImpl so = new SeatOrderDAOImpl();

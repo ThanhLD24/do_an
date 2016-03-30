@@ -41,5 +41,13 @@ public class TicketDAOImpl implements TicketDAO {
 	        transaction.commit();
 	        return listTicket;
 	}
+	
+	public List<Ticket> getListTicket(){
+		List<Ticket> listTicket = null;
+		transaction = session.beginTransaction();
+		
+		return listTicket;
+	}
+	
 
 }

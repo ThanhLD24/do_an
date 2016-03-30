@@ -7,7 +7,7 @@ import org.hibernate.Transaction;
 
 public class ObjectManager {
 
-	public static List ListObject(Class object) {
+	public static List listObject(Class object) {
 		Session session = HibernateUtils.getSessionFactory().openSession();
 		List list = session.createCriteria(object).list();
 		return list;

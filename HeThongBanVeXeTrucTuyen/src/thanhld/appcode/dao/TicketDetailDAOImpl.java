@@ -26,6 +26,7 @@ public class TicketDetailDAOImpl implements TicketDetailDAO {
 		return ticketDetail;
 	}
 	
+	
 	public static void main(String[] args) {
 		TicketDetailDAOImpl t = new TicketDetailDAOImpl();
 		

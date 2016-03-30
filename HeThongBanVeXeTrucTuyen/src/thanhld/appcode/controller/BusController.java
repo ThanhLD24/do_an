@@ -14,11 +14,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import com.mysql.jdbc.Util;
 
+import thanhld.appcode.dao.BusStationDAO;
+import thanhld.appcode.dao.BusStationDAOImpl;
 import thanhld.appcode.dao.TicketDAO;
 import thanhld.appcode.dao.TicketDAOImpl;
 import thanhld.appcode.model.Bus;
+import thanhld.appcode.model.BusStation;
 import thanhld.appcode.model.Carrier;
 import thanhld.appcode.model.OrderTicket;
 import thanhld.appcode.model.Route;
@@ -57,7 +64,16 @@ public class BusController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		/*response.getWriter().append("Served at: ").append(request.getContextPath());*/
+		String id = request.getParameter("id");
+		BusStationDAO busStationDAO = new BusStationDAOImpl();
+		List<BusStation> listBusStation = new ArrayList<BusStation>();
+		listBusStation = busStationDAO.getListStationByProvince(id);
+		Gson gson = new Gson();
+		JsonElement element = gson.toJsonTree(listBusStation, new TypeToken<List<BusStation>>() {}.getType());
+		JsonArray jsonArray = element.getAsJsonArray();
+		response.setContentType("application/json");
+		response.getWriter().print(jsonArray);
 	}
 
 	/**
@@ -80,17 +96,17 @@ public class BusController extends HttpServlet {
 		TicketDAO ticketDAO = new TicketDAOImpl();
 
 		List<Ticket> listTicket = new ArrayList<Ticket>();
-		
+
 		String orginPlace = "";
 		String destinationPlace = "";
 		String startDate = "";
-		String listSeat ="";
-		String seatCount ="";
-		String fullName="";
-		String phoneNumber="";
-		String notes ="";
+		String listSeat = "";
+		String seatCount = "";
+		String fullName = "";
+		String phoneNumber = "";
+		String notes = "";
 		String totalMoney = "";
-		String sessionShortId="";
+		String sessionShortId = "";
 		String ticketId = "";
 		int busId = 0;
 		int priceTotal = 0;
@@ -140,7 +156,7 @@ public class BusController extends HttpServlet {
 			listSeat = request.getParameter("txtListSeat");
 			totalMoney = request.getParameter("txtTotalMoney");
 			seatCount = request.getParameter("txtSeatCount");
-			
+
 			session.setAttribute("listSeat", listSeat);
 			session.setAttribute("totalMoney", totalMoney);
 			session.setAttribute("seatCount", seatCount);
@@ -150,14 +166,14 @@ public class BusController extends HttpServlet {
 			break;
 		case Variables.INFO:
 			fullName = request.getParameter("txtHoTen");
-			phoneNumber=request.getParameter("txtSdt");
+			phoneNumber = request.getParameter("txtSdt");
 			notes = request.getParameter("txtGhiChu");
 			ticketId = session.getAttribute("ticketId").toString();
 			numberOriginPlace = Integer.parseInt(session.getAttribute("numberOriginPlace").toString());
-			numberDestinationPlace =Integer.parseInt(session.getAttribute("numberDestinationPlace").toString());
-			int seatCountInt =Integer.parseInt(session.getAttribute("seatCount").toString());
-			
-			sessionShortId = session.getId().substring(0,6);
+			numberDestinationPlace = Integer.parseInt(session.getAttribute("numberDestinationPlace").toString());
+			int seatCountInt = Integer.parseInt(session.getAttribute("seatCount").toString());
+
+			sessionShortId = session.getId().substring(0, 6);
 			OrderTicket orderTicket = new OrderTicket();
 			orderTicket.setOrderTicketId(sessionShortId);
 			orderTicket.setTicketId(ticketId);
@@ -175,21 +191,21 @@ public class BusController extends HttpServlet {
 			orderTicket.setOrderTicketPaidDate("");
 			orderTicket.setOrderTicketStatus(true);
 			orderTicket.setOrderTicketOther(notes);
-			
+
 			try {
-				ObjectManager.addObject((Object)orderTicket);
+				ObjectManager.addObject((Object) orderTicket);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			SeatOrder seatOrder = new SeatOrder();
 			seatOrder.setTicketId(ticketId);
 			seatOrder.setOrderTicketId(sessionShortId);
 			seatOrder.setSeat(session.getAttribute("listSeat").toString());
 			seatOrder.setRoutes(Utility.phanChangDuong(numberOriginPlace, numberDestinationPlace));
-			ticket = (Ticket)session.getAttribute("ticket");
-			ticket.setTicketCount(ticket.getTicketCount()-seatCountInt);
+			ticket = (Ticket) session.getAttribute("ticket");
+			ticket.setTicketCount(ticket.getTicketCount() - seatCountInt);
 			try {
 				ObjectManager.addObject(seatOrder);
 				ObjectManager.update(ticket);
@@ -197,12 +213,12 @@ public class BusController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			session.invalidate();
-			
+
 			break;
 		}
-		
+
 	}
 
 }

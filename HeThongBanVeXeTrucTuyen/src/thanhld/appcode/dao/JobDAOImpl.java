@@ -14,15 +14,4 @@ import thanhld.appcode.utility.HibernateUtils;
 public class JobDAOImpl {
 	Session session = null;
     Transaction transaction = null;
-    public static List listObject(Class object) {
-		Session session = HibernateUtils.getSessionFactory().openSession();
-		List list = session.createCriteria(object).list();
-		return list;
-	}
-    public static void main(String[] args) {
-		JobDAOImpl jDao = new JobDAOImpl();
-		List<Job> lj = new ArrayList<Job>(); 
-		lj = jDao.listObject(Job.class);
-		System.out.println(lj.get(0).getJobName());
-	}
 }
