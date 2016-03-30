@@ -13,7 +13,7 @@
 		$("#target").change(function(event) {
 			var id = $(this).val();
 			/* alert(id); */
-			$.get('BusController', {
+			$.get('<%=request.getContextPath()%>/BusController', {
 				// Parameter to be sent to server side
 				id : id
 			}, function(jsonResponse) {
@@ -69,7 +69,7 @@
 	
 	<select id="des" name="des">
 	</select>
-<div class="hihi">DKKKKMMMM</div>
+<div class="hihi">Hihihi</div>
 	
 </body>
 </html>
