@@ -15,6 +15,15 @@
 		<servlet-name>home</servlet-name>
 		<url-pattern>/home</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>feedback</servlet-name>
+		<jsp-file>/pages/customer/feedback.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>feedback</servlet-name>
+		<url-pattern>/feedback</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>search result</servlet-name>
@@ -42,7 +51,35 @@
 		<servlet-name>info</servlet-name>
 		<url-pattern>/info</url-pattern>
 	</servlet-mapping>
-
+	
+	<!-- admin mapping  -->
+	<servlet>
+		<servlet-name>admin home</servlet-name>
+		<jsp-file>/pages/admin/home.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>admin home</servlet-name>
+		<url-pattern>/admin/home</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>admin manager schedule</servlet-name>
+		<jsp-file>/pages/admin/schedule-management.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>admin manager schedule</servlet-name>
+		<url-pattern>/admin/schedule</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>add schedule</servlet-name>
+		<jsp-file>/pages/admin/add-schedule.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>add schedule</servlet-name>
+		<url-pattern>/admin/add-schedule</url-pattern>
+	</servlet-mapping>
+<!-- /admin -->
 	<servlet>
 		<servlet-name>BusController</servlet-name>
 		<servlet-class>thanhld.appcode.controller.BusController</servlet-class>

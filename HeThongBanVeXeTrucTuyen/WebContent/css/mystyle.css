@@ -62,15 +62,15 @@
 	
 }
 
-.text_menu {
+/* .text_menu {
 	font-weight: bold;
-	color: white;
-}
+	color: black;
+} */
 
-.text_menu.active {
+/* .text_menu.active {
 	color: black;
 }
-
+ */
 #result_table tr td {
 	align: center;
 }

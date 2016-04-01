@@ -5,4 +5,5 @@ public class Variables {
 	  public static final int SELECT_SEAT = 3;
 	  public static final int  SELECT_BUS=2;
 	  public static final int  INFO=4;
+	  public static final int  FEEBBACK=5;
 }

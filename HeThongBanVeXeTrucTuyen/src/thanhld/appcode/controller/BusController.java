@@ -1,6 +1,7 @@
 package thanhld.appcode.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import thanhld.appcode.dao.TicketDAOImpl;
 import thanhld.appcode.model.Bus;
 import thanhld.appcode.model.BusStation;
 import thanhld.appcode.model.Carrier;
+import thanhld.appcode.model.Feedback;
 import thanhld.appcode.model.OrderTicket;
 import thanhld.appcode.model.Route;
 import thanhld.appcode.model.SeatOrder;
@@ -99,6 +101,7 @@ public class BusController extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		/* doGet(request, response); */
+		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession(true);
 		response.setContentType("text/html;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
@@ -231,6 +234,21 @@ public class BusController extends HttpServlet {
 
 			session.invalidate();
 
+			break;
+		case Variables.FEEBBACK:
+			String title = request.getParameter("title");
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			String phone = request.getParameter("phone");
+			String comment = request.getParameter("comment");
+			Feedback feedback = new Feedback(title, comment, name, email, phone);
+			try {
+				ObjectManager.addObject(feedback);
+				/*out.print("<h2>Thanh cong</h2>");*/
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		}
 
