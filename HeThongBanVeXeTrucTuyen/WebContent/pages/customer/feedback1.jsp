@@ -133,7 +133,7 @@
 							<div class="col-md-4 inputGroupContainer">
 								<div class="input-group">
 									<span class="input-group-addon"><i
-										class="glyphicon glyphicon-list"></i></span> <input name="title" id="title"
+										class="glyphicon glyphicon-list"></i></span> <input name="title"
 										placeholder="Tiêu đề" class="form-control" type="text">
 								</div>
 							</div>
@@ -145,7 +145,7 @@
 							<div class="col-md-4 inputGroupContainer">
 								<div class="input-group">
 									<span class="input-group-addon"><i
-										class="glyphicon glyphicon-user"></i></span> <input name="name" id="name"
+										class="glyphicon glyphicon-user"></i></span> <input name="name"
 										placeholder="Họ tên" class="form-control" type="text">
 								</div>
 							</div>
@@ -158,7 +158,7 @@
 							<div class="col-md-4 inputGroupContainer">
 								<div class="input-group">
 									<span class="input-group-addon"><i
-										class="glyphicon glyphicon-envelope"></i></span> <input name="email" id="email"
+										class="glyphicon glyphicon-envelope"></i></span> <input name="email"
 										placeholder="Địa chỉ E-Mail" class="form-control" type="text">
 								</div>
 							</div>
@@ -172,7 +172,7 @@
 							<div class="col-md-4 inputGroupContainer">
 								<div class="input-group">
 									<span class="input-group-addon"><i
-										class="glyphicon glyphicon-earphone"></i></span> <input name="phone" id="phone"
+										class="glyphicon glyphicon-earphone"></i></span> <input name="phone"
 										placeholder="Số điện thoại" class="form-control" type="text">
 								</div>
 							</div>
@@ -189,7 +189,7 @@
 								<div class="input-group">
 									<span class="input-group-addon"><i
 										class="glyphicon glyphicon-pencil"></i></span>
-									<textarea class="form-control" name="comment" id="comment"
+									<textarea class="form-control" name="comment"
 										placeholder=" Nội dung phản hồi"></textarea>
 								</div>
 							</div>
@@ -437,31 +437,6 @@
 								      },'json');
 								      return false;
 								   }); */
-								   
-							    $('#contact_form').on('click', '#bt_feedback', function(e){
-							       e.preventDefault() //this prevents the form from submitting normally, but still allows the click to 'bubble up'.
-							       
-							       //lets get our values from the form....
-							       var title = $('#title').val();
-							       var name = $('#name').val();
-							       var email = $('#email').val();
-							       var phone = $('#phone').val();
-							       var comment = $('#comment').val();
-							       
-							           
-							       //now lets make our ajax call
-							        $.ajax({
-							          type: "POST",
-							          url: "<%=request.getContextPath() %>/BusController?type=<%=Variables.FEEBBACK%>",
-							           data: { title:title, name: name, email:email, phone:phone, comment:comment}
-							        }).done(function() {
-							        
-							           //replace submit button with some text...
-							        	$('#success_message').slideDown({ opacity: 'show' }, 'slow');
-							        	$('#contact_form').data('bootstrapValidator').resetForm();
-							           
-							        });       
-							    });
 								
 							
 						});
