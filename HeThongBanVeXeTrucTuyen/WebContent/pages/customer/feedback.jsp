@@ -72,9 +72,6 @@
 }
 
 /*  .hide { position:absolute; top:-1px; left:-1px; width:1px; height:1px; } */
-
-
-
 </style>
 </head>
 <iframe name="hiddenFrame" class="hide"></iframe>
@@ -117,11 +114,12 @@
 			</div>
 		</div>
 		</nav> </header>
-		 <!--  target="hiddenFrame" -->
+		<!--  target="hiddenFrame" -->
 		<div class="container">
 			<div class="result_form">
-				<form class="well form-horizontal" action="<%=request.getContextPath() %>/BusController?type=<%=Variables.FEEBBACK%>" method="post"
-					id="contact_form">
+				<form class="well form-horizontal"
+					action="<%=request.getContextPath()%>/BusController?type=<%=Variables.FEEBBACK%>"
+					method="post" id="contact_form">
 					<fieldset>
 
 						<!-- Form Name -->
@@ -133,8 +131,9 @@
 							<div class="col-md-4 inputGroupContainer">
 								<div class="input-group">
 									<span class="input-group-addon"><i
-										class="glyphicon glyphicon-list"></i></span> <input name="title" id="title"
-										placeholder="Tiêu đề" class="form-control" type="text">
+										class="glyphicon glyphicon-list"></i></span> <input name="title"
+										id="title" placeholder="Tiêu đề" class="form-control"
+										type="text">
 								</div>
 							</div>
 						</div>
@@ -145,8 +144,9 @@
 							<div class="col-md-4 inputGroupContainer">
 								<div class="input-group">
 									<span class="input-group-addon"><i
-										class="glyphicon glyphicon-user"></i></span> <input name="name" id="name"
-										placeholder="Họ tên" class="form-control" type="text">
+										class="glyphicon glyphicon-user"></i></span> <input name="name"
+										id="name" placeholder="Họ tên" class="form-control"
+										type="text">
 								</div>
 							</div>
 						</div>
@@ -158,8 +158,9 @@
 							<div class="col-md-4 inputGroupContainer">
 								<div class="input-group">
 									<span class="input-group-addon"><i
-										class="glyphicon glyphicon-envelope"></i></span> <input name="email" id="email"
-										placeholder="Địa chỉ E-Mail" class="form-control" type="text">
+										class="glyphicon glyphicon-envelope"></i></span> <input name="email"
+										id="email" placeholder="Địa chỉ E-Mail" class="form-control"
+										type="text">
 								</div>
 							</div>
 						</div>
@@ -172,8 +173,9 @@
 							<div class="col-md-4 inputGroupContainer">
 								<div class="input-group">
 									<span class="input-group-addon"><i
-										class="glyphicon glyphicon-earphone"></i></span> <input name="phone" id="phone"
-										placeholder="Số điện thoại" class="form-control" type="text">
+										class="glyphicon glyphicon-earphone"></i></span> <input name="phone"
+										id="phone" placeholder="Số điện thoại" class="form-control"
+										type="text">
 								</div>
 							</div>
 						</div>
@@ -192,6 +194,12 @@
 									<textarea class="form-control" name="comment" id="comment"
 										placeholder=" Nội dung phản hồi"></textarea>
 								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-4 control-label" id="captchaOperation"></label>
+							<div class="col-md-4 inputGroupContainer">
+								<input type="text" class="form-control" name="captcha" />
 							</div>
 						</div>
 
@@ -300,6 +308,17 @@
 		$(document)
 				.ready(
 						function() {
+							
+							  function randomNumber(min, max) {
+							        return Math.floor(Math.random() * (max - min + 1) + min);
+							    }
+
+							    function generateCaptcha() {
+							        $('#captchaOperation').html([randomNumber(1, 10), '+', randomNumber(1, 10), '='].join(' '));
+							    }
+
+							    generateCaptcha();
+							
 							$('#contact_form')
 									.bootstrapValidator(
 											{
@@ -402,10 +421,24 @@
 																message : 'Vui lòng ghi phản hồi'
 															}
 														}
-													}
+													},
+													captcha: {
+									                    validators: {
+									                        callback: {
+									                            message: 'Trả lời sai',
+									                            callback: function(value, validator, $field) {
+									                                var items = $('#captchaOperation').html().split(' '),
+									                                    sum   = parseInt(items[0]) + parseInt(items[2]);
+									                                return value == sum;
+									                            }
+									                        }
+									                    }
+									                }
 												}
-											})
-									;
+											}).on('err.form.fv', function(e) {
+									            // Regenerate the captcha
+									            generateCaptcha();
+									        });
 							
 							/* $('#bt_feedback').click(function(){
 								$('#success_message')
@@ -438,7 +471,7 @@
 								      return false;
 								   }); */
 								   
-							    $('#contact_form').on('click', '#bt_feedback', function(e){
+							   <%--  $('#contact_form').on('click', '#bt_feedback', function(e){
 							       e.preventDefault() //this prevents the form from submitting normally, but still allows the click to 'bubble up'.
 							       
 							       //lets get our values from the form....
@@ -461,7 +494,7 @@
 							        	$('#contact_form').data('bootstrapValidator').resetForm();
 							           
 							        });       
-							    });
+							    }); --%>
 								
 							
 						});

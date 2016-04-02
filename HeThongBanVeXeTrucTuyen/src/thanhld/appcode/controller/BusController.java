@@ -23,6 +23,8 @@ import com.mysql.jdbc.Util;
 
 import thanhld.appcode.dao.BusStationDAO;
 import thanhld.appcode.dao.BusStationDAOImpl;
+import thanhld.appcode.dao.RouteDetailDAO;
+import thanhld.appcode.dao.RouteDetailDAOImpl;
 import thanhld.appcode.dao.TicketDAO;
 import thanhld.appcode.dao.TicketDAOImpl;
 import thanhld.appcode.model.Bus;
@@ -30,7 +32,9 @@ import thanhld.appcode.model.BusStation;
 import thanhld.appcode.model.Carrier;
 import thanhld.appcode.model.Feedback;
 import thanhld.appcode.model.OrderTicket;
+import thanhld.appcode.model.Province;
 import thanhld.appcode.model.Route;
+import thanhld.appcode.model.RouteDetail;
 import thanhld.appcode.model.SeatOrder;
 import thanhld.appcode.model.Ticket;
 import thanhld.appcode.utility.ObjectManager;
@@ -67,30 +71,75 @@ public class BusController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		// TODO Auto-generated method stub
-		/*response.getWriter().append("Served at: ").append(request.getContextPath());*/
-		String id = request.getParameter("id");
-		BusStationDAO busStationDAO = new BusStationDAOImpl();
-		List<BusStation> listBusStation = new ArrayList<BusStation>();
-		listBusStation = busStationDAO.getListStationByProvince(id);
-		Gson gson = new Gson();
-		JsonElement element = gson.toJsonTree(listBusStation, new TypeToken<List<BusStation>>() {}.getType());
-		JsonArray jsonArray = element.getAsJsonArray();
-		response.setContentType("application/json");
-		response.getWriter().print(jsonArray);
+		/*
+		 * response.getWriter().append("Served at: "
+		 * ).append(request.getContextPath());
+		 */
+		int type = Integer.parseInt(request.getParameter("type"));
+		/*System.out.println(type);*/
+		String jsonString =null;
+		HttpSession session = request.getSession(true);
+		RouteDetailDAO routeDetailDAO = new RouteDetailDAOImpl();
+		if (type == 0) {
+			String id = request.getParameter("id");
+			BusStationDAO busStationDAO = new BusStationDAOImpl();
+			List<BusStation> listBusStation = new ArrayList<BusStation>();
+			listBusStation = busStationDAO.getListStationByProvince(id);
+			Gson gson = new Gson();
+			JsonElement element = gson.toJsonTree(listBusStation, new TypeToken<List<BusStation>>() {
+			}.getType());
+			JsonArray jsonArray = element.getAsJsonArray();
+			response.setContentType("application/json");
+			response.getWriter().print(jsonArray);
+		}
+		if (type == 1) {
 		
-		/*int specialityId = Integer.parseInt(request.getParameter("SpecialityId"));
+			int routeId = Integer.parseInt(request.getParameter("id"));
+			List<RouteDetail> listRouteDetail = routeDetailDAO.getListRouteDetailByRouteId(routeId);
+			List<String> listString = new ArrayList<String>();
+			session.setAttribute("listRouteDetail", listRouteDetail);
+			int a =listRouteDetail.size();
+			System.out.println(a);
+			listString.add(String.valueOf(a));
+			jsonString = new Gson().toJson(a);
+			
+			/*List<Route> listRoute = ObjectManager.listObject(Route.class);
+			jsonString = new Gson().toJson(listRoute);*/
+			response.setContentType("application/json");
+			response.getWriter().write(jsonString);
+			
+		}
 		
-		ArrayList<Doctor> list = new ArrayList<>();		
-		Doctor d1= new Doctor("1", "A");
-		Doctor d2= new Doctor("2", "B");
-		list.add(d1);
-		list.add(d2);	
-
-		String doctors = null;
-
-		doctors = new Gson().toJson(list);
-		response.setContentType("application/json");
-		response.getWriter().write(doctors);*/
+		if (type == 2) {
+			int routeId = Integer.parseInt(request.getParameter("id"));
+			List<RouteDetail> listRouteDetail = routeDetailDAO.getListRouteDetailByRouteId(routeId);
+			List<Province> listProvince = new ArrayList<Province>();
+			for(RouteDetail rd: listRouteDetail){
+				Province p = (Province)ObjectManager.getObjectById(rd.getProvinceId(), Province.class);
+				listProvince.add(p);
+			}
+			session.setAttribute("hihi", 2);
+			Gson gson = new Gson();
+			JsonElement element = gson.toJsonTree(listProvince, new TypeToken<List<Province>>() {
+			}.getType());
+			JsonArray jsonArray = element.getAsJsonArray();
+			response.setContentType("application/json");
+			response.getWriter().print(jsonArray);
+		}
+		/*
+		 * int specialityId =
+		 * Integer.parseInt(request.getParameter("SpecialityId"));
+		 * 
+		 * ArrayList<Doctor> list = new ArrayList<>(); Doctor d1= new
+		 * Doctor("1", "A"); Doctor d2= new Doctor("2", "B"); list.add(d1);
+		 * list.add(d2);
+		 * 
+		 * String doctors = null;
+		 * 
+		 * doctors = new Gson().toJson(list);
+		 * response.setContentType("application/json");
+		 * response.getWriter().write(doctors);
+		 */
 	}
 
 	/**
@@ -244,7 +293,7 @@ public class BusController extends HttpServlet {
 			Feedback feedback = new Feedback(title, comment, name, email, phone);
 			try {
 				ObjectManager.addObject(feedback);
-				/*out.print("<h2>Thanh cong</h2>");*/
+				/* out.print("<h2>Thanh cong</h2>"); */
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

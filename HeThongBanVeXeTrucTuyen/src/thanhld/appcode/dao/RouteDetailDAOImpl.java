@@ -37,9 +37,23 @@ public class RouteDetailDAOImpl implements RouteDetailDAO {
 	        transaction.commit();
 	        return routeDetail.getNumbercialOrder();
 	}
+	
+	public List<RouteDetail> getListRouteDetailByRouteId(int routeId){
+		 session = HibernateUtils.getSessionFactory().openSession();
+	        transaction = session.beginTransaction();
+	        sqlQuery = new StringBuilder();
+	        sqlQuery.append(" select * from ROUTE_DETAIL ");
+	        sqlQuery.append(" where ROUTE_ID="+ routeId+ "");
+	        
+	        System.out.println(sqlQuery.toString());
+	        Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(RouteDetail.class);
+	        List<RouteDetail> listRouteDetail =  query.list();
+	        transaction.commit();
+	        return listRouteDetail;
+	}
 	public static void main(String[] args) {
 		RouteDetailDAOImpl r = new RouteDetailDAOImpl();
-		System.out.println(r.getNumberOrderByCondition(1, 2));
+		System.out.println(r.getListRouteDetailByRouteId(1).size());
 	}
 
 }

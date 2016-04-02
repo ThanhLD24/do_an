@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script src="<%=request.getContextPath()%>/js/jquery-1.11.1.js"
+<script
+	src="<%=request.getContextPath()%>/js/admin/jquery-1.11.1.min.js"
 	type="text/javascript"></script>
 <title>Insert title here</title>
 <script>
@@ -13,14 +14,15 @@
 		$("#target").change(function(event) {
 			var id = $(this).val();
 			/* alert(id); */
-			$.get('<%=request.getContextPath()%>/BusController', {
+			$.get('<%=request.getContextPath()%>/BusController?type=0', {
 				// Parameter to be sent to server side
 				id : id
 			}, function(jsonResponse) {
 				var select = $('#des');
 				select.find('option').remove();
 				$.each(jsonResponse, function(index, value) {
-// 					 $("#" + index).html(value);
+					
+					 $("#" + index).html(value.busStationName);
 					/* alert(index); */
 					$("#des").append( 
 			           $("<option></option>")
@@ -31,6 +33,40 @@
 				});
 				
 			});}); 
+		
+		$("#route").change(function(event) {
+			var id = $(this).val();
+			/* alert(id); */
+			
+			
+			 $.ajax({
+							          type: "GET",
+							          url: "<%=request.getContextPath()%>/BusController?type=1",
+							           data: { id:id},
+							           dataType: "text",
+							        }).done(function(data) {
+							        		alert(data);
+							           
+							        });   }); 
+			
+			<%-- $.get('<%=request.getContextPath()%>/BusController?type=1', {
+				// Parameter to be sent to server side
+				id : id
+			}, function(jsonResponse) {
+				/* var div = $('#bus');
+				div.find('option').remove(); */
+				$.each(jsonResponse, function(data) {
+			 $("#1").html(data[0]);
+					
+					/* $("#bus").append( 
+					           $("<option></option>")
+					               .text(index)
+					               .val(index)
+					          
+					       ); */
+				});
+				
+			});}); --%>
 // $('.hihi').hide();
 // 		$('#target').change(
 // 				function(event) {
@@ -66,10 +102,19 @@
 		<option value="3">Ha Nam</option>
 		<option value="4">Ninh Binh</option>
 	</select>
-	
+
 	<select id="des" name="des">
 	</select>
-<div class="hihi">Hihihi</div>
-	
+
+	<select id="route" name="route" >
+		<option value="1">Ha Tinh</option>
+		<option value="2">HN</option>
+		<option value="3">Ha Nam</option>
+		<option value="4">Ninh Binh</option>
+	</select>
+	<div id="1">1zzzz</div>
+	<div id="2">2zzzz</div>
+	<div class="hihi">Hihihi</div>
+
 </body>
 </html>

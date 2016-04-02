@@ -1,7 +1,3 @@
-<%@page import="thanhld.appcode.utility.Variables"%>
-<%@page import="thanhld.appcode.model.Employee"%>
-<%@page import="thanhld.appcode.dao.EmployeeDAO"%>
-<%@page import="thanhld.appcode.dao.EmployeeDAOImpl"%>
 <%@page import="thanhld.appcode.dao.BusStationDAO"%>
 <%@page import="thanhld.appcode.dao.BusStationDAOImpl"%>
 <%@page import="thanhld.appcode.model.BusStation"%>
@@ -32,40 +28,22 @@
 	rel="stylesheet">
 <link href="<%=request.getContextPath()%>/css/admin/styles.css"
 	rel="stylesheet">
-<link href="<%=request.getContextPath()%>/css/mystyle.css"
-	rel="stylesheet">
 <script src="<%=request.getContextPath()%>/js/jquery-1.11.1.js"></script>
-<script src="<%=request.getContextPath()%>/js/multiselect.min.js"></script>
-<script src="<%=request.getContextPath()%>/js/prettify.min.js"></script>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/uikit.min.css">
 <!--Icons-->
 <script src="<%=request.getContextPath()%>/js/admin/lumino.glyphs.js"></script>
 <title>Quản lý Lịch trình</title>
-<%
-	try {
-		session.getAttribute("hihi");
-	} catch (Exception e) {
-		session.setAttribute("hihi", 1);
-	}
-%>
+<% 
+try{
+	session.getAttribute("hihi");
+}
+catch(Exception e){
+session.setAttribute("hihi", 1);}%>
 
 <script>
-jQuery(document).ready(function($) {
-    $('#search').multiselect({
-        search: {
-            left: '<input type="text" name="q" class="form-control" placeholder="Tìm..." />',
-            right: '<input type="text" name="q" class="form-control" placeholder="Tìm..." />',
-        }
-    });
-    $('#search1').multiselect({
-        search: {
-            left: '<input type="text" name="q" class="form-control" placeholder="Tìm..." />',
-            right: '<input type="text" name="q" class="form-control" placeholder="Tìm..." />',
-        }
-    });
-});
 	$(document).ready(function() {
+		
 		
 		$("#route").change(function(event) {
 			var id = $(this).val();
@@ -76,20 +54,16 @@ jQuery(document).ready(function($) {
 			}, function(jsonResponse) {
 				var div_route_detail = $('#div_route_detail');
 				div_route_detail.find('.row').remove();
-			
-			$('#div_route_detail').append('<div class="row" id="div_route_detail_row" style="margin-bottom:15px;" ><div class="col-md-12 selectContainer">'+'<label class="control-label">Điểm dừng &nbsp; &nbsp; </label> '
-					+'<div id="div_route_detail_span"></div></div></div>'
-				);
 				$.each(jsonResponse, function(index, value) {
 					
 					 /* $("#" + index).html(value.busStationName); */
 					 
-					
-					$('#div_route_detail_span').append('<h2 style="display:inline;"><span class="label label-info" id="province'+index+'" ></span></h2><h4 style="display:inline; margin:0px 10px 0px 10px;"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></h4> ');
-					 
+					$('#div_route_detail').append('<div class="row" id="div_route_detail_row'+index+'" style="margin-bottom:15px;" ><div class="col-md-4 selectContainer">'+'<label class="control-label">Điểm dừng &nbsp; &nbsp; </label> '
+							+'<div><span class="label label-info" id="province'+index+'">Info</span>'+'</div></div></div>'
+						);
 					$('#province'+index).text(value['provinceName']);
-					/* $('#div_route_detail_row'+index).append('<div class="col-md-3 selectContainer"><label class="control-label">Chọn bến xe </label>'
-							+'<select class="form-control" name="bus'+index+'"></select></div>'); */
+					$('#div_route_detail_row'+index).append('<div class="col-md-3 selectContainer"><label class="control-label">Chọn bến xe </label>'
+							+'<select class="form-control" name="bus'+index+'"></select></div>');
 					
 				
 				
@@ -100,13 +74,8 @@ jQuery(document).ready(function($) {
 					%> --%>
 					
 				});
-				$('#div_route_detail_span').append('<h2 style="display:inline;"><span class="glyphicon glyphicon-map-marker"  aria-hidden="true"></h2>');
 				
 			});}); 
-		
-		
-		
-		
 		<%-- $("#route").change(function(event) {
 			var id = $(this).val();
 			/* alert(id); */
@@ -202,7 +171,7 @@ jQuery(document).ready(function($) {
 
 	</div>
 	<!-- /.container-fluid --> </nav>
-	<input type="hidden" id="provinceIdTemp" name="provinceIdTemp">
+<input type="hidden" id="provinceIdTemp" name="provinceIdTemp">
 	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
 		<form role="search">
 			<div class="form-group">
@@ -254,9 +223,7 @@ jQuery(document).ready(function($) {
 		</div>
 		<!--/.row-->
 		<%
-			EmployeeDAO employeeDAO = new EmployeeDAOImpl();
 			List<Route> listRoute = ObjectManager.listObject(Route.class);
-			List<Employee> listDriver = employeeDAO.getListEmployeeByJob(Variables.DRIVER_JOB_ID);
 		%>
 
 		<div class="row">
@@ -296,101 +263,106 @@ jQuery(document).ready(function($) {
 
 									</div>
 								</div>
+								<div class="form-group" id="div_route_detail">
+									<div class="row" >
 
-								<div class="form-group" id="div_route_detail"></div>
 
-								<label class="control-label">Tài xế</label>
-								<div class="form-group">
-									<div class="row">
-										<div class="col-md-5">
-											<select name="from[]" id="search" class="form-control"
-												size="3" multiple="multiple" style="">
+										<div class="col-md-4 selectContainer">
+										
+											<label class="control-label">Địa điểm đi qua</label> <select
+												class="form-control" name="route">
+												<option value="">Chọn địa điểm</option>
+												<option value="action">Action</option>
 
-												<%
-													for (Employee emp : listDriver) {
-												%>
-												<option class="option_custom"
-													value="<%=emp.getEmployeeId()%>"
-													style="background-image:url(<%=request.getContextPath()%>/img/avatar.jpg);"><%=emp.getEmployeeName()%></option>
+											</select>
+										</div>
+										<div class="col-md-3 selectContainer">
+											<label class="control-label">Chọn bến xe </label> <select
+												class="form-control" name="bus">
+												<option value="">Chọn xe</option>
+												<option value="action">Action</option>
 
-												<%
-													}
-												%>
+											</select>
+										</div>
+										<div class="col-md-3 selectContainer">
+											<label class="control-label">Ngày khởi hành</label> <select
+												class="form-control" name="route">
+												<option value="">Chọn tuyến đường</option>
+												<option value="action">Action</option>
+
+											</select>
+
+										</div>
+										<div class="col-md-2 selectContainer">
+											<label class="control-label">Giờ khởi hành </label> <select
+												class="form-control" name="bus">
+												<option value="">Chọn xe</option>
+												<option value="action">Action</option>
+
 											</select>
 										</div>
 
-										<div class="col-md-2">
-											<button type="button" id="search_rightAll"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-forward"></i>
-											</button>
-											<button type="button" id="search_rightSelected"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-chevron-right"></i>
-											</button>
-											<button type="button" id="search_leftSelected"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-chevron-left"></i>
-											</button>
-											<button type="button" id="search_leftAll"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-backward"></i>
-											</button>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-4 selectContainer">
+											<label class="control-label">Số tài xế</label> <select
+												class="form-control" name="number_driver">
+												<option value="">Chọn số tài xế</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+											</select>
+
 										</div>
 
-										<div class="col-md-5">
-											<select name="to[]" id="search_to" class="form-control"
-												size="3" multiple="multiple"></select>
+										<div class="col-md-8 selectContainer" id="div_driver">
+											<label class="control-label">Tài xế</label> <select
+												class="form-control" name="driver">
+												<option value="">Choose a genre</option>
+												<option value="action">Action</option>
+												<option value="comedy">Comedy</option>
+												<option value="horror">Horror</option>
+												<option value="romance">Romance</option>
+											</select>
+
 										</div>
+
 									</div>
 								</div>
 
-								<label class="control-label">Phụ xe</label>
+
 								<div class="form-group">
 									<div class="row">
-										<div class="col-md-5">
-											<select name="from[]" id="search1" class="form-control"
-												size="3" multiple="multiple" style="">
+										<div class="col-md-4 selectContainer">
 
-												<%
-													for (Employee emp : listDriver) {
-												%>
-												<option class="option_custom"
-													value="<%=emp.getEmployeeId()%>"
-													style="background-image:url(<%=request.getContextPath()%>/img/avatar.jpg);"><%=emp.getEmployeeName()%></option>
-
-												<%
-													}
-												%>
+											<label class="control-label">Số phụ xe</label> <select
+												class="form-control" name="number_extra_driver">
+												<option value="">Chọn số phụ xe</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
 											</select>
 										</div>
 
-										<div class="col-md-2">
-											<button type="button" id="search1_rightAll"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-forward"></i>
-											</button>
-											<button type="button" id="search1_rightSelected"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-chevron-right"></i>
-											</button>
-											<button type="button" id="search1_leftSelected"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-chevron-left"></i>
-											</button>
-											<button type="button" id="search1_leftAll"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-backward"></i>
-											</button>
+										<div class="col-md-8 selectContainer">
+											<label class="control-label">Phụ xe</label> <select
+												class="form-control" name="extra_driver">
+												<option value="">Choose a genre</option>
+												<option value="action">Action</option>
+												<option value="comedy">Comedy</option>
+												<option value="horror">Horror</option>
+												<option value="romance">Romance</option>
+											</select>
 										</div>
 
-										<div class="col-md-5">
-											<select name="to[]" id="search1_to" class="form-control"
-												size="3" multiple="multiple"></select>
-										</div>
 									</div>
 								</div>
-								
 							</div>
 						</div>
 
