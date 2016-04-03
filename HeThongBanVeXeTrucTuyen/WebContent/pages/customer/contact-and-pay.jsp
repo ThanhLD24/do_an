@@ -79,9 +79,9 @@
 				width="120px"></a>
 
 			<ul class="uk-navbar-nav uk-hidden-small">
-				<li class="uk-active"><a href="/">Vé xe</a></li>
-				<li class=""><a href="/thue-xe.html">Thuê xe</a></li>
-				<li><a href="#">Chuyển hàng</a></li>
+				<li class="uk-active"><a href="<%=request.getContextPath()%>/home"><span class="text_menu active">Vé xe</span></a></li>
+				<li><a href="<%=request.getContextPath()%>/feedback"><span class="text_menu">Phản hồi</span></a></li>
+				
 			</ul>
 
 			<div class="uk-navbar-content uk-navbar-flip uk-hidden-small">

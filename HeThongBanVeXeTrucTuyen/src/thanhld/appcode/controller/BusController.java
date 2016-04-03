@@ -127,8 +127,7 @@ public class BusController extends HttpServlet {
 			session.setAttribute("listOfListBusStation", listOfListBusStation);
 			session.setAttribute("listProvince", listProvince);
 			/*end */
-			
-			session.setAttribute("hihi", 2);
+
 			Gson gson = new Gson();
 			JsonElement element = gson.toJsonTree(listProvince, new TypeToken<List<Province>>() {
 			}.getType());

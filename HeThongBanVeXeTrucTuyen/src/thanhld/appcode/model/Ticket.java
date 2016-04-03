@@ -32,23 +32,6 @@ public class Ticket implements Serializable{
 	@Column(name = "BUS_ID")
 	private Integer busId;
 	
-	@Column(name = "TICKET_DRIVER_EMPLOYEE_ID")
-	private Integer ticketDriverEmployeeId;
-	
-	@Column(name = "TICKET_EXTRA_DRIVER_EMPLOYEE_ID")
-	private Integer ticketExtraDriverEmployeeId;
-	
-	@Column(name = "TICKET_ORIGIN_TIME")
-	private String ticketOriginTime;
-	
-	@Column(name = "TICKET_ORIGIN_BUS_STATION_ID")
-	private Integer ticketOriginBusStationId;
-	
-	@Column(name = "TICKET_DESTINATION_TIME")
-	private String ticketDestinationTime;
-	
-	@Column(name = "TICKET_DESTINATION_BUS_STATION_ID")
-	private Integer ticketDestinationBusStationId;
 	
 	@Column(name = "TICKET_PRICE")
 	private String ticketPrice;
@@ -117,53 +100,7 @@ public class Ticket implements Serializable{
 		this.busId = busId;
 	}
 
-	public Integer getTicketDriverEmployeeId() {
-		return ticketDriverEmployeeId;
-	}
-
-	public void setTicketDriverEmployeeId(Integer ticketDriverEmployeeId) {
-		this.ticketDriverEmployeeId = ticketDriverEmployeeId;
-	}
-
-	public Integer getTicketExtraDriverEmployeeId() {
-		return ticketExtraDriverEmployeeId;
-	}
-
-	public void setTicketExtraDriverEmployeeId(Integer ticketExtraDriverEmployeeId) {
-		this.ticketExtraDriverEmployeeId = ticketExtraDriverEmployeeId;
-	}
-
-	public String getTicketOriginTime() {
-		return ticketOriginTime;
-	}
-
-	public void setTicketOriginTime(String ticketOriginTime) {
-		this.ticketOriginTime = ticketOriginTime;
-	}
-
-	public Integer getTicketOriginBusStationId() {
-		return ticketOriginBusStationId;
-	}
-
-	public void setTicketOriginBusStationId(Integer ticketOriginBusStationId) {
-		this.ticketOriginBusStationId = ticketOriginBusStationId;
-	}
-
-	public String getTicketDestinationTime() {
-		return ticketDestinationTime;
-	}
-
-	public void setTicketDestinationTime(String ticketDestinationTime) {
-		this.ticketDestinationTime = ticketDestinationTime;
-	}
-
-	public Integer getTicketDestinationBusStationId() {
-		return ticketDestinationBusStationId;
-	}
-
-	public void setTicketDestinationBusStationId(Integer ticketDestinationBusStationId) {
-		this.ticketDestinationBusStationId = ticketDestinationBusStationId;
-	}
+	
 
 	public String getTicketPrice() {
 		return ticketPrice;
@@ -238,8 +175,6 @@ public class Ticket implements Serializable{
 	}
 
 	public Ticket(String ticketId, String ticketState, Integer employeeId, Integer routeId, Integer busId,
-			Integer ticketDriverEmployeeId, Integer ticketExtraDriverEmployeeId, String ticketOriginTime,
-			Integer ticketOriginBusStationId, String ticketDestinationTime, Integer ticketDestinationBusStationId,
 			String ticketPrice, String ticketTax, String ticketSale, String ticketFitmentPrice, String ticketCurrency,
 			Boolean ticketAvailable, Integer ticketCount, String ticketStartSellDate, String ticketEndSellDate) {
 		super();
@@ -248,12 +183,6 @@ public class Ticket implements Serializable{
 		this.employeeId = employeeId;
 		this.routeId = routeId;
 		this.busId = busId;
-		this.ticketDriverEmployeeId = ticketDriverEmployeeId;
-		this.ticketExtraDriverEmployeeId = ticketExtraDriverEmployeeId;
-		this.ticketOriginTime = ticketOriginTime;
-		this.ticketOriginBusStationId = ticketOriginBusStationId;
-		this.ticketDestinationTime = ticketDestinationTime;
-		this.ticketDestinationBusStationId = ticketDestinationBusStationId;
 		this.ticketPrice = ticketPrice;
 		this.ticketTax = ticketTax;
 		this.ticketSale = ticketSale;
@@ -265,11 +194,11 @@ public class Ticket implements Serializable{
 		this.ticketEndSellDate = ticketEndSellDate;
 	}
 
-
 	public Ticket() {
 		super();
 	}
 
+	
 	
 	
 }

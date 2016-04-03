@@ -156,62 +156,26 @@
 
 									</div>
 								</div>
-								<div id="div_route_detail_total">
-									<div class="form-group" id="div_route_detail">
-										<div class="row" id="row_detail">
-											<div class="col-md-4 selectContainer">
-												<div>
-													<span class="label label-info">ssdsd</span>
-												</div>
-											</div>
-											<div class="col-md-3 selectContainer">
-												<select class="form-control" name="bus">
-													<option value="">Chọn xe</option>
-													<option value="action">Action</option>
+								<form  action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.ADD_DETAIL_SCHEDULE%>" method="post">
+									<div id="div_route_detail_total">
+										<div class="form-group" id="div_route_detail"></div>
+									</div>
 
-												</select>
-											</div>
-											<div class="col-md-3 selectContainer">
-												<div class="form-group">
-													<div class="input-group input-append date"
-														id="dateRangePicker">
-														<input type="text" class="form-control" name="date" /> <span
-															class="input-group-addon add-on"><span
-															class="glyphicon glyphicon-calendar"></span></span>
-													</div>
-												</div>
-											</div>
-											<div class="col-md-2 selectContainer">
-												<div class="form-group">
-													<div class='input-group date' id='datetimepicker3'>
-														<input type='text' class="form-control" /> <span
-															class="input-group-addon"> <span
-															class="glyphicon glyphicon-time"></span>
-														</span>
-													</div>
-												</div>
-											</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-md-10"></div>
 
+
+											<div class="col-md-2">
+												<button type="submit" class="btn btn-primary"
+													id="bt_continue">
+													Lưu chuyến đi <span class="glyphicon glyphicon-save"
+														aria-hidden="true"></span>
+												</button>
+											</div>
 										</div>
 									</div>
-								</div>
-
-								<div class="form-group">
-									<div class="row">
-										<div class="col-md-10"></div>
-
-
-										<div class="col-md-2">
-											<button type="button" class="btn btn-primary"
-												id="bt_continue"
-												onclick="location.href = '<%=request.getContextPath()%>/';">
-												Lưu chuyến đi <span class="glyphicon glyphicon-save"
-													aria-hidden="true"></span>
-											</button>
-										</div>
-									</div>
-								</div>
-
+								</form>
 							</div>
 						</div>
 
@@ -304,7 +268,8 @@
 		
 		<% for(int k=0 ; k<listOfListBusStation.get(j).size(); k++){%>
 			$('#bus_station_<%=j%>').append('<option value="<%=listOfListBusStation.get(j).get(k).getBusStationId()%>"><%=listOfListBusStation.get(j).get(k).getBusStationName()%></option>')
-		<%}}%>
+		<%}
+			}%>
 			$('#datetimepicker3').datetimepicker({
 									format : 'LT'
 								});

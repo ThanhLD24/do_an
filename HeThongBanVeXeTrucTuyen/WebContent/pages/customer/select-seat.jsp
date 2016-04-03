@@ -82,10 +82,9 @@
 				width="120px"></a>
 
 			<ul class="uk-navbar-nav uk-hidden-small">
-				<li class="uk-active"><a href="/"><span
-						class="text_menu active">Vé xe</span></a></li>
-				<li class=""><a href="/thue-xe.html">Thuê xe</a></li>
-				<li><a href="#">Chuyển hàng</a></li>
+				<li class="uk-active"><a href="<%=request.getContextPath()%>/home"><span class="text_menu active">Vé xe</span></a></li>
+				<li><a href="<%=request.getContextPath()%>/feedback"><span class="text_menu">Phản hồi</span></a></li>
+				
 			</ul>
 
 			<div class="uk-navbar-content uk-navbar-flip uk-hidden-small">
@@ -448,11 +447,11 @@
 												</tr>
 												<tr>
 													<td>Ngày:</td>
-													<td><%=Utility.parseToDateFormat(ticket.getTicketOriginTime())%></td>
+													<td></td>
 												</tr>
 												<tr>
 													<td>Giờ:</td>
-													<td itemprop="startDate"><%=Utility.parseToTimeFormat(ticket.getTicketOriginTime())%></td>
+													<td itemprop="startDate"></td>
 												</tr>
 												<tr>
 													<td>Bến xe:</td>

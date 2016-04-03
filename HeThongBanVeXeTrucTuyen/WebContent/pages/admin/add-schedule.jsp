@@ -1,3 +1,4 @@
+<%@page import="thanhld.appcode.model.Bus"%>
 <%@page import="thanhld.appcode.utility.Variables"%>
 <%@page import="thanhld.appcode.model.Employee"%>
 <%@page import="thanhld.appcode.dao.EmployeeDAO"%>
@@ -42,13 +43,6 @@
 <!--Icons-->
 <script src="<%=request.getContextPath()%>/js/admin/lumino.glyphs.js"></script>
 <title>Quản lý Lịch trình</title>
-<%
-	try {
-		session.getAttribute("hihi");
-	} catch (Exception e) {
-		session.setAttribute("hihi", 1);
-	}
-%>
 
 <script>
 jQuery(document).ready(function($) {
@@ -67,8 +61,10 @@ jQuery(document).ready(function($) {
 });
 	$(document).ready(function() {
 		
+		
 		$("#route").change(function(event) {
 			var id = $(this).val();
+			var i =0;
 			/* alert(id); */
 			$.get('<%=request.getContextPath()%>/BusController?type=2', {
 				// Parameter to be sent to server side
@@ -80,13 +76,13 @@ jQuery(document).ready(function($) {
 			$('#div_route_detail').append('<div class="row" id="div_route_detail_row" style="margin-bottom:15px;" ><div class="col-md-12 selectContainer">'+'<label class="control-label">Điểm dừng &nbsp; &nbsp; </label> '
 					+'<div id="div_route_detail_span"></div></div></div>'
 				);
-			
+			var m =0;
 				$.each(jsonResponse, function(index, value) {
-					
+					m++;
 					 /* $("#" + index).html(value.busStationName); */
 					 
 					
-					$('#div_route_detail_span').append('<h2 style="display:inline;"><span class="label label-info" id="province'+index+'" ></span></h2><h4 style="display:inline; margin:0px 10px 0px 10px;"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></h4> ');
+					$('#div_route_detail_span').append('<h2 style="display:inline;"><span class="label label-info" id="province'+index+'" ></span></h2><h4 style="display:inline; margin:0px 10px 0px 10px;"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true" id="arrow_'+index+'"></span></h4><div class="form-group" style="display:inline"><input type="text" style="max-width:100px; display:inline" class="form-control" id="price_'+index+'"  name="price_'+index+'" placeholder="Giá tiền" title="Giá tiền chặng '+m+'"> </div><h4 style="display:inline; margin:0px 10px 0px 10px;"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true" id="arrow_'+index+'"></span></h4>');
 					 
 					$('#province'+index).text(value['provinceName']);
 					/* $('#div_route_detail_row'+index).append('<div class="col-md-3 selectContainer"><label class="control-label">Chọn bến xe </label>'
@@ -100,9 +96,14 @@ jQuery(document).ready(function($) {
 					List<BusStation>  listBusStation = busStationDAO.getListStationByProvince(value['provinceId']);
 					%> --%>
 					
+					
 				});
-				$('#div_route_detail_span').append('<h2 style="display:inline;"><span class="glyphicon glyphicon-map-marker"  aria-hidden="true"></h2>');
 				
+				var n=m-1;
+				
+				$('#div_route_detail_span').append('<h2 style="display:inline;"><span class="glyphicon glyphicon-map-marker"  aria-hidden="true"></h2>');
+				$('#arrow_'+n).remove();
+				$('#price_'+n).remove();
 			});}); 
 		
 		
@@ -257,6 +258,7 @@ jQuery(document).ready(function($) {
 		<%
 			EmployeeDAO employeeDAO = new EmployeeDAOImpl();
 			List<Route> listRoute = ObjectManager.listObject(Route.class);
+			List<Bus> listBus = ObjectManager.listObject(Bus.class);
 			List<Employee> listDriver = employeeDAO.getListEmployeeByJob(Variables.DRIVER_JOB_ID);
 			List<Employee> listExtraDriver = employeeDAO.getListEmployeeByJob(Variables.EXTRA_DRIVER_JOB_ID);
 		%>
@@ -265,6 +267,7 @@ jQuery(document).ready(function($) {
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-body">
+					<form action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.ADD_SCHEDULE%>" method="post">
 						<div class="row">
 							<div class="panel-body">
 								<div class="form-group">
@@ -273,7 +276,8 @@ jQuery(document).ready(function($) {
 										<div class="col-md-6 selectContainer">
 											<label class="control-label">Tuyến đường</label> <select
 												class="form-control" name="route" id="route">
-												<option value="">Chọn tuyến đường</option>
+												<option value="" disabled="disabled" selected="selected">Chọn
+													tuyến đường</option>
 												<%
 													for (Route r : listRoute) {
 												%>
@@ -286,8 +290,15 @@ jQuery(document).ready(function($) {
 										<div class="col-md-6 selectContainer">
 											<label class="control-label">Xe</label> <select
 												class="form-control" name="bus" id="bus">
-												<option value="">Chọn xe</option>
-												<option value="action">Action</option>
+												<option value="" disabled="disabled" selected="selected">Chọn
+													xe</option>
+												<%
+													for (Bus b : listBus) {
+												%>
+												<option value="<%=b.getBusId()%>"><%=b.getBusName()%></option>
+												<%
+													}
+												%>
 
 											</select>
 										</div>
@@ -315,6 +326,7 @@ jQuery(document).ready(function($) {
 													}
 												%>
 											</select>
+
 										</div>
 
 										<div class="col-md-2">
@@ -337,8 +349,9 @@ jQuery(document).ready(function($) {
 										</div>
 
 										<div class="col-md-5">
-											<select name="to[]" id="search_to" class="form-control"
-												size="3" multiple="multiple"></select>
+											<select name="to[]" id="search_to"
+												class="driver form-control" size="3" multiple="multiple"></select>
+											<input type="hidden" name="listDriver" id="listDriver">
 										</div>
 									</div>
 								</div>
@@ -383,33 +396,42 @@ jQuery(document).ready(function($) {
 										</div>
 
 										<div class="col-md-5">
-											<select name="to[]" id="search1_to" class="form-control"
-												size="3" multiple="multiple"></select>
+											<select name="to[]" id="search1_to"
+												class="extra_driver form-control" size="3"
+												multiple="multiple"></select>
 										</div>
+										<input type="hidden" name="listExtraDriver"
+											id="listExtraDriver">
 									</div>
 								</div>
-								
-								
+
+
 								<div class="form-group">
 									<div class="row">
-										<div class="col-md-10">
-
-										</div>
+										<div class="col-md-10"></div>
 
 
 										<div class="col-md-2">
-											<button type="button" class="btn btn-primary" id="bt_continue" onclick="location.href = '<%=request.getContextPath()%>/admin/add-detail-schedule';">Thêm chi tiết <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+										<input type="hidden" name="priceTicket" id="priceTicket">
+											<button type="submit" class="btn btn-primary"
+												id="bt_continue">
+												Thêm chi tiết <span
+													class="glyphicon glyphicon-chevron-right"
+													aria-hidden="true"></span>
+											</button>
 										</div>
 									</div>
 								</div>
-								
+
 							</div>
+							</div>
+							</form>
 						</div>
 
 					</div>
 				</div>
 			</div>
-			
+
 
 		</div>
 		<!--/.main-->
@@ -430,6 +452,8 @@ jQuery(document).ready(function($) {
 			src="<%=request.getContextPath()%>/js/admin/bootstrap-table.js"></script>
 
 		<script>
+		
+		
 			!function($) {
 				$(document).on(
 						"click",
@@ -450,6 +474,22 @@ jQuery(document).ready(function($) {
 				if ($(window).width() <= 767)
 					$('#sidebar-collapse').collapse('hide')
 			})
+			
+			$('#bt_continue').click(function () {
+								
+					$("#search_to option").each(function()
+							{
+							    // Add $(this).val() to your list
+						$('#listDriver').val($('#listDriver').val()+'/'+$(this).val()+'/|');
+							});
+					$("#search1_to option").each(function()
+							{
+							    // Add $(this).val() to your list
+						$('#listExtraDriver').val($('#listExtraDriver').val()+'/'+$(this).val()+'/|');
+							});
+					
+				});
+		
 		</script>
 </body>
 </html>
