@@ -14,7 +14,7 @@ public class BusStationDAOImpl implements BusStationDAO {
 	Transaction transaction = null;
 	StringBuilder sqlQuery = null;
 	@Override
-	public List<BusStation> getListStationByProvince(String provinceId) {
+	public List<BusStation> getListStationByProvince(int provinceId) {
 		// TODO Auto-generated method stub
 		session = HibernateUtils.getSessionFactory().openSession();
 		transaction = session.beginTransaction();

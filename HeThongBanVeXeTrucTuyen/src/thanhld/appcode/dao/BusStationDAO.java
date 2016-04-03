@@ -5,5 +5,5 @@ import java.util.List;
 import thanhld.appcode.model.BusStation;
 
 public interface BusStationDAO {
-	public List<BusStation> getListStationByProvince(String province);
+	public List<BusStation> getListStationByProvince(int province);
 }

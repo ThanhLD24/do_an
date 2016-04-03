@@ -16,7 +16,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="vi" class="uk-notouch">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport"
 	content="initial-scale=1, maximum-scale=1, user-scalable=no" />
 <meta content="IE=edge" http-equiv="X-UA-Compatible" />

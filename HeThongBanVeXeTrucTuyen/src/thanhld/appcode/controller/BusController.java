@@ -79,10 +79,11 @@ public class BusController extends HttpServlet {
 		/*System.out.println(type);*/
 		String jsonString =null;
 		HttpSession session = request.getSession(true);
+		BusStationDAO busStationDAO = new BusStationDAOImpl();
 		RouteDetailDAO routeDetailDAO = new RouteDetailDAOImpl();
+		List<List<BusStation>> listOfListBusStation = new ArrayList<>();
 		if (type == 0) {
-			String id = request.getParameter("id");
-			BusStationDAO busStationDAO = new BusStationDAOImpl();
+			int id = Integer.parseInt(request.getParameter("id").toString());
 			List<BusStation> listBusStation = new ArrayList<BusStation>();
 			listBusStation = busStationDAO.getListStationByProvince(id);
 			Gson gson = new Gson();
@@ -118,6 +119,15 @@ public class BusController extends HttpServlet {
 				Province p = (Province)ObjectManager.getObjectById(rd.getProvinceId(), Province.class);
 				listProvince.add(p);
 			}
+			
+			/*begin*/
+			for(RouteDetail rd: listRouteDetail){
+				listOfListBusStation.add(busStationDAO.getListStationByProvince(rd.getProvinceId()));
+			}
+			session.setAttribute("listOfListBusStation", listOfListBusStation);
+			session.setAttribute("listProvince", listProvince);
+			/*end */
+			
 			session.setAttribute("hihi", 2);
 			Gson gson = new Gson();
 			JsonElement element = gson.toJsonTree(listProvince, new TypeToken<List<Province>>() {
@@ -150,10 +160,12 @@ public class BusController extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		/* doGet(request, response); */
-		PrintWriter out = response.getWriter();
-		HttpSession session = request.getSession(true);
+		
+		
 		response.setContentType("text/html;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession(true);
+		
 		int type = Integer.parseInt(request.getParameter("type"));
 		RequestDispatcher dispatcher = null;
 		Ticket ticket = new Ticket();

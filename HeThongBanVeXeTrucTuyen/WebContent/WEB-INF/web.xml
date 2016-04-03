@@ -79,6 +79,16 @@
 		<servlet-name>add schedule</servlet-name>
 		<url-pattern>/admin/add-schedule</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>add detail schedule</servlet-name>
+		<jsp-file>/pages/admin/add-detail-schedule.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>add detail schedule</servlet-name>
+		<url-pattern>/admin/add-detail-schedule</url-pattern>
+	</servlet-mapping>
+	
 <!-- /admin -->
 	<servlet>
 		<servlet-name>BusController</servlet-name>
