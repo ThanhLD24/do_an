@@ -11,4 +11,5 @@ public class Variables {
 	public static final int ADD_SCHEDULE = 1;
 	public static final int ADD_DETAIL_SCHEDULE = 2;
 	public static final String VIET_NAM_DONG = "VND";
+	public static final int FIRST_NUMBERCIAL =1;
 }

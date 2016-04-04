@@ -212,14 +212,14 @@ jQuery(document).ready(function($) {
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li><a href="index.html"><svg
+			<li><a href="<%=request.getContextPath()%>/admin/home"><svg
 						class="glyph stroked dashboard-dial"> <use
 						xlink:href="#stroked-dashboard-dial"></use></svg> Trang chủ</a></li>
 			<li><a href="widgets.html"><i class="uk-icon-list-alt"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Vé đặt</a></li>
 			<li><a href="charts.html"><i class="uk-icon-share-square-o"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Hủy vé</a></li>
-			<li class="active"><a href="tables.html"><i
+			<li class="active"><a href="<%=request.getContextPath()%>/admin/schedule"><i
 					class="uk-icon-calendar" style="font-size: 15px"></i>
 					&nbsp;&nbsp;&nbsp;Quản lý Lịch trình </a></li>
 			<li><a href="forms.html"><i class="uk-icon-road"
@@ -480,12 +480,12 @@ jQuery(document).ready(function($) {
 					$("#search_to option").each(function()
 							{
 							    // Add $(this).val() to your list
-						$('#listDriver').val($('#listDriver').val()+'/'+$(this).val()+'/|');
+						$('#listDriver').val($('#listDriver').val()+''+$(this).val()+'-');
 							});
 					$("#search1_to option").each(function()
 							{
 							    // Add $(this).val() to your list
-						$('#listExtraDriver').val($('#listExtraDriver').val()+'/'+$(this).val()+'/|');
+						$('#listExtraDriver').val($('#listExtraDriver').val()+''+$(this).val()+'-');
 							});
 					
 				});

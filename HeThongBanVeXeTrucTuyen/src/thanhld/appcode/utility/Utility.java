@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.print.attribute.standard.DateTimeAtCompleted;
 
@@ -32,6 +34,28 @@ public class Utility {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		Date date = new Date();
 		return dateFormat.format(date); //2014/08/06 15:59:48
+	}
+	public static String getDateNow(){
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		return dateFormat.format(date); //2014/08/06
+	}
+
+	public static String parse12HoursTo24HoursTime(String hours12) {
+	       SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm:ss",Locale.ENGLISH);
+	       SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a",Locale.ENGLISH);
+	       Date date = null;
+		try {
+			date = parseFormat.parse(hours12);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	       return displayFormat.format(date);
+	   }
+	public static void main(String[] args) throws ParseException {
+		
+	    System.out.print(Utility.parse12HoursTo24HoursTime("10:30 PM"));
 	}
 	
 	public static String parseFormatDate(String dateInput) {
@@ -94,7 +118,7 @@ public class Utility {
 		return string2;
 	}
 
-	// tach chuoi price
+	// tach chuoi price + chuoi id driver ra mang
 	public static ArrayList<Integer> splitPrice(String str) {
 		int i = 0;
 		String[] strTotal = str.split("-");
@@ -106,7 +130,19 @@ public class Utility {
 		}
 		return listPrice;
 	}
+	// tach chuoi id driver ra mang
+	public static ArrayList<Integer> splitIdDriver(String str) {
+		int i = 0;
+		String[] strTotal = str.split("-");
+		ArrayList<Integer> listId = new ArrayList<Integer>();
+		while (i < strTotal.length) {
 
+			listId.add(Integer.parseInt(strTotal[i]));
+			i++;
+		}
+		return listId;
+	}
+	
 	// tinh tong price dua theo so chang di cua khach
 	public static int getPrice(int originNumber, int destinationNumber, ArrayList<Integer> listPrice) {
 		int tong = 0;
@@ -202,10 +238,7 @@ public class Utility {
     	}
     	return check;
 	}
-	public static void main(String[] args) {
 		
-		System.out.println(Utility.compareDateTime("2016-03-30 9:23:30"));
-	}
 /*	public static void main(String[] args) {
 		SeatOrderDAOImpl so = new SeatOrderDAOImpl();
 		System.out.println(Utility.layGheDaDuocDat(so.getSeatOrderByCondition(1, 1, 4)));

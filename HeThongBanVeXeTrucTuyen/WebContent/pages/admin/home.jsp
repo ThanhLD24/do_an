@@ -50,10 +50,10 @@
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li  class="active"><a href="index.html"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Trang chủ</a></li>
+			<li  class="active"><a href="<%=request.getContextPath()%>/admin/home"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Trang chủ</a></li>
 			<li><a href="widgets.html"><i class="uk-icon-list-alt" style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Vé đặt</a></li>
 			<li><a href="charts.html"><i class="uk-icon-share-square-o" style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Hủy vé</a></li>
-			<li><a href="tables.html"><i class="uk-icon-calendar" style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp;Quản lý Lịch trình </a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/schedule"><i class="uk-icon-calendar" style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp;Quản lý Lịch trình </a></li>
 			<li><a href="forms.html"><i class="uk-icon-road" style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tuyến đường</a></li>
 			<li><a href="forms.html"><i class="uk-icon-user" style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài xế </a></li>
 			<li><a href="forms.html"><i class="uk-icon-street-view" style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Điểm dừng</a></li>

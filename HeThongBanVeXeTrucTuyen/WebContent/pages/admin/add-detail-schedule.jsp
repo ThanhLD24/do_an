@@ -82,14 +82,14 @@
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li><a href="index.html"><svg
+			<li><a href="<%=request.getContextPath()%>/admin/home"><svg
 						class="glyph stroked dashboard-dial"> <use
 						xlink:href="#stroked-dashboard-dial"></use></svg> Trang chủ</a></li>
 			<li><a href="widgets.html"><i class="uk-icon-list-alt"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Vé đặt</a></li>
 			<li><a href="charts.html"><i class="uk-icon-share-square-o"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Hủy vé</a></li>
-			<li class="active"><a href="tables.html"><i
+			<li class="active"><a href="<%=request.getContextPath()%>/admin/schedule"><i
 					class="uk-icon-calendar" style="font-size: 15px"></i>
 					&nbsp;&nbsp;&nbsp;Quản lý Lịch trình </a></li>
 			<li><a href="forms.html"><i class="uk-icon-road"
@@ -156,7 +156,7 @@
 
 									</div>
 								</div>
-								<form  action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.ADD_DETAIL_SCHEDULE%>" method="post">
+								<form id="form_add_detail_schedule" action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.ADD_DETAIL_SCHEDULE%>" method="post">
 									<div id="div_route_detail_total">
 										<div class="form-group" id="div_route_detail"></div>
 									</div>
@@ -231,6 +231,7 @@
 			List<List<BusStation>> listOfListBusStation = (List<List<BusStation>>) session
 					.getAttribute("listOfListBusStation");
 			List<Province> listProvince = (List<Province>) session.getAttribute("listProvince");
+			String dateNow = Utility.getDateNow();
 		%>
 		<%-- <%
 			for (int i = 0; i < listOfListBusStation.size(); i++) {
@@ -258,9 +259,9 @@
 		$('#row_detail_<%=j%>').append('<div class="col-md-2 selectContainer"><div class="form-group"><div class="input-group date" id="datetimepicker_<%=j%>"><input type="text" class="form-control" name="time_<%=j%>" id="time_<%=j%>" />'
 				+'<span class="input-group-addon"><span	class="glyphicon glyphicon-time"></span></span></div></div></div>');
 		$('#dateRangePicker_<%=j%>').datepicker({
-			format : 'dd/mm/yyyy',
-			startDate : '01/01/2010',
-			endDate : '12/30/2020'
+			format : 'yyyy/mm/dd',
+			startDate : '<%=dateNow%>',
+			endDate : '2020/12/29'
 		});
 		$('#datetimepicker_<%=j%>').datetimepicker({
 			format : 'LT'
@@ -270,7 +271,7 @@
 			$('#bus_station_<%=j%>').append('<option value="<%=listOfListBusStation.get(j).get(k).getBusStationId()%>"><%=listOfListBusStation.get(j).get(k).getBusStationName()%></option>')
 		<%}
 			}%>
-			$('#datetimepicker3').datetimepicker({
+			/* $('#datetimepicker3').datetimepicker({
 									format : 'LT'
 								});
 
@@ -278,7 +279,8 @@
 									format : 'mm/dd/yyyy',
 									startDate : '01/01/2010',
 									endDate : '12/30/2020'
-								});
+								}); */
+								
 							});
 		</script>
 </body>

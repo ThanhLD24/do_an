@@ -282,11 +282,11 @@ public class BusController extends HttpServlet {
 			seatOrder.setOrderTicketId(sessionShortId);
 			seatOrder.setSeat(session.getAttribute("listSeat").toString());
 			seatOrder.setRoutes(Utility.phanChangDuong(numberOriginPlace, numberDestinationPlace));
-			ticket = (Ticket) session.getAttribute("ticket");
-			ticket.setTicketCount(ticket.getTicketCount() - seatCountInt);
+			/*ticket = (Ticket) session.getAttribute("ticket");
+			ticket.setTicketCount(ticket.getTicketCount() - seatCountInt);*/ //tam thoi de ticket count = ""
 			try {
 				ObjectManager.addObject(seatOrder);
-				ObjectManager.update(ticket);
+				/*ObjectManager.update(ticket);*/
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

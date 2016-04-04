@@ -17,6 +17,7 @@ import thanhld.appcode.model.Province;
 import thanhld.appcode.model.Ticket;
 import thanhld.appcode.model.TicketDetail;
 import thanhld.appcode.utility.ObjectManager;
+import thanhld.appcode.utility.Utility;
 import thanhld.appcode.utility.Variables;
 
 /**
@@ -54,6 +55,8 @@ public class AdminBusController extends HttpServlet {
 		
 		List<Province> listProvince = new ArrayList<Province>();
 		String ticketIdBySession = null;
+		String listDriver =null;
+		String listExtraDriver=null;
 		switch (type) {
 		case Variables.ADD_SCHEDULE:
 			ticketIdBySession = session.getId().substring(0, 6);
@@ -61,8 +64,10 @@ public class AdminBusController extends HttpServlet {
 			StringBuilder stringPrice = new StringBuilder();
 			int busId = Integer.parseInt(request.getParameter("bus"));
 			int routeId = Integer.parseInt(request.getParameter("route"));
-			String listDriver = request.getParameter("listDriver");
-			String listExtraDriver = request.getParameter("listExtraDriver");
+			listDriver = request.getParameter("listDriver");
+			listExtraDriver = request.getParameter("listExtraDriver");
+			session.setAttribute("listDriver", listDriver);
+			session.setAttribute("listExtraDriver", listExtraDriver);
 			for(int i=0; i<listProvince.size()-1;i++){
 				stringPrice.append(request.getParameter("price_"+i)+"-");
 			}
@@ -90,8 +95,30 @@ public class AdminBusController extends HttpServlet {
 			dispatcher.forward(request, response);
 			break;
 		case Variables.ADD_DETAIL_SCHEDULE:
-			listProvince=(List<Province>)session.getAttribute("listProvince");
 			ticketIdBySession = session.getId().substring(0, 6);
+			listProvince=(List<Province>)session.getAttribute("listProvince");
+			listDriver = session.getAttribute("listDriver").toString();
+			listExtraDriver = session.getAttribute("listExtraDriver").toString();
+			StringBuilder concatDriver = new StringBuilder();
+			concatDriver.append(listExtraDriver);
+			concatDriver.append(listDriver);
+			List<Integer> listIdDriver = new ArrayList<Integer>();
+			listIdDriver = Utility.splitIdDriver(concatDriver.toString());
+			int maxPosition = listProvince.size()-1;
+			for(Integer id : listIdDriver){
+				EmployeeWorking emplW = new EmployeeWorking();
+				emplW.setTicketId(ticketIdBySession);
+				emplW.setEmployeeId(id);
+				emplW.setStartRunDate(request.getParameter("date_0"));
+				emplW.setEndRunDate(request.getParameter("date_"+maxPosition));
+				try {
+					ObjectManager.addObject(emplW);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 			
 			for(int i=0; i< listProvince.size(); i++){
 				TicketDetail ticketDetail = new TicketDetail();
@@ -101,15 +128,22 @@ public class AdminBusController extends HttpServlet {
 				ticketDetail.setTicketId(ticketIdBySession);
 				ticketDetail.setProvinceId(listProvince.get(i).getProvinceId());
 				ticketDetail.setBusStationId(busStationId);
-				ticketDetail.setDetailDate(date);//dang sai vi chua chuyen dinh dang dung voi csdl
-				ticketDetail.setDetailTime(time);//dang sai vi chua chuyen dinh dang dung voi csdl
+				ticketDetail.setDetailDate(date);
+				ticketDetail.setDetailTime(Utility.parse12HoursTo24HoursTime(time));
 				try {
 					ObjectManager.addObject(ticketDetail);
+					session.invalidate();
+					session = request.getSession();
+					session.setAttribute("add-detail-schedule-success", 1);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
+					session.setAttribute("add-detail-schedule-success", 0);
 					e.printStackTrace();
 				}
 			}
+			
+			dispatcher = request.getRequestDispatcher("/admin/schedule");
+			dispatcher.forward(request, response);
 			break;
 		}
 	}

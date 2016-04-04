@@ -1,3 +1,12 @@
+<%@page import="thanhld.appcode.dao.TicketDetailDAO"%>
+<%@page import="thanhld.appcode.model.TicketDetail"%>
+<%@page import="thanhld.appcode.model.RouteDetail"%>
+<%@page import="thanhld.appcode.utility.Variables"%>
+<%@page import="thanhld.appcode.dao.TicketDAOImpl"%>
+<%@page import="thanhld.appcode.dao.TicketDAO"%>
+<%@page import="thanhld.appcode.dao.TicketDetailDAOImpl"%>
+<%@page import="thanhld.appcode.dao.RouteDetailDAO"%>
+<%@page import="thanhld.appcode.dao.RouteDetailDAOImpl"%>
 <%@page import="thanhld.appcode.utility.Utility"%>
 <%@page import="thanhld.appcode.model.Route"%>
 <%@page import="thanhld.appcode.model.Ticket"%>
@@ -28,6 +37,8 @@
 <!--Icons-->
 <script src="<%=request.getContextPath()%>/js/admin/lumino.glyphs.js"></script>
 <title>Quản lý Lịch trình</title>
+
+
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -74,7 +85,7 @@
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Vé đặt</a></li>
 			<li><a href="charts.html"><i class="uk-icon-share-square-o"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Hủy vé</a></li>
-			<li class="active"><a href="tables.html"><i
+			<li class="active"><a href="<%=request.getContextPath()%>/admin/schedule"><i
 					class="uk-icon-calendar" style="font-size: 15px"></i>
 					&nbsp;&nbsp;&nbsp;Quản lý Lịch trình </a></li>
 			<li><a href="forms.html"><i class="uk-icon-road"
@@ -115,7 +126,7 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<button type="button" class="btn btn-primary">Thêm lịch
+						<button type="button" class="btn btn-primary" onclick="location.href = '<%=request.getContextPath()%>/admin/add-schedule';">Thêm lịch
 							trình</button>
 					</div>
 					<div class="panel-body">
@@ -141,13 +152,19 @@
 							</thead>
 							<tbody>
 								<%
+									RouteDetailDAO routeDetailDAO =  new RouteDetailDAOImpl();
+									TicketDetailDAO ticketDetailDAO = new TicketDetailDAOImpl();
 									for (Ticket t : listTicket) {
 										Route route = (Route) ObjectManager.getObjectById(t.getRouteId(), Route.class);
+										RouteDetail routeDetail = routeDetailDAO.getRouteDetailWithNumberOrder(route.getRouteId(), Variables.FIRST_NUMBERCIAL);
+										TicketDetail ticketDetail = ticketDetailDAO.getTicketDetailByTicketId(t.getTicketId(), routeDetail.getProvinceId());
+									
+										
 								%>
 								<tr>
 									<td><%=t.getTicketId()%></td>
 									<td><%=route.getRouteDescription()%></td>
-									<td><%=Utility.parseToDateFormat(t.getTicketOriginTime())%></td>
+									<td><%=ticketDetail.getDetailDate() %></td>
 									<td></td>
 									<td align="center">
 									<%if(Utility.compareDateTime(t.getTicketEndSellDate())) {%>
@@ -336,8 +353,42 @@
 			</div>
 			<!-- /.modal-dialog -->
 		</div>
+		
 		<!-- end popup delete -->
 
+
+<!-- popup message -->
+
+<div class="modal fade" id="message" tabindex="-1" role="dialog"
+			aria-labelledby="edit" aria-hidden="false" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+						</button>
+						<h4 class="modal-title custom_align" id="Heading">Thông báo</h4>
+					</div>
+					<div class="modal-body">
+
+						<div class="alert alert-success">
+							<span class="glyphicon glyphicon-ok"></span> Thêm thành công!
+						</div>
+
+					</div>
+					<div class="modal-footer ">
+						<button type="button" class="btn btn-success"  id="close_message" data-dismiss="modal">
+							<span class="glyphicon glyphicon-ok-sign"></span> OK
+						</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		
+<!-- end message -->
 	</div>
 	<!--/.main-->
 
@@ -378,5 +429,26 @@
 				$('#sidebar-collapse').collapse('hide')
 		})
 	</script>
+	<script>
+$(document).ready(function() {
+	
+	<% try{
+	
+		if(Integer.parseInt(session.getAttribute("add-detail-schedule-success").toString())==1){
+			session.removeAttribute("add-detail-schedule-success");
+		%>
+		$("#message").addClass("in");
+		$('#message').fadeIn(700);
+		$("#message").css({'display':'block'});
+	     
+		$('#close_message').click(function(){
+			$('#message').fadeOut(700);
+	    });
+		<%}
+	 }catch(Exception e){
+		e.getMessage();
+	}  %>
+});
+</script>
 </body>
 </html>
