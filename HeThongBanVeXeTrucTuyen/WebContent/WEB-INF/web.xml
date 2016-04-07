@@ -1,87 +1,217 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
-  <display-name>HeThongBanVeXeTrucTuyen</display-name>
-  <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
-  <servlet>
-    <servlet-name>home</servlet-name>
-    <jsp-file>/pages/customer/home.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>home</servlet-name>
-    <url-pattern>/home</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>feedback</servlet-name>
-    <jsp-file>/pages/customer/feedback.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>feedback</servlet-name>
-    <url-pattern>/feedback</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>search result</servlet-name>
-    <jsp-file>/pages/customer/search-result.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>search result</servlet-name>
-    <url-pattern>/searchresult</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>select seat</servlet-name>
-    <jsp-file>/pages/customer/select-seat.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>select seat</servlet-name>
-    <url-pattern>/selectseat</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>info</servlet-name>
-    <jsp-file>/pages/customer/contact-and-pay.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>info</servlet-name>
-    <url-pattern>/info</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>admin home</servlet-name>
-    <jsp-file>/pages/admin/home.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>admin home</servlet-name>
-    <url-pattern>/admin/home</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>admin manager schedule</servlet-name>
-    <jsp-file>/pages/admin/schedule-management.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>admin manager schedule</servlet-name>
-    <url-pattern>/admin/schedule</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>add schedule</servlet-name>
-    <jsp-file>/pages/admin/add-schedule.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>add schedule</servlet-name>
-    <url-pattern>/admin/add-schedule</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>add detail schedule</servlet-name>
-    <jsp-file>/pages/admin/add-detail-schedule.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>add detail schedule</servlet-name>
-    <url-pattern>/admin/add-detail-schedule</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>BusController</servlet-name>
-    <servlet-class>thanhld.appcode.controller.BusController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>BusController</servlet-name>
-    <url-pattern>/BusController/*</url-pattern>
-  </servlet-mapping>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+	<display-name>HeThongBanVeXeTrucTuyen</display-name>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- config mapping client page -->
+	<!-- home.jsp -->
+	<servlet>
+		<servlet-name>home</servlet-name>
+		<jsp-file>/pages/customer/home.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>home</servlet-name>
+		<url-pattern>/home</url-pattern>
+	</servlet-mapping>
+
+	<!-- feedback.jsp -->
+	<servlet>
+		<servlet-name>feedback</servlet-name>
+		<jsp-file>/pages/customer/feedback.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>feedback</servlet-name>
+		<url-pattern>/feedback</url-pattern>
+	</servlet-mapping>
+
+	<!-- search-result.jsp -->
+	<servlet>
+		<servlet-name>search result</servlet-name>
+		<jsp-file>/pages/customer/search-result.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>search result</servlet-name>
+		<url-pattern>/searchresult</url-pattern>
+	</servlet-mapping>
+
+	<!-- select-seat.jsp -->
+	<servlet>
+		<servlet-name>select seat</servlet-name>
+		<jsp-file>/pages/customer/select-seat.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>select seat</servlet-name>
+		<url-pattern>/selectseat</url-pattern>
+	</servlet-mapping>
+
+	<!-- contact-and-pay.jsp -->
+	<servlet>
+		<servlet-name>info</servlet-name>
+		<jsp-file>/pages/customer/contact-and-pay.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>info</servlet-name>
+		<url-pattern>/info</url-pattern>
+	</servlet-mapping>
+	<!-- end config client pages -->
+
+	<!-- config admin pages -->
+	<!-- home.jsp -->
+	<servlet>
+		<servlet-name>admin home</servlet-name>
+		<jsp-file>/pages/admin/home.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>admin home</servlet-name>
+		<url-pattern>/admin/home</url-pattern>
+	</servlet-mapping>
+	<!-- schedule-manage.jsp -->
+	<servlet>
+		<servlet-name>admin manager schedule</servlet-name>
+		<jsp-file>/pages/admin/schedule-manage.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>admin manager schedule</servlet-name>
+		<url-pattern>/admin/schedule</url-pattern>
+	</servlet-mapping>
+
+	<!-- add-schedule.jsp -->
+	<servlet>
+		<servlet-name>add schedule</servlet-name>
+		<jsp-file>/pages/admin/add-schedule.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>add schedule</servlet-name>
+		<url-pattern>/admin/add-schedule</url-pattern>
+	</servlet-mapping>
+
+	<!-- add-detail-schedule.jsp -->
+	<servlet>
+		<servlet-name>add detail schedule</servlet-name>
+		<jsp-file>/pages/admin/add-detail-schedule.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>add detail schedule</servlet-name>
+		<url-pattern>/admin/add-detail-schedule</url-pattern>
+	</servlet-mapping>
+
+	<!-- account-manage.jsp -->
+	<servlet>
+		<servlet-name>account</servlet-name>
+		<jsp-file>/pages/admin/account-manage.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>account</servlet-name>
+		<url-pattern>/admin/account</url-pattern>
+	</servlet-mapping>
+	
+	<!-- book-manage.jsp -->
+	<servlet>
+		<servlet-name>book</servlet-name>
+		<jsp-file>/pages/admin/book-manage.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>book</servlet-name>
+		<url-pattern>/admin/book</url-pattern>
+	</servlet-mapping>
+	
+	<!-- bus-manage.jsp -->
+	<servlet>
+		<servlet-name>bus</servlet-name>
+		<jsp-file>/pages/admin/bus-manage.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>bus</servlet-name>
+		<url-pattern>/admin/bus</url-pattern>
+	</servlet-mapping>
+	
+	<!-- bus-station-manage.jsp -->
+	<servlet>
+		<servlet-name>bus-station</servlet-name>
+		<jsp-file>/pages/admin/bus-station-manage.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>bus-station</servlet-name>
+		<url-pattern>/admin/bus-station</url-pattern>
+	</servlet-mapping>
+	
+	<!-- cancel-book-manage.jsp -->
+	<servlet>
+		<servlet-name>cancel-book</servlet-name>
+		<jsp-file>/pages/admin/cancel-book-manage.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>cancel-book</servlet-name>
+		<url-pattern>/admin/cancel-book</url-pattern>
+	</servlet-mapping>
+	
+	<!-- driver-manage.jsp -->
+	<servlet>
+		<servlet-name>driver</servlet-name>
+		<jsp-file>/pages/admin/driver-manage.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>driver</servlet-name>
+		<url-pattern>/admin/driver</url-pattern>
+	</servlet-mapping>
+	
+	<!-- report-manage.jsp -->
+	<servlet>
+		<servlet-name>report</servlet-name>
+		<jsp-file>/pages/admin/report-manage.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>report</servlet-name>
+		<url-pattern>/admin/report</url-pattern>
+	</servlet-mapping>
+	
+	<!-- route-manage.jsp -->
+	<servlet>
+		<servlet-name>route</servlet-name>
+		<jsp-file>/pages/admin/route-manage.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>route</servlet-name>
+		<url-pattern>/admin/route</url-pattern>
+	</servlet-mapping>
+
+	<!-- home.jsp -->
+	<!-- home.jsp -->
+	<!-- home.jsp -->
+
+
+	<!-- login.jsp -->
+	<servlet>
+		<servlet-name>login</servlet-name>
+		<jsp-file>/pages/admin/login.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>login</servlet-name>
+		<url-pattern>/admin/login</url-pattern>
+	</servlet-mapping>
+
+	<!-- error.jsp -->
+	<servlet>
+		<servlet-name>error</servlet-name>
+		<jsp-file>/pages/admin/error.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>error</servlet-name>
+		<url-pattern>/admin/error</url-pattern>
+	</servlet-mapping>
+
+	<!-- Servlet mapping -->
+	<servlet>
+		<servlet-name>BusController</servlet-name>
+		<servlet-class>thanhld.appcode.controller.BusController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BusController</servlet-name>
+		<url-pattern>/BusController/*</url-pattern>
+	</servlet-mapping>
 </web-app>

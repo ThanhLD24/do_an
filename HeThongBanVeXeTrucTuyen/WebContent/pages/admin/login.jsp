@@ -1,3 +1,4 @@
+<%@page import="thanhld.appcode.utility.Variables"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -19,23 +20,35 @@
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">Đăng Nhập</div>
 				<div class="panel-body">
-					<form role="form">
+					<form role="form" method="post" action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.LOGIN%>">
 						<fieldset>
 							<div class="form-group">
-								<input class="form-control" placeholder="E-mail" name="email" type="email" autofocus="">
+								<input class="form-control" placeholder="Tài khoản" name="account" type="text" autofocus="">
 							</div>
 							<div class="form-group">
-								<input class="form-control" placeholder="Password" name="password" type="password" value="">
+								<input class="form-control" placeholder="Mật khẩu" name="password" type="password" value="">
 							</div>
 							<div class="checkbox">
 								<label>
 									<input name="remember" type="checkbox" value="Remember Me">Nhớ tài khoản
 								</label>
 							</div>
-							<a href="index.html" class="btn btn-primary">Đăng nhập</a>
+							<button type="submit" class="btn btn-primary"
+												id="bt_continue">
+												Đăng nhập <span
+													class="glyphicon glyphicon-chevron-right"
+													aria-hidden="true"></span>
+											</button>
 						</fieldset>
 					</form>
+					
 				</div>
+				<% if(request.getAttribute("error_message")==null) {%>
+				<%}  else if(Integer.parseInt(request.getAttribute("error_message").toString())==1) {%>
+				<div class="alert alert-danger" role="alert">Tài khoản không đúng, vui lòng nhập lại!</div>
+				<%} else if(Integer.parseInt(request.getAttribute("error_message").toString())==2) {%>
+				<div class="alert alert-danger" role="alert">Vui lòng đăng nhập để sử dụng dịch vụ!</div>
+				<%} %>
 			</div>
 		</div><!-- /.col-->
 	</div><!-- /.row -->	

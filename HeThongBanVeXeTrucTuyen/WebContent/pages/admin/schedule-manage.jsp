@@ -1,3 +1,5 @@
+<%@page import="thanhld.appcode.model.Employee"%>
+<%@page import="thanhld.appcode.model.Account"%>
 <%@page import="thanhld.appcode.dao.TicketDetailDAO"%>
 <%@page import="thanhld.appcode.model.TicketDetail"%>
 <%@page import="thanhld.appcode.model.RouteDetail"%>
@@ -38,7 +40,24 @@
 <script src="<%=request.getContextPath()%>/js/admin/lumino.glyphs.js"></script>
 <title>Quản lý Lịch trình</title>
 
-
+<%
+	RequestDispatcher dispatcher = null;
+	Account account = new Account();
+	Employee employee = new Employee();
+	if (session.getAttribute("permit") == null) {
+		request.setAttribute("error_message", 2);
+		dispatcher = request.getRequestDispatcher("/admin/login");
+		dispatcher.forward(request, response);
+	} 
+	else if(Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN){
+		account = (Account) session.getAttribute("account");
+		employee = (Employee) ObjectManager.getObjectById(account.getEmployeeId(), Employee.class);
+	}
+	else {
+		dispatcher = request.getRequestDispatcher("/admin/error");
+		dispatcher.forward(request, response);
+	}
+%>
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -54,15 +73,15 @@
 			<ul class="user-menu">
 				<li class="dropdown pull-right"><a href="#"
 					class="dropdown-toggle" data-toggle="dropdown"><svg
-							class="glyph stroked male-user">
-						<use xlink:href="#stroked-male-user"></use></svg> User <span
+							class="glyph stroked male-user"> <use
+							xlink:href="#stroked-male-user"></use></svg> <%=employee.getEmployeeName()%><span
 						class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="#"><svg class="glyph stroked male-user">
 								<use xlink:href="#stroked-male-user"></use></svg> Cá nhân</a></li>
-						<li><a href="#"><svg class="glyph stroked gear">
-								<use xlink:href="#stroked-gear"></use></svg> Cài đặt</a></li>
-						<li><a href="#"><svg class="glyph stroked cancel">
+						<li><a href="#"><svg class="glyph stroked gear"> <use
+									xlink:href="#stroked-gear"></use></svg> Cài đặt</a></li>
+						<li><a href="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.LOGOUT%>"><svg class="glyph stroked cancel">
 								<use xlink:href="#stroked-cancel"></use></svg> Đăng xuất</a></li>
 					</ul></li>
 			</ul>
@@ -78,10 +97,10 @@
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li><a href="index.html"><svg
+			<li><a href="<%=request.getContextPath()%>/admin/home"><svg
 						class="glyph stroked dashboard-dial">
 					<use xlink:href="#stroked-dashboard-dial"></use></svg> Trang chủ</a></li>
-			<li><a href="widgets.html"><i class="uk-icon-list-alt"
+			<li><a href="<%=request.getContextPath()%>/admin/book"><i class="uk-icon-list-alt"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Vé đặt</a></li>
 			<li><a href="charts.html"><i class="uk-icon-share-square-o"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Hủy vé</a></li>
