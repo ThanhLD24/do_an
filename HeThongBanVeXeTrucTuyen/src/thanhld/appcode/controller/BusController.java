@@ -27,6 +27,8 @@ import thanhld.appcode.dao.RouteDetailDAO;
 import thanhld.appcode.dao.RouteDetailDAOImpl;
 import thanhld.appcode.dao.TicketDAO;
 import thanhld.appcode.dao.TicketDAOImpl;
+import thanhld.appcode.dao.TicketDetailDAO;
+import thanhld.appcode.dao.TicketDetailDAOImpl;
 import thanhld.appcode.model.Bus;
 import thanhld.appcode.model.BusStation;
 import thanhld.appcode.model.Carrier;
@@ -37,6 +39,7 @@ import thanhld.appcode.model.Route;
 import thanhld.appcode.model.RouteDetail;
 import thanhld.appcode.model.SeatOrder;
 import thanhld.appcode.model.Ticket;
+import thanhld.appcode.model.TicketDetail;
 import thanhld.appcode.utility.ObjectManager;
 import thanhld.appcode.utility.Utility;
 import thanhld.appcode.utility.Variables;
@@ -172,8 +175,9 @@ public class BusController extends HttpServlet {
 		Route route = new Route();
 		Carrier carrier = new Carrier();
 		TicketDAO ticketDAO = new TicketDAOImpl();
-
+		TicketDetailDAO ticketDetailDAO = new TicketDetailDAOImpl();
 		List<Ticket> listTicket = new ArrayList<Ticket>();
+		
 
 		String orginPlace = "";
 		String destinationPlace = "";
@@ -186,6 +190,7 @@ public class BusController extends HttpServlet {
 		String totalMoney = "";
 		String sessionShortId = "";
 		String ticketId = "";
+		String email="";
 		int busId = 0;
 		int priceTotal = 0;
 		int numberOriginPlace = 0;
@@ -215,6 +220,8 @@ public class BusController extends HttpServlet {
 			numberOriginPlace = Integer.parseInt(request.getParameter("txtNumberOriginPlace"));
 			numberDestinationPlace = Integer.parseInt(request.getParameter("txtNumberDestinationPlace"));
 			ticket = (Ticket) ObjectManager.getObjectById(ticketId, Ticket.class);
+			String ticketTax = ticket.getTicketTax();
+			String ticketSale = ticket.getTicketSale();
 			bus = (Bus) ObjectManager.getObjectById(busId, Bus.class);
 			route = (Route) ObjectManager.getObjectById(ticket.getRouteId(), Route.class);
 			carrier = (Carrier) ObjectManager.getObjectById(bus.getCarrierId(), Carrier.class);
@@ -224,9 +231,15 @@ public class BusController extends HttpServlet {
 			session.setAttribute("numberDestinationPlace", numberDestinationPlace);
 			session.setAttribute("priceTotal", priceTotal);
 			session.setAttribute("ticket", ticket);
+			session.setAttribute("ticketTax", ticketTax);
+			session.setAttribute("ticketSale", ticketSale);
 			session.setAttribute("bus", bus);
 			session.setAttribute("route", route);
 			session.setAttribute("carrier", carrier);
+			
+			session.setAttribute("startTimeSession",request.getParameter("startTimeSession"));
+			session.setAttribute("startDateSession",request.getParameter("startDateSession"));
+			session.setAttribute("busStationSession",request.getParameter("busStationSession"));
 			dispatcher = request.getRequestDispatcher("/selectseat");
 			dispatcher.forward(request, response);
 			break;
@@ -234,8 +247,9 @@ public class BusController extends HttpServlet {
 			listSeat = request.getParameter("txtListSeat");
 			totalMoney = request.getParameter("txtTotalMoney");
 			seatCount = request.getParameter("txtSeatCount");
-
-			session.setAttribute("listSeat", listSeat);
+			
+			session.setAttribute("listSeat", listSeat);//co van de khi back tu man hinh INFO ve MH chon ghe -> listGhe se tiep tuc append them, ma k bi mat
+			session.setAttribute("listSeatTachDeHienThi", Utility.replaceString2(listSeat));
 			session.setAttribute("totalMoney", totalMoney);
 			session.setAttribute("seatCount", seatCount);
 
@@ -243,21 +257,23 @@ public class BusController extends HttpServlet {
 			dispatcher.forward(request, response);
 			break;
 		case Variables.INFO:
+			String pageForward ="";
 			fullName = request.getParameter("txtHoTen");
 			phoneNumber = request.getParameter("txtSdt");
+			email = request.getParameter("txtEmail"); //dung de gui email ve hop thu khach
 			notes = request.getParameter("txtGhiChu");
 			ticketId = session.getAttribute("ticketId").toString();
 			numberOriginPlace = Integer.parseInt(session.getAttribute("numberOriginPlace").toString());
 			numberDestinationPlace = Integer.parseInt(session.getAttribute("numberDestinationPlace").toString());
 			int seatCountInt = Integer.parseInt(session.getAttribute("seatCount").toString());
-
+			TicketDetail ticketDetail = ticketDetailDAO.getTicketDetailByTicketId(ticketId);
 			sessionShortId = session.getId().substring(0, 6);
 			OrderTicket orderTicket = new OrderTicket();
 			orderTicket.setOrderTicketId(sessionShortId);
 			orderTicket.setTicketId(ticketId);
 			orderTicket.setPassengerNameTitle("");
 			orderTicket.setPassengerName(fullName);
-			orderTicket.setPassengerEmail("");
+			orderTicket.setPassengerEmail(email);
 			orderTicket.setPassengerAddress("");
 			orderTicket.setPassengerGender("");
 			orderTicket.setPassengerPhone(phoneNumber);
@@ -265,15 +281,17 @@ public class BusController extends HttpServlet {
 			orderTicket.setOrderTicketTotalSeat(Integer.parseInt(session.getAttribute("seatCount").toString()));
 			orderTicket.setOrderTicketTotalPrice(session.getAttribute("totalMoney").toString());
 			orderTicket.setOrderTicketTime(Utility.getDateTimeNow());
-			orderTicket.setOrderTicketExpiredTime("");
-			orderTicket.setOrderTicketPaidDate("");
+			orderTicket.setOrderTicketExpiredTime(ticketDetail.getDetailDate());
+			orderTicket.setOrderTicketPaidDate(""); //hien tai dang set cung ngay thanh toan = ""
 			orderTicket.setOrderTicketStatus(true);
 			orderTicket.setOrderTicketOther(notes);
 
 			try {
 				ObjectManager.addObject((Object) orderTicket);
+				session.setAttribute("orderTicket", orderTicket);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				pageForward="/error_book";
 				e.printStackTrace();
 			}
 
@@ -286,19 +304,23 @@ public class BusController extends HttpServlet {
 			ticket.setTicketCount(ticket.getTicketCount() - seatCountInt);*/ //tam thoi de ticket count = ""
 			try {
 				ObjectManager.addObject(seatOrder);
+				request.changeSessionId();
+				pageForward="/confirm";
 				/*ObjectManager.update(ticket);*/
 			} catch (Exception e) {
+				pageForward="/error_book";
+				
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			session.invalidate();
-
+			
+			
+			response.sendRedirect(request.getContextPath() + pageForward);
 			break;
 		case Variables.FEEBBACK:
 			String title = request.getParameter("title");
 			String name = request.getParameter("name");
-			String email = request.getParameter("email");
+			email = request.getParameter("email");
 			String phone = request.getParameter("phone");
 			String comment = request.getParameter("comment");
 			Feedback feedback = new Feedback(title, comment, name, email, phone);

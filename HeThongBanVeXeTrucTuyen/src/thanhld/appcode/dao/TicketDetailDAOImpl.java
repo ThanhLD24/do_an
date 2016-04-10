@@ -1,6 +1,8 @@
 package thanhld.appcode.dao;
 
 
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -24,6 +26,19 @@ public class TicketDetailDAOImpl implements TicketDetailDAO {
 		TicketDetail ticketDetail = (TicketDetail) query.uniqueResult();
 		transaction.commit();
 		return ticketDetail;
+	}
+	
+	@Override
+	public TicketDetail getTicketDetailByTicketId(String ticketId) {
+		// TODO Auto-generated method stub
+		session = HibernateUtils.getSessionFactory().openSession();
+		transaction = session.beginTransaction();
+		sqlQuery = new StringBuilder();
+		sqlQuery.append(" select * from TICKET_DETAIL where TICKET_ID='" + ticketId + "'");
+		Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(TicketDetail.class);
+		List<TicketDetail> listTicketDetail = (List<TicketDetail>) query.list();
+		transaction.commit();
+		return listTicketDetail.get(0);
 	}
 	
 	

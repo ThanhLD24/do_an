@@ -58,6 +58,27 @@
 		<servlet-name>info</servlet-name>
 		<url-pattern>/info</url-pattern>
 	</servlet-mapping>
+	
+	<!-- confirm.jsp -->
+	<servlet>
+		<servlet-name>confirm</servlet-name>
+		<jsp-file>/pages/customer/confirm.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>confirm</servlet-name>
+		<url-pattern>/confirm</url-pattern>
+	</servlet-mapping>
+	
+	<!-- error.jsp -->
+	<servlet>
+		<servlet-name>error_book</servlet-name>
+		<jsp-file>/pages/customer/error.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>error_book</servlet-name>
+		<url-pattern>/error_book</url-pattern>
+	</servlet-mapping>
+	
 	<!-- end config client pages -->
 
 	<!-- config admin pages -->

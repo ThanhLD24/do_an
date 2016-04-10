@@ -1,3 +1,4 @@
+<%@page import="thanhld.appcode.model.Account"%>
 <%@page import="thanhld.appcode.model.Bus"%>
 <%@page import="thanhld.appcode.utility.Variables"%>
 <%@page import="thanhld.appcode.model.Employee"%>
@@ -43,7 +44,24 @@
 <!--Icons-->
 <script src="<%=request.getContextPath()%>/js/admin/lumino.glyphs.js"></script>
 <title>Quản lý Lịch trình</title>
-
+<%
+	RequestDispatcher dispatcher = null;
+	Account account = new Account();
+	Employee employee = new Employee();
+	if (session.getAttribute("permit") == null) {
+		request.setAttribute("error_message", 2);
+		dispatcher = request.getRequestDispatcher("/admin/login");
+		dispatcher.forward(request, response);
+	} 
+	else if(Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN){
+		account = (Account) session.getAttribute("account");
+		employee = (Employee) ObjectManager.getObjectById(account.getEmployeeId(), Employee.class);
+	}
+	else {
+		dispatcher = request.getRequestDispatcher("/admin/error");
+		dispatcher.forward(request, response);
+	}
+%>
 <script>
 jQuery(document).ready(function($) {
     $('#search').multiselect({
@@ -190,13 +208,14 @@ jQuery(document).ready(function($) {
 				<li class="dropdown pull-right"><a href="#"
 					class="dropdown-toggle" data-toggle="dropdown"><svg
 							class="glyph stroked male-user"> <use
-							xlink:href="#stroked-male-user"></use></svg> User <span class="caret"></span></a>
+							xlink:href="#stroked-male-user"></use></svg> <%=employee.getEmployeeName()%><span
+						class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="#"><svg class="glyph stroked male-user">
 								<use xlink:href="#stroked-male-user"></use></svg> Cá nhân</a></li>
 						<li><a href="#"><svg class="glyph stroked gear"> <use
 									xlink:href="#stroked-gear"></use></svg> Cài đặt</a></li>
-						<li><a href="#"><svg class="glyph stroked cancel">
+						<li><a href="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.LOGOUT%>"><svg class="glyph stroked cancel">
 								<use xlink:href="#stroked-cancel"></use></svg> Đăng xuất</a></li>
 					</ul></li>
 			</ul>
@@ -307,6 +326,22 @@ jQuery(document).ready(function($) {
 								</div>
 
 								<div class="form-group" id="div_route_detail"></div>
+								
+								<div class="form-group">
+									<div class="row">
+
+										<div class="col-md-6 selectContainer">
+											<label class="control-label">Giảm giá</label>
+											 <input type="text"   class="form-control" name="txtSale" id="txtSale">
+										</div>
+										<div class="col-md-6 selectContainer">
+											<label class="control-label">Phụ thu</label> 
+											<input type="text"   class="form-control" name="txtTax" id="txtTax">
+											
+										</div>
+
+									</div>
+								</div>
 
 								<label class="control-label">Tài xế</label>
 								<div class="form-group">

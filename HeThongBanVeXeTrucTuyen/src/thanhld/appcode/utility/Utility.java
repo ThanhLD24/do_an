@@ -4,15 +4,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
-import javax.print.attribute.standard.DateTimeAtCompleted;
-
-import thanhld.appcode.dao.SeatOrderDAOImpl;
 import thanhld.appcode.model.SeatOrder;
 
 public class Utility {
@@ -114,6 +109,13 @@ public class Utility {
 	public static String replaceString(String stringNeedReplace) {
 		String string1 = stringNeedReplace.replace("/", "'");
 		String string2 = string1.replace("|", ",");
+
+		return string2;
+	}
+	
+	public static String replaceString2(String stringNeedReplace) {
+		String string1 = stringNeedReplace.replace("/", "");
+		String string2 = string1.replace("|", ", ");
 
 		return string2;
 	}
@@ -239,6 +241,16 @@ public class Utility {
     	return check;
 	}
 	
+	public static String checkPaid(String time){
+		String status="";
+		if(time==null||("").equals(time)){
+			status="Chưa thanh toán";
+		}
+		else{
+			status ="Đã thanh toán";
+		}
+		return status;
+	}
 	public static String encryptMD5(String md5) {
 		try {
 			java.security.MessageDigest md = java.security.MessageDigest

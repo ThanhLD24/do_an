@@ -79,13 +79,17 @@ public class AdminBusController extends HttpServlet {
 		String ticketIdBySession = null;
 		String listDriver = null;
 		String listExtraDriver = null;
+		Account ac = new Account();
 		switch (type) {
 		case Variables.ADD_SCHEDULE:
+			ac = (Account)session.getAttribute("account");
 			ticketIdBySession = session.getId().substring(0, 6);
 			listProvince = (List<Province>) session.getAttribute("listProvince");
 			StringBuilder stringPrice = new StringBuilder();
 			int busId = Integer.parseInt(request.getParameter("bus"));
 			int routeId = Integer.parseInt(request.getParameter("route"));
+			String sale =request.getParameter("txtSale");
+			String tax = request.getParameter("txtTax");
 			listDriver = request.getParameter("listDriver");
 			listExtraDriver = request.getParameter("listExtraDriver");
 			session.setAttribute("listDriver", listDriver);
@@ -95,17 +99,19 @@ public class AdminBusController extends HttpServlet {
 			}
 			Ticket ticket = new Ticket();
 			ticket.setTicketId(ticketIdBySession);
-			ticket.setEmployeeId(1); // demo
+			ticket.setEmployeeId(ac.getEmployeeId()); 
 			ticket.setRouteId(routeId);
 			ticket.setBusId(busId);
 			ticket.setTicketPrice(stringPrice.toString());
-			ticket.setTicketCurrency(Variables.VIET_NAM_DONG);
+			ticket.setTicketSale(sale);
+			ticket.setTicketTax(tax);
+			ticket.setTicketCurrency(Variables.VIET_NAM_DONG); //demo
 			ticket.setTicketStartSellDate("2016-02-20 06:00:00"); // demo
 			ticket.setTicketEndSellDate("2016-09-09 06:00:00"); // demo
 
 			/* EmployeeWorking emplWork = new EmployeeWorking(); */
-
 			// can add employee working HERE
+			
 			try {
 				ObjectManager.addObject(ticket);
 			} catch (Exception e) {
@@ -153,11 +159,13 @@ public class AdminBusController extends HttpServlet {
 				ticketDetail.setDetailTime(Utility.parse12HoursTo24HoursTime(time));
 				try {
 					ObjectManager.addObject(ticketDetail);
-					Account ac = new Account();
+					ac = new Account();
 					ac = (Account) session.getAttribute("account");
-					session.invalidate();
+					//session.invalidate();
+					request.changeSessionId();
 					session = request.getSession();
 					session.setAttribute("account", ac);
+					session.setAttribute("permit", ac.getAccountPermit());
 					session.setAttribute("add-detail-schedule-success", 1);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

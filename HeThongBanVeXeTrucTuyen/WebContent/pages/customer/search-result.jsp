@@ -77,11 +77,11 @@
 		<div class="uk-container uk-container-center">
 			<a data-uk-offcanvas="{target: '#offcanvas-main'}"
 				class="uk-navbar-toggle uk-visible-small" href=""></a> <a
-				class="uk-navbar-brand logo uk-visible-small" href="/"><img
+				class="uk-navbar-brand logo uk-visible-small" href="<%=request.getContextPath() %>/home"><img
 				alt="duythanhbus.vn"
 				src="<%=request.getContextPath()%>/img/logo.png" height="90px"
 				width="120px"></a> <a class="uk-navbar-brand logo uk-hidden-small"
-				href="/"><img alt="duythanhbus.vn"
+				 href="<%=request.getContextPath() %>/home"><img alt="duythanhbus.vn"
 				src="<%=request.getContextPath()%>/img/logo.png" height="90px"
 				width="120px"></a>
 
@@ -118,6 +118,10 @@
  	Province provinceEnd = (Province) ObjectManager.getObjectById(destinationPlaceId, Province.class);
  	session.setAttribute("provinceStart", provinceStart);
  	session.setAttribute("provinceEnd", provinceEnd);
+ 	String startName = provinceStart.getProvinceName();
+ 	String endName = provinceEnd.getProvinceName();
+ 	session.setAttribute("startName", startName);
+ 	session.setAttribute("endName", endName);
  %>
 
 		<div class="container" style="max-width: 940px;">
@@ -402,9 +406,9 @@
  -->
 
 			<div class="result_form">
-				<div class="ten_changduong"><%=provinceStart.getProvinceName()%>
+				<div class="ten_changduong"><%=startName%>
 					<i class="uk-icon-long-arrow-right"></i>
-					<%=provinceEnd.getProvinceName()%></div>
+					<%=endName%></div>
 				<div class="input-group">
 					<span class="input-group-addon">Lọc</span> <input id="filter"
 						type="text" class="form-control" placeholder="Nhập từ khóa..."
@@ -451,6 +455,9 @@
 										.getObjectById(ticketDetailStart.getBusStationId(), BusStation.class);
 								BusStation busStationDestination = (BusStation) ObjectManager
 										.getObjectById(ticketDetailEnd.getBusStationId(), BusStation.class);
+								String startTimeSs =  ticketDetailStart.getDetailTime();
+								String startDateSs = ticketDetailStart.getDetailDate();
+								String busStationOriginSs= busStationOrigin.getBusStationName();
 						%>
 
 						<tr class="tr_second">
@@ -463,9 +470,9 @@
 							<td align="center"><%=bus.getBusType()%></td>
 							<td align="left"><%=bus.getBusFeature()%></td>
 							<td align="center">
-								<div><%=ticketDetailStart.getDetailTime()%></div>
-								<div><%=ticketDetailStart.getDetailDate()%></div>
-								<div><%=busStationOrigin.getBusStationName()%></div>
+								<div><%=startTimeSs%></div>
+								<div><%=startDateSs%></div>
+								<div><%=busStationOriginSs%></div>
 							</td>
 							<td align="center">
 								<div><%=ticketDetailEnd.getDetailTime()%></div>
@@ -488,6 +495,9 @@
 										<input type="hidden" value="<%=numberDestinationPlace%>"
 											id="txtNumberDestinationPlace"
 											name="txtNumberDestinationPlace">
+											<input type="hidden" name="startTimeSession" id="startTimeSession" value="<%=startTimeSs%>">
+											<input type="hidden" name="startDateSession" id="startDateSession" value="<%=startDateSs%>">
+											<input type="hidden" name="busStationSession" id="busStationSession" value="<%=busStationOriginSs%>">
 										<button class="uk-button uk-button-success uk-button-small"
 											type="submit">
 											Chọn chỗ <i class="uk-icon-angle-down"></i>

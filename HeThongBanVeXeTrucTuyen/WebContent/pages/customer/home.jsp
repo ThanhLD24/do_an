@@ -54,11 +54,11 @@
 		<div class="uk-container uk-container-center">
 			<a data-uk-offcanvas="{target: '#offcanvas-main'}"
 				class="uk-navbar-toggle uk-visible-small" href=""></a> <a
-				class="uk-navbar-brand logo uk-visible-small" href="/"><img
+				class="uk-navbar-brand logo uk-visible-small" href="<%=request.getContextPath() %>/home"><img
 				alt="duythanhbus.vn"
 				src="<%=request.getContextPath()%>/img/logo.png" height="90px"
 				width="120px"></a> <a class="uk-navbar-brand logo uk-hidden-small"
-				href="/"><img alt="duythanhbus.vn"
+				 href="<%=request.getContextPath() %>/home"><img alt="duythanhbus.vn"
 				src="<%=request.getContextPath()%>/img/logo.png" height="90px"
 				width="120px"></a>
 

@@ -73,11 +73,11 @@
 		<div class="uk-container uk-container-center">
 			<a data-uk-offcanvas="{target: '#offcanvas-main'}"
 				class="uk-navbar-toggle uk-visible-small" href=""></a> <a
-				class="uk-navbar-brand logo uk-visible-small" href="/"><img
+				class="uk-navbar-brand logo uk-visible-small" href="<%=request.getContextPath() %>/home"><img
 				alt="duythanhbus.vn"
 				src="<%=request.getContextPath()%>/img/logo.png" height="90px"
 				width="120px"></a> <a class="uk-navbar-brand logo uk-hidden-small"
-				href="/"><img alt="duythanhbus.vn"
+				 href="<%=request.getContextPath() %>/home"><img alt="duythanhbus.vn"
 				src="<%=request.getContextPath()%>/img/logo.png" height="90px"
 				width="120px"></a>
 
@@ -389,7 +389,10 @@
 				int numberOriginPlace = Integer.parseInt(session.getAttribute("numberOriginPlace").toString());
 				int numberDestinationPlace = Integer.parseInt(session.getAttribute("numberDestinationPlace").toString());
 				int priceTotal = Integer.parseInt(session.getAttribute("priceTotal").toString());
+				int priceAffterSaleAndTax = priceTotal+Integer.parseInt(session.getAttribute("ticketTax").toString())-Integer.parseInt(session.getAttribute("ticketSale").toString());
 				Bus bus = (Bus)session.getAttribute("bus");
+				String busType =bus.getBusType();
+				session.setAttribute("busType", busType);
 				Ticket ticket = (Ticket) session.getAttribute("ticket");
 				Route route = (Route) session.getAttribute("route");
 				Carrier carrier = (Carrier) session.getAttribute("carrier");
@@ -437,9 +440,9 @@
 												</tr>
 												<tr>
 													<td>Chặng: </td>
-													<td itemprop="name"><%=provinceStart.getProvinceName()%>
+													<td itemprop="name"><%=session.getAttribute("startName") %>
 					<i class="uk-icon-long-arrow-right"></i>
-					<%=provinceEnd.getProvinceName()%></td>
+					<%=session.getAttribute("endName") %></td>
 												</tr>
 												<tr>
 													<td>Tuyến:</td>
@@ -447,15 +450,15 @@
 												</tr>
 												<tr>
 													<td>Ngày:</td>
-													<td></td>
+													<td><%=session.getAttribute("startDateSession") %></td>
 												</tr>
 												<tr>
 													<td>Giờ:</td>
-													<td itemprop="startDate"></td>
+													<td itemprop="startDate"><%=session.getAttribute("startTimeSession") %> </td>
 												</tr>
 												<tr>
 													<td>Bến xe:</td>
-													<td></td>
+													<td><%=session.getAttribute("busStationSession") %></td>
 												</tr>
 												<tr>
 													<td>Số ghế:</td>
@@ -463,11 +466,19 @@
 												</tr>
 												<tr>
 													<td>Loại ghế:</td>
-													<td itemprop="description"><%=bus.getBusType()%></td>
+													<td itemprop="description"><%=busType%></td>
 												</tr>
 												<tr>
 													<td>Giá vé:</td>
 													<td itemprop="price"><strong><%=priceTotal%></strong></td>
+												</tr>
+												<tr>
+													<td>Giảm giá:</td>
+													<td itemprop="price"><strong><%=session.getAttribute("ticketSale")%></strong></td>
+												</tr>
+												<tr>
+													<td>Phụ thu:</td>
+													<td itemprop="price"><strong><%=session.getAttribute("ticketTax")%></strong></td>
 												</tr>
 											</tbody>
 										</table>
@@ -491,7 +502,7 @@
 												<input type="hidden" id="txtSeatCount" name="txtSeatCount">
 											<button
 												class="uk-button uk-button-primary uk-button-large uk-width-1-1"
-												type="submit">
+												type="submit" onclick="return checkSeat();">
 												Xác nhận <i class="uk-icon-angle-right"></i>
 											</button>
 										</div>
@@ -597,7 +608,7 @@
 					],
 					seats: {
 						f: {
-							price   : <%=priceTotal%>,
+							price   : <%=priceAffterSaleAndTax%>,
 							classes : 'first-class', //your custom CSS class
 							category: 'First Class'
 						}
@@ -698,7 +709,7 @@
 					],
 					seats: {
 						f: {
-							price   : <%=priceTotal%>,
+							price   : <%=priceAffterSaleAndTax%>,
 							classes : 'first-class', //your custom CSS class
 							category: 'First Class'
 						}				
@@ -781,6 +792,8 @@
 				//let's pretend some seats have already been booked
 				sb.get([<%=chuoiGheBiDat%>]).status('unavailable');
 				
+				
+				
 		
 		});
 
@@ -797,6 +810,17 @@
 			return total;
 		}
 		
+		function checkSeat(){
+			var check=false;
+			if($('#txtListSeat').val()==""){
+				alert("Vui lòng chọn ít nhất 01 chỗ!");
+				check=false;
+			}
+			else{
+				check =true;
+			}
+			return check;
+		}
 		</script>
 </body>
 </html>

@@ -7,10 +7,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="<%=request.getContextPath()%>/css/admin/bootstrap.min.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/css/bootstrap.min.css" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/css/admin/datepicker3.css" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/css/admin/styles.css" rel="stylesheet">
 
+<%-- <link rel='stylesheet prefetch'
+	href='<%=request.getContextPath()%>/css/bootstrap.min.320.css'> --%>
+<link rel='stylesheet prefetch'
+	href='<%=request.getContextPath()%>/css/admin/bootstrap-theme.min.css'>
+<link rel='stylesheet prefetch'
+	href='<%=request.getContextPath()%>/css/bootstrapValidator.min.css'>
 <title>Login</title>
 </head>
 <body>
@@ -20,7 +26,7 @@
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">Đăng Nhập</div>
 				<div class="panel-body">
-					<form role="form" method="post" action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.LOGIN%>">
+					<form role="form" method="post" action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.LOGIN%>" id="login_form">
 						<fieldset>
 							<div class="form-group">
 								<input class="form-control" placeholder="Tài khoản" name="account" type="text" autofocus="">
@@ -56,12 +62,9 @@
 		
 
 	<script src="<%=request.getContextPath()%>/js/admin/jquery-1.11.1.min.js"></script>
-	<script src="<%=request.getContextPath()%>/js/admin/bootstrap.min.js"></script>
-	<script src="<%=request.getContextPath()%>/js/admin/chart.min.js"></script>
-	<script src="<%=request.getContextPath()%>/js/admin/chart-data.js"></script>
-	<script src="<%=request.getContextPath()%>/js/admin/easypiechart.js"></script>
-	<script src="<%=request.getContextPath()%>/js/admin/easypiechart-data.js"></script>
-	<script src="<%=request.getContextPath()%>/js/admin/bootstrap-datepicker.js"></script>
+	<script src='<%=request.getContextPath()%>/js/bootstrap.min.js'></script>
+	<script
+		src='<%=request.getContextPath()%>/js/bootstrapvalidator.min.js'></script>
 	<script>
 		!function ($) {
 			$(document).on("click","ul.nav li.parent > a > span.icon", function(){		  
@@ -77,5 +80,39 @@
 		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
 		})
 	</script>	
+	<script>
+	$(document)
+	.ready(
+			function() {
+				
+				$('#login_form')
+						.bootstrapValidator(
+								{
+									feedbackIcons : {
+										valid : 'glyphicon glyphicon-ok',
+										invalid : 'glyphicon glyphicon-remove',
+										validating : 'glyphicon glyphicon-refresh'
+									},
+									fields : {
+										account : {
+											validators : {
+												
+												notEmpty : {
+													message : 'Vui lòng nhập tài khoản'
+												}
+											}
+										},
+										password : {
+											validators : {
+												
+												notEmpty : {
+													message : 'Vui lòng nhập mật khẩu'
+												}
+											}
+										}
+		
+									}
+								});});
+	</script>
 </body>
 </html>
