@@ -16,9 +16,12 @@ public class SeatOrderDAOImpl implements SeatOrderDAO {
 	Session session = null;
 	Transaction transaction = null;
 	StringBuilder sqlQuery= null;
+	List<SeatOrder> listSeatOrder =null;
+	Query query =null;
 	@Override
 	public List<SeatOrder> getSeatOrderByCondition(String ticketId, int numberOriginPlace, int numberDestinationPlace) {
 		// TODO Auto-generated method stub
+		try{
 		session = HibernateUtils.getSessionFactory().openSession();
 		ArrayList<String> listChang = new ArrayList<String>();
 		listChang = Utility.phanChangDuongRaMang(numberOriginPlace, numberDestinationPlace);
@@ -32,15 +35,21 @@ public class SeatOrderDAOImpl implements SeatOrderDAO {
         }
         sqlQuery.append(" ) ");
         System.out.println(sqlQuery.toString());
-        Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(SeatOrder.class);
-        List<SeatOrder> listSeatOrder = query.list();
+        query = session.createSQLQuery(sqlQuery.toString()).addEntity(SeatOrder.class);
+        listSeatOrder = query.list();
         transaction.commit();
+		} catch (Exception e) {
+			
+		} finally {
+			session.close();
+
+		}
         return listSeatOrder;
 	}
 	
 	/*public static void main(String[] args) {
 		SeatOrderDAOImpl sc = new SeatOrderDAOImpl();
-		for(SeatOrder so : sc.getSeatOrderByCondition(9,1, 2)){
+		for(SeatOrder so : sc.getSeatOrderByCondition("ABCKA1",1, 2)){
 			System.out.println(so.getSeat());
 		}
 	}*/

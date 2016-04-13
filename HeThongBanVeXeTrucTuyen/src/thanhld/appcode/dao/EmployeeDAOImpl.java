@@ -13,15 +13,23 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	Session session = null;
 	Transaction transaction = null;
 	StringBuilder sqlQuery = null;
+	Query query = null;
+	List<Employee> listEmployee = null;
+
 	@Override
 	public List<Employee> getListEmployeeByJob(int jobId) {
-		session = HibernateUtils.getSessionFactory().openSession();
-		transaction = session.beginTransaction();
-		sqlQuery = new StringBuilder();
-		sqlQuery.append(" select * from EMPLOYEE where EMPLOYEE_JOB_ID=" + jobId + "");
-		Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(Employee.class);
-		List<Employee> listEmployee = (List<Employee>) query.list();
-		transaction.commit();
+		try {
+			session = HibernateUtils.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			sqlQuery = new StringBuilder();
+			sqlQuery.append(" select * from EMPLOYEE where EMPLOYEE_JOB_ID=" + jobId + "");
+			query = session.createSQLQuery(sqlQuery.toString()).addEntity(Employee.class);
+			listEmployee = (List<Employee>) query.list();
+			transaction.commit();
+		} catch (Exception e) {
+		} finally {
+			session.close();
+		}
 		return listEmployee;
 	}
 

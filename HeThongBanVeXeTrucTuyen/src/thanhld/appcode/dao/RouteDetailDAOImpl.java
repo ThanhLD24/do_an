@@ -19,52 +19,67 @@ public class RouteDetailDAOImpl implements RouteDetailDAO {
 	Session session = null;
 	Transaction transaction = null;
 	StringBuilder sqlQuery = null;
+	RouteDetail routeDetail = null;
+	List<RouteDetail> listRouteDetail = null;
+	Query query = null;
 
 	@Override
 	public int getNumberOrderByCondition(int routeId, int provinceId) {
 		// TODO Auto-generated method stub
 
-		session = HibernateUtils.getSessionFactory().openSession();
-		transaction = session.beginTransaction();
-		sqlQuery = new StringBuilder();
-		sqlQuery.append(" select * from ROUTE_DETAIL ");
-		sqlQuery.append(" where ROUTE_ID=" + routeId + " and PROVINCE_ID=" + provinceId + "");
+		try {
+			session = HibernateUtils.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			sqlQuery = new StringBuilder();
+			sqlQuery.append(" select * from ROUTE_DETAIL ");
+			sqlQuery.append(" where ROUTE_ID=" + routeId + " and PROVINCE_ID=" + provinceId + "");
+			query = session.createSQLQuery(sqlQuery.toString()).addEntity(RouteDetail.class);
+			routeDetail = (RouteDetail) query.uniqueResult();
+			transaction.commit();
+		} catch (Exception e) {
+		} finally {
+			session.close();
 
-		System.out.println(sqlQuery.toString());
-		Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(RouteDetail.class);
-		RouteDetail routeDetail = (RouteDetail) query.uniqueResult();
-		transaction.commit();
+		}
 		return routeDetail.getNumbercialOrder();
 	}
 
 	public List<RouteDetail> getListRouteDetailByRouteId(int routeId) {
-		session = HibernateUtils.getSessionFactory().openSession();
-		transaction = session.beginTransaction();
-		sqlQuery = new StringBuilder();
-		sqlQuery.append(" select * from ROUTE_DETAIL ");
-		sqlQuery.append(" where ROUTE_ID=" + routeId + "");
-
-		System.out.println(sqlQuery.toString());
-		Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(RouteDetail.class);
-		List<RouteDetail> listRouteDetail = query.list();
-		transaction.commit();
+		try {
+			session = HibernateUtils.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			sqlQuery = new StringBuilder();
+			sqlQuery.append(" select * from ROUTE_DETAIL ");
+			sqlQuery.append(" where ROUTE_ID=" + routeId + "");
+			query = session.createSQLQuery(sqlQuery.toString()).addEntity(RouteDetail.class);
+			listRouteDetail = query.list();
+			transaction.commit();
+		} catch (Exception e) {
+		} finally {
+			session.close();
+		}
 		return listRouteDetail;
 	}
 
-	public RouteDetail getRouteDetailWithNumberOrder(int routeId, int numberOrder){
-		session = HibernateUtils.getSessionFactory().openSession();
-		transaction = session.beginTransaction();
-		sqlQuery = new StringBuilder();
-		sqlQuery.append(" select * from ROUTE_DETAIL ");
-		sqlQuery.append(" where ROUTE_ID=" + routeId + " and NUMBERCIAL_ORDER=" + numberOrder + "");
+	public RouteDetail getRouteDetailWithNumberOrder(int routeId, int numberOrder) {
+		try {
+			session = HibernateUtils.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			sqlQuery = new StringBuilder();
+			sqlQuery.append(" select * from ROUTE_DETAIL ");
+			sqlQuery.append(" where ROUTE_ID=" + routeId + " and NUMBERCIAL_ORDER=" + numberOrder + "");
 
-		System.out.println(sqlQuery.toString());
-		Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(RouteDetail.class);
-		RouteDetail routeDetail = (RouteDetail) query.uniqueResult();
-		transaction.commit();
+			System.out.println(sqlQuery.toString());
+			query = session.createSQLQuery(sqlQuery.toString()).addEntity(RouteDetail.class);
+			routeDetail = (RouteDetail) query.uniqueResult();
+			transaction.commit();
+		} catch (Exception e) {
+		} finally {
+			session.close();
+		}
 		return routeDetail;
 	}
-	
+
 	public static void main(String[] args) {
 		RouteDetailDAOImpl r = new RouteDetailDAOImpl();
 		System.out.println(r.getListRouteDetailByRouteId(1).size());

@@ -18,37 +18,48 @@ public class TicketDAOImpl implements TicketDAO {
 	Session session = null;
 	Transaction transaction = null;
 	StringBuilder sqlQuery = null;
-	List<Ticket> listTicket =null;
+	List<Ticket> listTicket = null;
+	Query query = null;
+
 	@Override
 	public List<Ticket> getTicketByCondition(String startPlace, String endPlace, String timeStart) {
 		// TODO Auto-generated method stub
 
-		session = HibernateUtils.getSessionFactory().openSession();
-		String date = Utility.parseFormatDate(timeStart);
-		transaction = session.beginTransaction();
-		sqlQuery = new StringBuilder();
-		sqlQuery.append(" select * from ticket t ");
-		sqlQuery.append(" WHERE T.ROUTE_ID IN (SELECT rd1.ROUTE_ID FROM ROUTE_DETAIL rd1 WHERE rd1.PROVINCE_ID ="
-				+ endPlace + ") ");
-		sqlQuery.append(" AND T.ROUTE_ID IN (SELECT rd2.ROUTE_ID FROM ROUTE_DETAIL rd2 WHERE rd2.PROVINCE_ID ="
-				+ startPlace + ") ");
-		sqlQuery.append(" AND (SELECT rd3.NUMBERCIAL_ORDER FROM ROUTE_DETAIL rd3 ");
-		sqlQuery.append(" WHERE rd3.ROUTE_ID =t.ROUTE_ID AND rd3.PROVINCE_ID =" + endPlace
-				+ ")>(SELECT rd4.NUMBERCIAL_ORDER FROM ROUTE_DETAIL rd4 WHERE  rd4.ROUTE_ID =t.ROUTE_ID AND rd4.PROVINCE_ID ="
-				+ startPlace + ")");
-		/* sqlQuery.append(" and date(t.TICKET_ORIGIN_TIME)= '"+date+"'"); */
-		sqlQuery.append(
-				" AND (SELECT DETAIL_DATE FROM TICKET_DETAIL td WHERE t.TICKET_ID=td.TICKET_ID AND td.PROVINCE_ID= "
-						+ startPlace + " )= '" + date + "'");
-		System.out.println(sqlQuery.toString());
-		Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(Ticket.class);
-		listTicket = new ArrayList<Ticket>();
-		listTicket = query.list();
-		transaction.commit();
+		try {
+			session = HibernateUtils.getSessionFactory().openSession();
+			String date = Utility.parseFormatDate(timeStart);
+			transaction = session.beginTransaction();
+			sqlQuery = new StringBuilder();
+			sqlQuery.append(" select * from ticket t ");
+			sqlQuery.append(" WHERE T.ROUTE_ID IN (SELECT rd1.ROUTE_ID FROM ROUTE_DETAIL rd1 WHERE rd1.PROVINCE_ID ="
+					+ endPlace + ") ");
+			sqlQuery.append(" AND T.ROUTE_ID IN (SELECT rd2.ROUTE_ID FROM ROUTE_DETAIL rd2 WHERE rd2.PROVINCE_ID ="
+					+ startPlace + ") ");
+			sqlQuery.append(" AND (SELECT rd3.NUMBERCIAL_ORDER FROM ROUTE_DETAIL rd3 ");
+			sqlQuery.append(" WHERE rd3.ROUTE_ID =t.ROUTE_ID AND rd3.PROVINCE_ID =" + endPlace
+					+ ")>(SELECT rd4.NUMBERCIAL_ORDER FROM ROUTE_DETAIL rd4 WHERE  rd4.ROUTE_ID =t.ROUTE_ID AND rd4.PROVINCE_ID ="
+					+ startPlace + ")");
+			/*
+			 * sqlQuery.append(" and date(t.TICKET_ORIGIN_TIME)= '"+date+"'");
+			 */
+			sqlQuery.append(
+					" AND (SELECT DETAIL_DATE FROM TICKET_DETAIL td WHERE t.TICKET_ID=td.TICKET_ID AND td.PROVINCE_ID= "
+							+ startPlace + " )= '" + date + "'");
+			System.out.println(sqlQuery.toString());
+			query = session.createSQLQuery(sqlQuery.toString()).addEntity(Ticket.class);
+			listTicket = new ArrayList<Ticket>();
+			listTicket = query.list();
+			transaction.commit();
+		} catch (Exception e) {
+		} finally {
+			session.close();
+		}
+
 		return listTicket;
 	}
 
 	public List<Ticket> getTicketByConditionOnePath(String startPlace, String endPlace, String timeStart) {
+		try{
 		session = HibernateUtils.getSessionFactory().openSession();
 		String date = Utility.parseFormatDate(timeStart);
 		transaction = session.beginTransaction();
@@ -68,10 +79,14 @@ public class TicketDAOImpl implements TicketDAO {
 				" AND (SELECT DETAIL_DATE FROM TICKET_DETAIL td WHERE t.TICKET_ID=td.TICKET_ID AND td.PROVINCE_ID= "
 						+ startPlace + " )= '" + date + "'");
 		System.out.println(sqlQuery.toString());
-		Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(Ticket.class);
+		query = session.createSQLQuery(sqlQuery.toString()).addEntity(Ticket.class);
 		listTicket = new ArrayList<Ticket>();
 		listTicket = query.list();
 		transaction.commit();
+		} catch (Exception e) {
+		} finally {
+			session.close();
+		}
 		return listTicket;
 
 	}
