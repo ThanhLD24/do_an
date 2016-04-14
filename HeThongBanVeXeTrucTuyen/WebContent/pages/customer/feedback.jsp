@@ -269,13 +269,13 @@
 		<div class="uk-offcanvas-bar">
 
 			<ul data-uk-nav="" class="uk-nav uk-nav-offcanvas uk-nav-parent-icon">
-				<li><a href="/dang-nhap.html">Đăng nhập</a></li>
+				<li><a href="#">Đăng nhập</a></li>
 
 				<li class="uk-nav-divider"></li>
 				<li class="uk-nav-header">DuyThanhBus.vn</li>
-				<li class="uk-active"><a href="/">Vé xe</a></li>
-				<li class=""><a href="/thue-xe.html">Thuê xe</a></li>
-				<li class=""><a href="/tim-ve.html">Kiểm tra & in vé</a></li>
+				<li ><a href="<%=request.getContextPath()%>/home">Vé xe</a></li>
+				<li class="uk-active"><a href="<%=request.getContextPath()%>/feedback">Phản hồi</a></li>
+				<li class=""><a href="<%=request.getContextPath()%>/find">Kiểm tra & in vé</a></li>
 
 				<li class="uk-nav-divider"></li>
 				<li class="uk-nav-header">THÔNG TIN</li>

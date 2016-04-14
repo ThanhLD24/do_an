@@ -90,14 +90,14 @@ public class ObjectManager {
 	public static void deleteObject(int id, Class clas) {
 		Session session = null;
 		Transaction trans = null;
-		Object obj = null;
+		Object obj =null;
 		try {
-			session = HibernateUtils.getSessionFactory().openSession();
-			trans = session.beginTransaction();
-			obj = session.get(clas, id);
-			session.delete(obj);
-			session.flush();
-			trans.commit();
+		session = HibernateUtils.getSessionFactory().openSession();
+		trans = session.beginTransaction();
+		obj = session.get(clas, id);
+		session.delete(obj);
+		session.flush();
+		trans.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			trans.rollback();

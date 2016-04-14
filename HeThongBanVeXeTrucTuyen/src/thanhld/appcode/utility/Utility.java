@@ -26,10 +26,12 @@ public class Utility {
 	}
 	
 	public static String getDateTimeNow(){
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //format theo time 24h
+		//format time 12h 'yyyy-MM-dd hh:mm:ss'
 		Date date = new Date();
 		return dateFormat.format(date); //2014/08/06 15:59:48
 	}
+	
 	public static String getDateNow(){
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
@@ -50,7 +52,11 @@ public class Utility {
 	   }
 	public static void main(String[] args) throws ParseException {
 		
-	    System.out.print(Utility.parse12HoursTo24HoursTime("10:30 PM"));
+	    System.out.println(Utility.getDateTimeNow());
+	    System.out.print(Utility.replaceString2("/1_A/|/10_A/|/1_C/|/10_C/|"));
+	    for(String a:Utility.phanChuoiGheThanhMang("/1_A/|/10_A/|/1_C/|/10_C/|")){
+	    	System.out.println(a);
+	    }
 	}
 	
 	public static String parseFormatDate(String dateInput) {
@@ -67,8 +73,22 @@ public class Utility {
 		return reformattedStr;
 	}
 
-	public static String parseToDateFormat(String dateInput) {
+	public static String parseToDateFormat(String dateInput) { 
 		SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
+		SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String reformattedStr = null;
+
+		try {
+
+			reformattedStr = myFormat.format(fromUser.parse(dateInput));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return reformattedStr;
+	}
+	
+	public static String parseToDateFormat1(String dateInput) {
+		SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
 		String reformattedStr = null;
 
@@ -116,8 +136,7 @@ public class Utility {
 	public static String replaceString2(String stringNeedReplace) {
 		String string1 = stringNeedReplace.replace("/", "");
 		String string2 = string1.replace("|", ", ");
-
-		return string2;
+		return string2.substring(0, string2.length()-2);
 	}
 
 	// tach chuoi price + chuoi id driver ra mang
@@ -209,6 +228,15 @@ public class Utility {
 		
 		return count;
 		
+	}
+	
+	public static List<String> phanChuoiGheThanhMang(String listSeat){
+		List<String> list = new ArrayList<>();
+		String[] arraySeat = listSeat.split("\\|");
+		for(String s : arraySeat){
+			list.add(s);
+		}
+		return list;
 	}
 	
 	public static boolean compareDateTime(String date){

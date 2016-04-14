@@ -37,6 +37,10 @@ public class TicketDetailDAOImpl implements TicketDetailDAO {
 		return ticketDetail;
 	}
 
+	/* (non-Javadoc)
+	 * @see thanhld.appcode.dao.TicketDetailDAO#getTicketDetailByTicketId(java.lang.String)
+	 * lay ban ghi dau tien (1st) trong list ticketDetail theo ticketid
+	 */
 	@Override
 	public TicketDetail getTicketDetailByTicketId(String ticketId) {
 		// TODO Auto-generated method stub

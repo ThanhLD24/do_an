@@ -1,18 +1,14 @@
-<%@page import="thanhld.appcode.model.OrderTicket"%>
+<%@page import="thanhld.appcode.dao.OrderTicketDAO"%>
+<%@page import="thanhld.appcode.dao.OrderTicketDAOImpl"%>
+<%@page import="thanhld.appcode.dao.SeatOrderDAOImpl"%>
+<%@page import="thanhld.appcode.dao.SeatOrderDAO"%>
 <%@page import="thanhld.appcode.model.Employee"%>
 <%@page import="thanhld.appcode.model.Account"%>
 <%@page import="thanhld.appcode.dao.TicketDetailDAO"%>
-<%@page import="thanhld.appcode.model.TicketDetail"%>
-<%@page import="thanhld.appcode.model.RouteDetail"%>
+<%@page import="thanhld.appcode.model.SeatOrder"%>
 <%@page import="thanhld.appcode.utility.Variables"%>
-<%@page import="thanhld.appcode.dao.TicketDAOImpl"%>
-<%@page import="thanhld.appcode.dao.TicketDAO"%>
-<%@page import="thanhld.appcode.dao.TicketDetailDAOImpl"%>
-<%@page import="thanhld.appcode.dao.RouteDetailDAO"%>
-<%@page import="thanhld.appcode.dao.RouteDetailDAOImpl"%>
+<%@page import="thanhld.appcode.model.OrderTicket"%>
 <%@page import="thanhld.appcode.utility.Utility"%>
-<%@page import="thanhld.appcode.model.Route"%>
-<%@page import="thanhld.appcode.model.Ticket"%>
 <%@page import="java.util.List"%>
 <%@page import="thanhld.appcode.utility.ObjectManager"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
@@ -27,8 +23,7 @@
 
 <link href="<%=request.getContextPath()%>/css/bootstrap.min.css"
 	rel="stylesheet">
-<link
-	href="<%=request.getContextPath()%>/css/admin/bootstrap-table.css"
+<link href="<%=request.getContextPath()%>/css/admin/bootstrap-table.css"
 	rel="stylesheet">
 <link href="<%=request.getContextPath()%>/css/admin/datepicker3.css"
 	rel="stylesheet">
@@ -82,8 +77,10 @@
 								<use xlink:href="#stroked-male-user"></use></svg> Cá nhân</a></li>
 						<li><a href="#"><svg class="glyph stroked gear"> <use
 									xlink:href="#stroked-gear"></use></svg> Cài đặt</a></li>
-						<li><a href="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.LOGOUT%>"><svg class="glyph stroked cancel">
-								<use xlink:href="#stroked-cancel"></use></svg> Đăng xuất</a></li>
+						<li><a
+							href="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.LOGOUT%>"><svg
+									class="glyph stroked cancel"> <use
+									xlink:href="#stroked-cancel"></use></svg> Đăng xuất</a></li>
 					</ul></li>
 			</ul>
 		</div>
@@ -98,29 +95,37 @@
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li><a
-				href="<%=request.getContextPath()%>/admin/home"><svg
+			<li><a href="<%=request.getContextPath()%>/admin/home"><svg
 						class="glyph stroked dashboard-dial"> <use
 						xlink:href="#stroked-dashboard-dial"></use></svg> Trang chủ</a></li>
-			<li class="active"><a href="<%=request.getContextPath()%>/admin/book"><i class="uk-icon-list-alt"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Vé đặt</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/cancel-book"><i class="uk-icon-share-square-o"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Hủy vé</a></li>
+			<li class="active"><a
+				href="<%=request.getContextPath()%>/admin/book"><i
+					class="uk-icon-list-alt" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Vé đặt</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/cancel-book"><i
+					class="uk-icon-share-square-o" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Hủy vé</a></li>
 			<li><a href="<%=request.getContextPath()%>/admin/schedule"><i
 					class="uk-icon-calendar" style="font-size: 15px"></i>
 					&nbsp;&nbsp;&nbsp;Quản lý Lịch trình </a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/route"><i class="uk-icon-road"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tuyến đường</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/driver"><i class="uk-icon-user"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài xế </a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/bus-station"><i class="uk-icon-street-view"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Điểm dừng</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/bus"><i class="uk-icon-bus"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Xe lưu hành</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/account"><i class="uk-icon-users"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài khoản</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/report"><i class="uk-icon-line-chart"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Báo cáo</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/route"><i
+					class="uk-icon-road" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Tuyến đường</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/driver"><i
+					class="uk-icon-user" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Tài xế </a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/bus-station"><i
+					class="uk-icon-street-view" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Điểm dừng</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/bus"><i
+					class="uk-icon-bus" style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp;
+					Quản lý Xe lưu hành</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/account"><i
+					class="uk-icon-users" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Tài khoản</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/report"><i
+					class="uk-icon-line-chart" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Báo cáo</a></li>
 
 
 			<li role="presentation" class="divider"></li>
@@ -135,8 +140,8 @@
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
 			<ol class="breadcrumb">
-				<li><a href="#"><svg class="glyph stroked home">
-						<use xlink:href="#stroked-home"></use></svg></a></li>
+				<li><a href="#"><svg class="glyph stroked home"> <use
+							xlink:href="#stroked-home"></use></svg></a></li>
 				<li class="active">Quản lý Vé đặt</li>
 			</ol>
 		</div>
@@ -147,13 +152,10 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<button type="button" class="btn btn-primary" onclick="location.href = '<%=request.getContextPath()%>/admin/add-schedule';">Thêm lịch
-							trình</button>
+						<%-- <button type="button" class="btn btn-primary" onclick="location.href = '<%=request.getContextPath()%>/admin/add-schedule';">Thêm lịch
+							trình</button> --%>
 					</div>
 					<div class="panel-body">
-						<%
-							List<OrderTicket> listOrderTicket = ObjectManager.listObject(OrderTicket.class);
-						%>
 						<table data-toggle="table" data-show-refresh="false"
 							data-show-toggle="false" data-show-columns="true"
 							data-search="true" data-select-item-name="toolbar1"
@@ -162,50 +164,69 @@
 							<thead>
 								<tr>
 
-									<th data-sortable="true">Mã vé</th>
-									<th data-sortable="true">Mã chuyến đi</th>
-									<th data-sortable="true">Chặng</th>
+									<th data-sortable="true">Mã đặt vé</th>
 									<th data-sortable="true">Tên khách</th>
-									<th data-sortable="true">Ghế</th>
-									<th data-sortable="true">Tổng tiền</th>
-									<th data-sortable="true">Thanh toán</th>
-									<th data-sortable="true" style="width:100px">Tác vụ</th>
+									<th data-sortable="true">Email</th>
+									<th data-sortable="true">Số điện thoại</th>
+									<th data-sortable="true">Số ghế</th>
+									<th data-sortable="true">Tiền thanh toán</th>
+									<th data-sortable="true">Ngày đặt</th>
+									<th data-sortable="true">Tình trạng</th>
+									<th data-sortable="true" style="width: 100px">Tác vụ</th>
 
 								</tr>
 							</thead>
 							<tbody>
 								<%
-									RouteDetailDAO routeDetailDAO =  new RouteDetailDAOImpl();
-									TicketDetailDAO ticketDetailDAO = new TicketDetailDAOImpl();
-									for (OrderTicket t : listOrderTicket) {
+									OrderTicketDAO orderTicketDAO = new OrderTicketDAOImpl();
+									List<OrderTicket> listOrderTicket = orderTicketDAO.getListOrderTicketDESC();
+									SeatOrder seatOrder = null;
+									SeatOrderDAO seatOrderDAO = new SeatOrderDAOImpl();
+									String orderTicketId =null;
+								for(OrderTicket orderTicket : listOrderTicket){
+									orderTicketId = orderTicket.getOrderTicketId();
+										seatOrder = seatOrderDAO.getSeatOrderByOrderTicket(orderTicketId);
 								%>
 								<tr>
-									<td><%=t.getOrderTicketId()%></td>
-									<td><%=t.getTicketId() %></td>
-									<td></td>
-									<td><%=t.getPassengerName()%></td>
-									<td><%=t.getOrderTicketSeat() %></td>
-									<td><%=t.getOrderTicketTotalPrice() %></td>
+									<td><%=orderTicketId%></td>
+									<td><%=orderTicket.getPassengerName()%></td>
+									<td><%=orderTicket.getPassengerEmail()%></td>
+									<td><%=orderTicket.getPassengerPhone()%></td>
+									<td><%=Utility.replaceString2(seatOrder.getSeat())%></td>
+									<td><%=orderTicket.getOrderTicketTotalPrice()%></td>
+									<td><%=Utility.parseToDateFormat1(orderTicket.getOrderTicketTime())%></td>
 									<td align="center">
-									<%-- <%if(Utility.compareDateTime(t.getTicketEndSellDate())) {%>
-									<h4><span class="label label-default">Hết hạn</span></h4><% } else{%>
-									<h4><span class="label label-success">Đang bán</span></h4><%} %> --%>
+									<%if(Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())) {%>
+										<h4>
+											<span class="label label-danger">Hết hạn</span>
+										</h4>
+										 
+										<%} else if(("").equals(orderTicket.getOrderTicketPaidDate())) {%>
+										<h4>
+											<span class="label label-warning">Chưa thanh toán</span>
+										</h4>
+										<% } else{%>
+										<h4>
+											<span class="label label-success">Đã thanh toán</span>
+										</h4>
+										<%} %>
 									</td>
-									<td align="center"><p data-placement="top" data-toggle="tooltip"
-											title="Sửa" style="display: inline">
+									
+									<td align="center"><p data-placement="top"
+											data-toggle="tooltip" title="Cập nhật"
+											style="display: inline">
 											<button class="btn btn-primary btn-xs" data-title="Edit"
 												data-toggle="modal" data-target="#edit" style="height: 22px">
 												<span class="glyphicon glyphicon-pencil"></span>
 											</button>
-										</p>
-										<p data-placement="top" data-toggle="tooltip" title="Xóa"
+										</p> <!-- <p data-placement="top" data-toggle="tooltip" title="Xóa"
 											style="display: inline">
 											<button class="btn btn-danger btn-xs" data-title="Delete"
 												data-toggle="modal" data-target="#delete"
 												style="height: 22px">
 												<span class="glyphicon glyphicon-trash"></span>
 											</button>
-										</p></td>
+										</p> --></td>
 
 								</tr>
 								<!-- popup edit -->
@@ -373,13 +394,13 @@
 			</div>
 			<!-- /.modal-dialog -->
 		</div>
-		
+
 		<!-- end popup delete -->
 
 
-<!-- popup message -->
+		<!-- popup message -->
 
-<div class="modal fade" id="message" tabindex="-1" role="dialog"
+		<div class="modal fade" id="message" tabindex="-1" role="dialog"
 			aria-labelledby="edit" aria-hidden="false" style="display: none;">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -398,7 +419,8 @@
 
 					</div>
 					<div class="modal-footer ">
-						<button type="button" class="btn btn-success"  id="close_message" data-dismiss="modal">
+						<button type="button" class="btn btn-success" id="close_message"
+							data-dismiss="modal">
 							<span class="glyphicon glyphicon-ok-sign"></span> OK
 						</button>
 					</div>
@@ -407,8 +429,8 @@
 			</div>
 			<!-- /.modal-dialog -->
 		</div>
-		
-<!-- end message -->
+
+		<!-- end message -->
 	</div>
 	<!--/.main-->
 
@@ -424,8 +446,7 @@
 		src="<%=request.getContextPath()%>/js/admin/easypiechart-data.js"></script>
 	<script
 		src="<%=request.getContextPath()%>/js/admin/bootstrap-datepicker.js"></script>
-	<script
-		src="<%=request.getContextPath()%>/js/admin/bootstrap-table.js"></script>
+	<script src="<%=request.getContextPath()%>/js/admin/bootstrap-table.js"></script>
 
 	<script>
 		!function($) {
@@ -450,25 +471,28 @@
 		})
 	</script>
 	<script>
-$(document).ready(function() {
-	
+		$(document)
+				.ready(
+						function() {
 	<% try{
 	
 		if(Integer.parseInt(session.getAttribute("add-detail-schedule-success").toString())==1){
 			session.removeAttribute("add-detail-schedule-success");
 		%>
 		$("#message").addClass("in");
-		$('#message').fadeIn(700);
-		$("#message").css({'display':'block'});
-	     
-		$('#close_message').click(function(){
-			$('#message').fadeOut(700);
-	    });
-		<%}
+							$('#message').fadeIn(700);
+							$("#message").css({
+								'display' : 'block'
+							});
+
+							$('#close_message').click(function() {
+								$('#message').fadeOut(700);
+							});
+	<%}
 	 }catch(Exception e){
 		e.getMessage();
 	}  %>
-});
-</script>
+		});
+	</script>
 </body>
 </html>

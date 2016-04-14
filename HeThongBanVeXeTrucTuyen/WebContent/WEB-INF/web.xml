@@ -69,6 +69,16 @@
 		<url-pattern>/confirm</url-pattern>
 	</servlet-mapping>
 	
+	<!-- find.jsp -->
+	<servlet>
+		<servlet-name>find</servlet-name>
+		<jsp-file>/pages/customer/find.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>find</servlet-name>
+		<url-pattern>/find</url-pattern>
+	</servlet-mapping>
+	
 	<!-- error.jsp -->
 	<servlet>
 		<servlet-name>error_book</servlet-name>

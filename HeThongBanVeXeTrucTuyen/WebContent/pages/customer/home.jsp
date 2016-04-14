@@ -402,7 +402,7 @@
 			<div class="uk-grid">
 				<div class="uk-width-medium-1-2 uk-text-center-small uk-margin-top">
 					<div>
-						<a href="/" class="uk-text-bold uk-link-reset">DuyThanhBus.vn</a>
+						<a href="<%=request.getContextPath()%>/home" class="uk-text-bold uk-link-reset">DuyThanhBus.vn</a>
 					</div>
 					<ul class="reset-list footer-links">
 						<!--li><a href="#">Chính sách</a></li>
@@ -439,13 +439,13 @@
 		<div class="uk-offcanvas-bar">
 
 			<ul data-uk-nav="" class="uk-nav uk-nav-offcanvas uk-nav-parent-icon">
-				<li><a href="/dang-nhap.html">Đăng nhập</a></li>
+				<li><a href="#">Đăng nhập</a></li>
 
 				<li class="uk-nav-divider"></li>
 				<li class="uk-nav-header">DuyThanhBus.vn</li>
-				<li class="uk-active"><a href="/">Vé xe</a></li>
-				<li class=""><a href="/thue-xe.html">Thuê xe</a></li>
-				<li class=""><a href="/tim-ve.html">Kiểm tra & in vé</a></li>
+				<li class="uk-active"><a href="<%=request.getContextPath()%>/home">Vé xe</a></li>
+				<li class=""><a href="<%=request.getContextPath()%>/feedback">Phản hồi</a></li>
+				<li class=""><a href="<%=request.getContextPath()%>/find">Kiểm tra & in vé</a></li>
 
 				<li class="uk-nav-divider"></li>
 				<li class="uk-nav-header">THÔNG TIN</li>

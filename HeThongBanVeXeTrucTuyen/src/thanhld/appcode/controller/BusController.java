@@ -143,27 +143,28 @@ public class BusController extends HttpServlet {
 			response.setContentType("application/json");
 			response.getWriter().print(jsonArray);
 		}
-		
+
 		if (type == 3) {
 			System.out.println("cb vao day");
 			String orginPlace = session.getAttribute("orginPlace").toString();
-			String destinationPlace =session.getAttribute("destinationPlace").toString();
-			String startDate=session.getAttribute("startDate").toString();
-			
+			String destinationPlace = session.getAttribute("destinationPlace").toString();
+			String startDate = session.getAttribute("startDate").toString();
+
 			TicketDAO ticketDAO = new TicketDAOImpl();
 			List<Ticket> listTicket = ticketDAO.getTicketByCondition(orginPlace, destinationPlace, startDate);
 			List<TicketVO> listTicketVO = new ArrayList<TicketVO>();
-			System.out.println("LIST SIZEEEEE"+listTicket.size());
+			System.out.println("LIST SIZEEEEE" + listTicket.size());
 			Bus bus = new Bus();
-			for(Ticket ticket:listTicket){
+			for (Ticket ticket : listTicket) {
 				TicketDetailDAO ticketDetailDAO = new TicketDetailDAOImpl();
-			 	SeatOrderDAO seatOrderDAO = new SeatOrderDAOImpl();
+				SeatOrderDAO seatOrderDAO = new SeatOrderDAOImpl();
 				bus = (Bus) ObjectManager.getObjectById(ticket.getBusId(), Bus.class);
 				Carrier carrier = (Carrier) ObjectManager.getObjectById(bus.getCarrierId(), Carrier.class);
-				int numberOriginPlace = routeDetailDAO.getNumberOrderByCondition(ticket.getRouteId(), Integer.parseInt(orginPlace));
+				int numberOriginPlace = routeDetailDAO.getNumberOrderByCondition(ticket.getRouteId(),
+						Integer.parseInt(orginPlace));
 				int numberDestinationPlace = routeDetailDAO.getNumberOrderByCondition(ticket.getRouteId(),
 						Integer.parseInt(destinationPlace));
-				//out.print(numberOriginPlace+"----"+numberDestinationPlace);
+				// out.print(numberOriginPlace+"----"+numberDestinationPlace);
 				ArrayList<Integer> listPrice = Utility.splitPrice(ticket.getTicketPrice());
 				int priceTotal = Utility.getPrice(numberOriginPlace, numberDestinationPlace, listPrice);
 				String chuoiGheBiDat = Utility.layGheDaDuocDat(seatOrderDAO
@@ -180,8 +181,8 @@ public class BusController extends HttpServlet {
 				String startTimeSs = ticketDetailStart.getDetailTime();
 				String startDateSs = ticketDetailStart.getDetailDate();
 				String busStationOriginSs = busStationOrigin.getBusStationName();
-				
-				TicketVO ticketVO =new TicketVO();
+
+				TicketVO ticketVO = new TicketVO();
 				ticketVO.setTicketId(ticket.getTicketId());
 				ticketVO.setBusId(bus.getBusId());
 				ticketVO.setBusType(bus.getBusType());
@@ -193,13 +194,13 @@ public class BusController extends HttpServlet {
 				ticketVO.setEndTime(ticketDetailEnd.getDetailTime());
 				ticketVO.setEndDate(ticketDetailEnd.getDetailDate());
 				ticketVO.setEndBusStation(busStationDestination.getBusStationName());
-				ticketVO.setCountSeat((bus.getBusCapacity() - tongGheDaDat)+"/"+bus.getBusCapacity());
+				ticketVO.setCountSeat((bus.getBusCapacity() - tongGheDaDat) + "/" + bus.getBusCapacity());
 				ticketVO.setPriceTotal(priceTotal);
 				ticketVO.setNumberOriginPlace(numberOriginPlace);
 				ticketVO.setNumberDestinationPlace(numberDestinationPlace);
 				System.out.println(ticketVO.toString());
 				listTicketVO.add(ticketVO);
-				
+
 			}
 			/* end */
 
@@ -348,58 +349,98 @@ public class BusController extends HttpServlet {
 			numberOriginPlace = Integer.parseInt(session.getAttribute("numberOriginPlace").toString());
 			numberDestinationPlace = Integer.parseInt(session.getAttribute("numberDestinationPlace").toString());
 			int seatCountInt = Integer.parseInt(session.getAttribute("seatCount").toString());
-			TicketDetail ticketDetail = ticketDetailDAO.getTicketDetailByTicketId(ticketId);
-			sessionShortId = session.getId().substring(0, 6);
-			OrderTicket orderTicket = new OrderTicket();
-			orderTicket.setOrderTicketId(sessionShortId);
-			orderTicket.setTicketId(ticketId);
-			orderTicket.setPassengerNameTitle("");
-			orderTicket.setPassengerName(fullName);
-			orderTicket.setPassengerEmail(email);
-			orderTicket.setPassengerAddress("");
-			orderTicket.setPassengerGender("");
-			orderTicket.setPassengerPhone(phoneNumber);
-			orderTicket.setOrderTicketSeat(session.getAttribute("listSeat").toString());
-			orderTicket.setOrderTicketTotalSeat(Integer.parseInt(session.getAttribute("seatCount").toString()));
-			orderTicket.setOrderTicketTotalPrice(session.getAttribute("totalMoney").toString());
-			orderTicket.setOrderTicketTime(Utility.getDateTimeNow());
-			orderTicket.setOrderTicketExpiredTime(ticketDetail.getDetailDate());
-			orderTicket.setOrderTicketPaidDate(""); // hien tai dang set cung
-													// ngay thanh toan = ""
-			orderTicket.setOrderTicketStatus(true);
-			orderTicket.setOrderTicketOther(notes);
 
-			try {
-				ObjectManager.addObject((Object) orderTicket);
-				session.setAttribute("orderTicket", orderTicket);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				pageForward = "/error_book";
-				e.printStackTrace();
-			}
-
-			SeatOrder seatOrder = new SeatOrder();
-			seatOrder.setTicketId(ticketId);
-			seatOrder.setOrderTicketId(sessionShortId);
-			seatOrder.setSeat(session.getAttribute("listSeat").toString());
-			seatOrder.setRoutes(Utility.phanChangDuong(numberOriginPlace, numberDestinationPlace));
 			/*
-			 * ticket = (Ticket) session.getAttribute("ticket");
-			 * ticket.setTicketCount(ticket.getTicketCount() - seatCountInt);
-			 */ // tam thoi de ticket count = ""
-			try {
-				ObjectManager.addObject(seatOrder);
-				request.changeSessionId();
-				pageForward = "/confirm";
-				/* ObjectManager.update(ticket); */
-			} catch (Exception e) {
-				pageForward = "/error_book";
-
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			 * check xem nguoi dat ghe co trung k | trong truong hop nhieu ng
+			 * dat cung 1 luc
+			 */
+			boolean checkSeat = false;
+			SeatOrderDAO seatOrderDAO = new SeatOrderDAOImpl();
+			String listSeatOrder = session.getAttribute("listSeat").toString();
+			List<String> pListSeatOrder = Utility.phanChuoiGheThanhMang(listSeatOrder);
+			List<String> pListSO = new ArrayList<String>();
+			List<SeatOrder> listSO = seatOrderDAO.getSeatOrderByCondition(ticketId, numberOriginPlace,
+					numberDestinationPlace);
+			for (SeatOrder so : listSO) {
+				for (String ghe : Utility.phanChuoiGheThanhMang(so.getSeat())) {
+					pListSO.add(ghe);
+				}
 			}
 
-			response.sendRedirect(request.getContextPath() + pageForward);
+			for (int i = 0; i < pListSeatOrder.size(); i++) {
+				for (int j = 0; j < pListSO.size(); j++) {
+					if ((pListSeatOrder.get(i)).equals(pListSO.get(j))) {
+						checkSeat = true;
+						break;
+					}
+				}
+			}
+			/* end ham check */
+
+			if (!checkSeat) {
+				TicketDetail ticketDetail = ticketDetailDAO.getTicketDetailByTicketId(ticketId);
+				sessionShortId = session.getId().substring(0, 6);
+
+				OrderTicket orderTicket = new OrderTicket();
+				orderTicket.setOrderTicketId(sessionShortId);
+				orderTicket.setTicketId(ticketId);
+				orderTicket.setPassengerNameTitle("");
+				orderTicket.setPassengerName(fullName);
+				orderTicket.setPassengerEmail(email);
+				orderTicket.setPassengerAddress("");
+				orderTicket.setPassengerGender("");
+				orderTicket.setPassengerPhone(phoneNumber);
+				orderTicket.setOrderTicketSeat(session.getAttribute("listSeat").toString());
+				orderTicket.setOrderTicketTotalSeat(Integer.parseInt(session.getAttribute("seatCount").toString()));
+				orderTicket.setOrderTicketTotalPrice(session.getAttribute("totalMoney").toString());
+				orderTicket.setOrderTicketTime(Utility.getDateTimeNow());
+				orderTicket
+						.setOrderTicketExpiredTime(ticketDetail.getDetailDate() + " " + ticketDetail.getDetailTime());
+				orderTicket.setOrderTicketPaidDate(""); // hien tai dang set
+														// cung
+														// ngay thanh toan = ""
+				orderTicket.setOrderTicketStatus(true);
+				orderTicket.setOrderTicketOther(notes);
+
+				try {
+					ObjectManager.addObject((Object) orderTicket);
+					session.setAttribute("orderTicket", orderTicket);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					pageForward = "/error_book";
+					e.printStackTrace();
+				}
+
+				SeatOrder seatOrder = new SeatOrder();
+				seatOrder.setTicketId(ticketId);
+				seatOrder.setOrderTicketId(sessionShortId);
+				seatOrder.setSeat(listSeatOrder);
+				seatOrder.setRoutes(Utility.phanChangDuong(numberOriginPlace, numberDestinationPlace));
+				/*
+				 * ticket = (Ticket) session.getAttribute("ticket");
+				 * ticket.setTicketCount(ticket.getTicketCount() -
+				 * seatCountInt);
+				 */ // tam thoi de ticket count = ""
+				try {
+					ObjectManager.addObject(seatOrder);
+					request.changeSessionId();
+					pageForward = "/confirm";
+					/* ObjectManager.update(ticket); */
+				} catch (Exception e) {
+					pageForward = "/error_book";
+
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				request.setAttribute("seat_message", Variables.SEAT_SUCCESS);
+			} else {
+				request.setAttribute("seat_message", Variables.SEAT_FAIL);
+				pageForward = "/confirm";
+
+			}
+
+			dispatcher = request.getRequestDispatcher(pageForward);
+			dispatcher.forward(request, response);
 			break;
 		case Variables.FEEBBACK:
 			String title = request.getParameter("title");

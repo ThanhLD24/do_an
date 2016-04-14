@@ -166,10 +166,10 @@ public class AdminBusController extends HttpServlet {
 					session = request.getSession();
 					session.setAttribute("account", ac);
 					session.setAttribute("permit", ac.getAccountPermit());
-					session.setAttribute("add-detail-schedule-success", 1);
+					request.setAttribute("add-detail-schedule-success", 1);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					session.setAttribute("add-detail-schedule-success", 0);
+					request.setAttribute("add-detail-schedule-success", 0);
 					e.printStackTrace();
 				}
 			}

@@ -454,8 +454,7 @@ $(document).ready(function() {
 	
 	<% try{
 	
-		if(Integer.parseInt(session.getAttribute("add-detail-schedule-success").toString())==1){
-			session.removeAttribute("add-detail-schedule-success");
+		if(Integer.parseInt(request.getAttribute("add-detail-schedule-success").toString())==1){
 		%>
 		$("#message").addClass("in");
 		$('#message').fadeIn(700);

@@ -131,6 +131,8 @@
 				</ul>
 			</div>
 			<!-- end process bar -->
+			<%int seatMessage = Integer.parseInt(request.getAttribute("seat_message").toString()); %>
+			<% if(seatMessage==1) {%>
 			<div class="result_form">
 				<div class="alert alert-success" role="alert">
 					<span class="glyphicon glyphicon-ok"></span> &nbsp;&nbsp;&nbsp; Quý
@@ -280,6 +282,11 @@
 
 				</main>
 			</div>
+			<%} else{%>
+			<div class="alert alert-danger" role="alert" style="margin-top: 50px;">
+					<span class="glyphicon glyphicon-ban-circle"></span> &nbsp; Thất bại!<br/>Xảy ra lỗi trong quá trình chọn chỗ, vui lòng <a href="<%=request.getContextPath()%>/home">chọn lại</a>!
+				</div>
+			<%} %>
 		</div>
 		<script>
 		
@@ -346,13 +353,13 @@
 		<div class="uk-offcanvas-bar">
 
 			<ul data-uk-nav="" class="uk-nav uk-nav-offcanvas uk-nav-parent-icon">
-				<li><a href="/dang-nhap.html">Đăng nhập</a></li>
+				<li><a href="#">Đăng nhập</a></li>
 
 				<li class="uk-nav-divider"></li>
 				<li class="uk-nav-header">DuyThanhBus.vn</li>
-				<li class="uk-active"><a href="/">Vé xe</a></li>
-				<li class=""><a href="/thue-xe.html">Thuê xe</a></li>
-				<li class=""><a href="/tim-ve.html">Kiểm tra & in vé</a></li>
+				<li class="uk-active"><a href="<%=request.getContextPath()%>/home">Vé xe</a></li>
+				<li class=""><a href="<%=request.getContextPath()%>/feedback">Phản hồi</a></li>
+				<li class=""><a href="<%=request.getContextPath()%>/find">Kiểm tra & in vé</a></li>
 
 				<li class="uk-nav-divider"></li>
 				<li class="uk-nav-header">THÔNG TIN</li>

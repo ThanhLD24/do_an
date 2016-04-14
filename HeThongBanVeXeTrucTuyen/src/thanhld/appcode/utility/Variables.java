@@ -27,4 +27,8 @@ public class Variables {
 	/* Phan quyen */
 	public static final int ADMIN = 1;
 	public static final int BOOKER = 2;
+	
+	/* Thong bao dat ghe*/
+	public static final int SEAT_FAIL=0;
+	public static final int SEAT_SUCCESS=1;
 }
