@@ -157,10 +157,10 @@
             return 'Đang tải, vui lòng chờ…';
         },
         formatRecordsPerPage: function (pageNumber) {
-            return sprintf('%s bản ghi/trang ', pageNumber);
+            return sprintf('| %s bản ghi/trang ', pageNumber);
         },
         formatShowingRows: function (pageFrom, pageTo, totalRows) {
-            return sprintf('Hiển thị %s đến %s của %s hàng', pageFrom, pageTo, totalRows);
+            return sprintf('Hiển thị bản ghi %s - %s / %s bản ghi', pageFrom, pageTo, totalRows);
         },
         formatSearch: function () {
             return 'Tìm kiếm';

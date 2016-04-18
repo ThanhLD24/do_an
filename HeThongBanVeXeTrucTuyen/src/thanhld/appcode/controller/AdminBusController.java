@@ -12,10 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+
 import thanhld.appcode.dao.AccountDAO;
 import thanhld.appcode.dao.AccountDAOImpl;
 import thanhld.appcode.model.Account;
 import thanhld.appcode.model.EmployeeWorking;
+import thanhld.appcode.model.OrderTicket;
 import thanhld.appcode.model.Province;
 import thanhld.appcode.model.Ticket;
 import thanhld.appcode.model.TicketDetail;
@@ -54,9 +57,9 @@ public class AdminBusController extends HttpServlet {
 		int type = Integer.parseInt(request.getParameter("type"));
 		switch (type) {
 		case Variables.LOGOUT:
-				session.invalidate();
-				dispatcher = request.getRequestDispatcher("/admin/login");
-				dispatcher.forward(request, response);
+			session.invalidate();
+			dispatcher = request.getRequestDispatcher("/admin/login");
+			dispatcher.forward(request, response);
 			break;
 
 		}
@@ -74,21 +77,23 @@ public class AdminBusController extends HttpServlet {
 		int type = Integer.parseInt(request.getParameter("type"));
 		HttpSession session = request.getSession(true);
 		RequestDispatcher dispatcher = null;
-
+		String oId = null;
+		OrderTicket orderTicket = null;
 		List<Province> listProvince = new ArrayList<Province>();
 		String ticketIdBySession = null;
 		String listDriver = null;
 		String listExtraDriver = null;
+		String check = null;
 		Account ac = new Account();
 		switch (type) {
 		case Variables.ADD_SCHEDULE:
-			ac = (Account)session.getAttribute("account");
+			ac = (Account) session.getAttribute("account");
 			ticketIdBySession = session.getId().substring(0, 6);
 			listProvince = (List<Province>) session.getAttribute("listProvince");
 			StringBuilder stringPrice = new StringBuilder();
 			int busId = Integer.parseInt(request.getParameter("bus"));
 			int routeId = Integer.parseInt(request.getParameter("route"));
-			String sale =request.getParameter("txtSale");
+			String sale = request.getParameter("txtSale");
 			String tax = request.getParameter("txtTax");
 			listDriver = request.getParameter("listDriver");
 			listExtraDriver = request.getParameter("listExtraDriver");
@@ -99,19 +104,19 @@ public class AdminBusController extends HttpServlet {
 			}
 			Ticket ticket = new Ticket();
 			ticket.setTicketId(ticketIdBySession);
-			ticket.setEmployeeId(ac.getEmployeeId()); 
+			ticket.setEmployeeId(ac.getEmployeeId());
 			ticket.setRouteId(routeId);
 			ticket.setBusId(busId);
 			ticket.setTicketPrice(stringPrice.toString());
 			ticket.setTicketSale(sale);
 			ticket.setTicketTax(tax);
-			ticket.setTicketCurrency(Variables.VIET_NAM_DONG); //demo
+			ticket.setTicketCurrency(Variables.VIET_NAM_DONG); // demo
 			ticket.setTicketStartSellDate("2016-02-20 06:00:00"); // demo
 			ticket.setTicketEndSellDate("2016-09-09 06:00:00"); // demo
 
 			/* EmployeeWorking emplWork = new EmployeeWorking(); */
 			// can add employee working HERE
-			
+
 			try {
 				ObjectManager.addObject(ticket);
 			} catch (Exception e) {
@@ -161,7 +166,7 @@ public class AdminBusController extends HttpServlet {
 					ObjectManager.addObject(ticketDetail);
 					ac = new Account();
 					ac = (Account) session.getAttribute("account");
-					//session.invalidate();
+					// session.invalidate();
 					request.changeSessionId();
 					session = request.getSession();
 					session.setAttribute("account", ac);
@@ -187,15 +192,124 @@ public class AdminBusController extends HttpServlet {
 			if (account != null) {
 				session.setAttribute("account", account);
 				session.setAttribute("permit", account.getAccountPermit());
-					dispatcher = request.getRequestDispatcher("/admin/home");
-					dispatcher.forward(request, response);
+				dispatcher = request.getRequestDispatcher("/admin/home");
+				dispatcher.forward(request, response);
 			} else {
 				request.setAttribute("error_message", 1);
 				dispatcher = request.getRequestDispatcher("/admin/login");
 				dispatcher.forward(request, response);
 			}
 			break;
+		case Variables.EDIT_BOOK:
+			check = "fail";
+			oId = request.getParameter("txtOrderTicketId");
+			String passengerName = request.getParameter("txtPassengerName");
+			String passengerEmail = request.getParameter("txtPassengerEmail");
+			String passengerPhone = request.getParameter("txtPassengerPhone");
+			System.out.println(oId + " ========= " + passengerEmail + "============" + passengerPhone + "============"
+					+ passengerName + "============");
+			orderTicket = (OrderTicket) ObjectManager.getObjectById(oId, OrderTicket.class);
+			orderTicket.setPassengerName(passengerName);
+			orderTicket.setPassengerEmail(passengerEmail);
+			orderTicket.setPassengerPhone(passengerPhone);
+			try {
+				ObjectManager.update(orderTicket);
+				check = "success";
+			} catch (Exception e) {
+				e.getMessage();
+				check = "fail";
+
+			}
+			request.setAttribute("check", check);
+			request.setAttribute("mess", "Cập nhật");
+			dispatcher = request.getRequestDispatcher("/admin/book");
+			dispatcher.forward(request, response);
+			/*
+			 * String jsonString = new Gson().toJson(check);
+			 * 
+			 * 
+			 * List<Route> listRoute = ObjectManager.listObject(Route.class);
+			 * jsonString = new Gson().toJson(listRoute);
+			 * 
+			 * response.setContentType("application/json");
+			 * response.getWriter().write(jsonString);
+			 */
+			break;
+		case Variables.PAY_BOOK:
+			check = "fail";
+			oId = request.getParameter("txtOrderTicketId");
+			orderTicket = (OrderTicket) ObjectManager.getObjectById(oId, OrderTicket.class);
+			Account accountLogon = (Account) session.getAttribute("account");
+			orderTicket.setOrderTicketPaidDate(Utility.getDateTimeNow());
+			orderTicket.setOrderTicketOther(String.valueOf(accountLogon.getEmployeeId()));
+			try {
+				ObjectManager.update(orderTicket);
+				check = "success";
+			} catch (Exception e) {
+				e.getMessage();
+				check = "fail";
+			}
+			request.setAttribute("check", check);
+			request.setAttribute("mess", "Thanh toán");
+			dispatcher = request.getRequestDispatcher("/admin/book");
+			dispatcher.forward(request, response);
+			break;
+		case Variables.EDIT_ACCOUNT:
+			check = "fail";
+			account  = (Account) ObjectManager.getObjectById(Integer.parseInt(request.getParameter("txtAccountId")), Account.class);
+			account.setAccountName(request.getParameter("txtAccountName"));
+			account.setAccountPassword(request.getParameter("txtAccountPassword"));
+			account.setAccountPermit(Integer.parseInt(request.getParameter("txtAccountPermit")));
+			try {
+				ObjectManager.update(account);
+				check = "success";
+			} catch (Exception e) {
+				e.getMessage();
+				check = "fail";
+
+			}
+			request.setAttribute("check", check);
+			request.setAttribute("mess", "Cập nhật");
+			dispatcher = request.getRequestDispatcher("/admin/account");
+			dispatcher.forward(request, response);
+			break;
+		case Variables.DELETE_ACCOUNT:
+			check = "fail";
+			try {
+				ObjectManager.deleteObject(Integer.parseInt(request.getParameter("txtAccountId").toString()),Account.class);
+				check = "success";
+			} catch (Exception e) {
+				e.getMessage();
+				check = "fail";
+			}
+			request.setAttribute("check", check);
+			request.setAttribute("mess", "Xóa");
+			dispatcher = request.getRequestDispatcher("/admin/account");
+			dispatcher.forward(request, response);
+			break;
+		case Variables.ADD_ACCOUNT:
+			account = new Account();
+			account.setAccountName(request.getParameter("txtAccountName"));
+			account.setAccountPassword(Utility.encryptMD5(request.getParameter("txtAccountPassword")));
+			account.setEmployeeId(Integer.parseInt(request.getParameter("txtEmployeeId")));
+			account.setAccountPermit(Integer.parseInt(request.getParameter("txtAccountPermit")));
+			check = "fail";
+			try {
+				ObjectManager.addObject(account);
+				check = "success";
+			} catch (Exception e) {
+				e.getMessage();
+				check = "fail";
+			}
+			request.setAttribute("check", check);
+			request.setAttribute("mess", "Thêm mới");
+			dispatcher = request.getRequestDispatcher("/admin/account");
+			dispatcher.forward(request, response);
+			break;
+
 		}
+		
+		
 	}
 
 }

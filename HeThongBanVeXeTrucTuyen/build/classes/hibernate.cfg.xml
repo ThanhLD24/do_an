@@ -30,6 +30,7 @@
 		<mapping class="thanhld.appcode.model.Ticket" />
 		<mapping class="thanhld.appcode.model.TicketDetail" />
 		<mapping class="thanhld.appcode.model.SeatOrder" />	
-		<mapping class="thanhld.appcode.model.EmployeeWorking" />			
+		<mapping class="thanhld.appcode.model.EmployeeWorking" />	
+		<mapping class="thanhld.appcode.model.Permit" />			
     </session-factory>
 </hibernate-configuration>

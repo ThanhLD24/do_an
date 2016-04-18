@@ -44,12 +44,10 @@
 		request.setAttribute("error_message", 2);
 		dispatcher = request.getRequestDispatcher("/admin/login");
 		dispatcher.forward(request, response);
-	} 
-	else if(Integer.parseInt(session.getAttribute("permit").toString()) == Variables.BOOKER){
+	} else if (Integer.parseInt(session.getAttribute("permit").toString()) == Variables.BOOKER) {
 		account = (Account) session.getAttribute("account");
 		employee = (Employee) ObjectManager.getObjectById(account.getEmployeeId(), Employee.class);
-	}
-	else {
+	} else {
 		dispatcher = request.getRequestDispatcher("/admin/error");
 		dispatcher.forward(request, response);
 	}
@@ -151,9 +149,19 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">
+					<div class="panel-heading" style="line-height: 0px;">
+					<% if((request.getAttribute("check")!=null) &&(request.getAttribute("mess")!=null)  ) {%>
 						<%-- <button type="button" class="btn btn-primary" onclick="location.href = '<%=request.getContextPath()%>/admin/add-schedule';">Thêm lịch
 							trình</button> --%>
+							<% if(request.getAttribute("check").toString().equals("success")){%>
+							<div class="alert alert-success" role="alert" id="success_message" style="max-height: 50px;">
+							<%=request.getAttribute("mess").toString()%> thành công! <i class="glyphicon glyphicon-ok-circle"></i>
+						</div>
+						<%} else if(request.getAttribute("check").toString().equals("fail")) {%>
+						<div class="alert alert-danger" role="alert" id="success_message" style="max-height: 50px;">
+							<%=request.getAttribute("mess").toString()%> thất bại! <i class="glyphicon glyphicon-thumbs-up"></i>
+						</div>
+						<%}}%>
 					</div>
 					<div class="panel-body">
 						<table data-toggle="table" data-show-refresh="false"
@@ -182,9 +190,9 @@
 									List<OrderTicket> listOrderTicket = orderTicketDAO.getListOrderTicketDESC();
 									SeatOrder seatOrder = null;
 									SeatOrderDAO seatOrderDAO = new SeatOrderDAOImpl();
-									String orderTicketId =null;
-								for(OrderTicket orderTicket : listOrderTicket){
-									orderTicketId = orderTicket.getOrderTicketId();
+									String orderTicketId = null;
+									for (OrderTicket orderTicket : listOrderTicket) {
+										orderTicketId = orderTicket.getOrderTicketId();
 										seatOrder = seatOrderDAO.getSeatOrderByOrderTicket(orderTicketId);
 								%>
 								<tr>
@@ -196,75 +204,87 @@
 									<td><%=orderTicket.getOrderTicketTotalPrice()%></td>
 									<td><%=Utility.parseToDateFormat1(orderTicket.getOrderTicketTime())%></td>
 									<td align="center">
-									<%if(Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())) {%>
+										<%
+											if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())) {
+										%>
 										<h4>
 											<span class="label label-danger">Hết hạn</span>
-										</h4>
-										 
-										<%} else if(("").equals(orderTicket.getOrderTicketPaidDate())) {%>
+										</h4> <%
+ 	} else if (("").equals(orderTicket.getOrderTicketPaidDate())) {
+ %>
 										<h4>
 											<span class="label label-warning">Chưa thanh toán</span>
-										</h4>
-										<% } else{%>
+										</h4> <%
+ 	} else {
+ %>
 										<h4>
 											<span class="label label-success">Đã thanh toán</span>
-										</h4>
-										<%} %>
+										</h4> <%
+ 	}
+ %>
 									</td>
-									
+
 									<td align="center"><p data-placement="top"
 											data-toggle="tooltip" title="Cập nhật"
 											style="display: inline">
 											<button class="btn btn-primary btn-xs" data-title="Edit"
-												data-toggle="modal" data-target="#edit" style="height: 22px">
+												data-toggle="modal" data-target="#edit<%=orderTicketId %>" style="height: 22px" <%if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())) {%>disabled="disabled" <%}%>>
 												<span class="glyphicon glyphicon-pencil"></span>
 											</button>
-										</p> <!-- <p data-placement="top" data-toggle="tooltip" title="Xóa"
+										</p> <p data-placement="top" data-toggle="tooltip" title="Thanh toán"
 											style="display: inline">
-											<button class="btn btn-danger btn-xs" data-title="Delete"
-												data-toggle="modal" data-target="#delete"
-												style="height: 22px">
-												<span class="glyphicon glyphicon-trash"></span>
+											<button class="btn btn-danger btn-xs" data-title="Thanh toán"
+												data-toggle="modal" data-target="#pay<%=orderTicketId %>"
+												style="height: 22px" <%if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())) {%>disabled="disabled" <%}%>>
+												<span class="glyphicon glyphicon-shopping-cart"></span>
 											</button>
-										</p> --></td>
+										</p></td>
 
 								</tr>
 								<!-- popup edit -->
-								<div class="modal fade" id="edit" tabindex="-1" role="dialog"
+								<div class="modal fade" id="edit<%=orderTicketId %>" tabindex="-1" role="dialog"
 									aria-labelledby="edit" aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
-											<div class="modal-header">
-												<button type="button" class="close" data-dismiss="modal"
-													aria-hidden="true">
-													<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-												</button>
-												<h4 class="modal-title custom_align" id="Heading">Edit
-													Your Detail</h4>
-											</div>
-											<div class="modal-body">
-												<div class="form-group">
-													<input class="form-control " type="text"
-														placeholder="Mohsin">
+											<form id="formEditBook" action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.EDIT_BOOK%>" method="post">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal"
+														aria-hidden="true">
+														<span class="glyphicon glyphicon-remove"
+															aria-hidden="true"></span>
+													</button>
+													<h4 class="modal-title custom_align" id="Heading">Sửa
+														sai thông tin đặt vé</h4>
 												</div>
-												<div class="form-group">
+												<div class="modal-body">
+													<div class="form-group">
+														<input class="form-control " type="hidden"
+															value="<%=orderTicketId%>" name="txtOrderTicketId"
+															id="txtOrderTicketId"> <input
+															class="form-control " type="text"
+															placeholder="Tên khách hàng" name="txtPassengerName"
+															id="txtPassengerName" value="<%=orderTicket.getPassengerName()%>">
+													</div>
+													<div class="form-group">
 
-													<input class="form-control " type="text"
-														placeholder="Irshad">
+														<input class="form-control " type="text"
+															placeholder="Email" name="txtPassengerEmail"
+															id="txtPassengerEmail" value="<%=orderTicket.getPassengerEmail()%>">
+													</div>
+													<div class="form-group">
+
+														<input class="form-control " type="text"
+															placeholder="Số điện thoại" name="txtPassengerPhone"
+															id="txtPassengerPhone"  value="<%=orderTicket.getPassengerPhone()%>">
+													</div>
 												</div>
-												<div class="form-group">
-													<textarea rows="2" class="form-control"
-														placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
-
-
+												<div class="modal-footer ">
+													<button type="submit" class="btn btn-warning btn-lg"
+														style="width: 100%;" id="btEdit">
+														<span class="glyphicon glyphicon-ok-sign"></span> Update
+													</button>
 												</div>
-											</div>
-											<div class="modal-footer ">
-												<button type="button" class="btn btn-warning btn-lg"
-													style="width: 100%;">
-													<span class="glyphicon glyphicon-ok-sign"></span> Update
-												</button>
-											</div>
+											</form>
 										</div>
 										<!-- /.modal-content -->
 									</div>
@@ -273,40 +293,48 @@
 								<!-- end popup edit -->
 
 								<!-- popup delete -->
-								<div class="modal fade" id="delete" tabindex="-1" role="dialog"
+								
+								<div class="modal fade" id="pay<%=orderTicketId %>" tabindex="-1" role="dialog"
 									aria-labelledby="edit" aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
+										
 											<div class="modal-header">
+											
 												<button type="button" class="close" data-dismiss="modal"
 													aria-hidden="true">
 													<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 												</button>
-												<h4 class="modal-title custom_align" id="Heading">Delete
-													this entry</h4>
+												<h4 class="modal-title custom_align" id="Heading">Thanh toán</h4>
 											</div>
 											<div class="modal-body">
 
-												<div class="alert alert-danger">
-													<span class="glyphicon glyphicon-warning-sign"></span> Are
-													you sure you want to delete this Record?
+												<div class="alert alert-info">
+													<span class="glyphicon glyphicon-usd"></span> Thanh toán cho mã đặt hàng <b><%=orderTicketId %></b>?
 												</div>
 
 											</div>
+											<form id="formDeleteBook" action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.PAY_BOOK%>" method="post">
+											<input class="form-control " type="hidden"
+															value="<%=orderTicketId%>" name="txtOrderTicketId"
+															id="txtOrderTicketId">
 											<div class="modal-footer ">
-												<button type="button" class="btn btn-success">
-													<span class="glyphicon glyphicon-ok-sign"></span> Yes
+												<button type="submit" class="btn btn-success" >
+													<span class="glyphicon glyphicon-ok-sign"></span> Thanh toán
 												</button>
 												<button type="button" class="btn btn-default"
 													data-dismiss="modal">
-													<span class="glyphicon glyphicon-remove"></span> No
+													<span class="glyphicon glyphicon-remove"></span> Hủy
 												</button>
 											</div>
+											</form>
 										</div>
+										
 										<!-- /.modal-content -->
 									</div>
 									<!-- /.modal-dialog -->
 								</div>
+								
 								<!-- end popup delete -->
 
 								<%
@@ -320,82 +348,7 @@
 		</div>
 		<!--/.row-->
 		<!-- popup edit -->
-		<div class="modal fade" id="edit" tabindex="-1" role="dialog"
-			aria-labelledby="edit" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-hidden="true">
-							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-						</button>
-						<h4 class="modal-title custom_align" id="Heading">Edit Your
-							Detail</h4>
-					</div>
-					<div class="modal-body">
-						<div class="form-group">
-							<input class="form-control " type="text" placeholder="Mohsin">
-						</div>
-						<div class="form-group">
-
-							<input class="form-control " type="text" placeholder="Irshad">
-						</div>
-						<div class="form-group">
-							<textarea rows="2" class="form-control"
-								placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
-
-
-						</div>
-					</div>
-					<div class="modal-footer ">
-						<button type="button" class="btn btn-warning btn-lg"
-							style="width: 100%;">
-							<span class="glyphicon glyphicon-ok-sign"></span> Update
-						</button>
-					</div>
-				</div>
-				<!-- /.modal-content -->
-			</div>
-			<!-- /.modal-dialog -->
-		</div>
-		<!-- end popup edit -->
-
-		<!-- popup delete -->
-		<div class="modal fade" id="delete" tabindex="-1" role="dialog"
-			aria-labelledby="edit" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-hidden="true">
-							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-						</button>
-						<h4 class="modal-title custom_align" id="Heading">Delete this
-							entry</h4>
-					</div>
-					<div class="modal-body">
-
-						<div class="alert alert-danger">
-							<span class="glyphicon glyphicon-warning-sign"></span> Are you
-							sure you want to delete this Record?
-						</div>
-
-					</div>
-					<div class="modal-footer ">
-						<button type="button" class="btn btn-success">
-							<span class="glyphicon glyphicon-ok-sign"></span> Yes
-						</button>
-						<button type="button" class="btn btn-default" data-dismiss="modal">
-							<span class="glyphicon glyphicon-remove"></span> No
-						</button>
-					</div>
-				</div>
-				<!-- /.modal-content -->
-			</div>
-			<!-- /.modal-dialog -->
-		</div>
-
-		<!-- end popup delete -->
+		
 
 
 		<!-- popup message -->
@@ -433,7 +386,14 @@
 		<!-- end message -->
 	</div>
 	<!--/.main-->
-
+	<!-- message success -->
+	<!-- <div class='message'>
+		<div class='check'>&#10004;</div>
+		<p>Cập nhật thành công</p>
+		<p>Cập nhật thành công</p>
+		<button id='ok'>OK</button>
+	</div> -->
+	<!-- end ms -->
 
 	<script
 		src="<%=request.getContextPath()%>/js/admin/jquery-1.11.1.min.js"></script>
@@ -450,13 +410,8 @@
 
 	<script>
 		!function($) {
-			$(document)
-					.on(
-							"click",
-							"ul.nav li.parent > a > span.icon",
-							function() {
-								$(this).find('em:first').toggleClass(
-										"glyphicon-minus");
+			$(document).on("click","ul.nav li.parent > a > span.icon",
+							function() {$(this).find('em:first').toggleClass("glyphicon-minus");
 							});
 			$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
 		}(window.jQuery);
@@ -474,11 +429,10 @@
 		$(document)
 				.ready(
 						function() {
-	<% try{
-	
-		if(Integer.parseInt(session.getAttribute("add-detail-schedule-success").toString())==1){
-			session.removeAttribute("add-detail-schedule-success");
-		%>
+	<%try {
+
+				if (Integer.parseInt(session.getAttribute("add-detail-schedule-success").toString()) == 1) {
+					session.removeAttribute("add-detail-schedule-success");%>
 		$("#message").addClass("in");
 							$('#message').fadeIn(700);
 							$("#message").css({
@@ -489,10 +443,59 @@
 								$('#message').fadeOut(700);
 							});
 	<%}
-	 }catch(Exception e){
-		e.getMessage();
-	}  %>
-		});
+			} catch (Exception e) {
+				e.getMessage();
+			}%>
+			setTimeout(function() {
+			    $('#success_message').fadeOut('slow');
+			}, 3000);
+	
+						});
 	</script>
+	<%-- <script>
+	$(document).ready(function(){
+		$('#formEditBook').on('submit', function(e){
+
+		       e.preventDefault(); //this prevents the form from submitting normally, but still allows the click to 'bubble up'.
+		       $('#edit').fadeOut(700);
+		       $('.modal-backdrop').remove();
+		       alert("OK");
+		       $('.message').toggleClass('comein');
+				$('.check').toggleClass('scaledown');
+		       //lets get our values from the form....
+		     var txtOrderTicketId = $('#txtOrderTicketId').val();
+		       var txtPassengerName = $('#txtPassengerName').val();
+		       var txtPassengerEmail = $('#txtPassengerEmail').val();
+		       var txtPassengerPhone = $('#txtPassengerPhone').val();
+		      
+		       
+		           
+		       //now lets make our ajax call
+		        $.ajax({
+		        	type: "POST",
+		        	url: "<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.EDIT_BOOK%>",
+		          
+		          
+												data : {
+													txtOrderTicketId : txtOrderTicketId,
+													txtPassengerName : txtPassengerName,
+													txtPassengerEmail : txtPassengerEmail,
+													txtPassengerPhone : txtPassengerPhone
+														},
+														dataType : "json",
+													
+													success: function(data) {
+alert("hehe");
+																		//replace submit button with some text...
+																		/* $('#success_message').slideDown({ opacity: 'show' }, 'slow'); */
+																		$('.message').toggleClass('comein');
+																		$('.check').toggleClass('scaledown');
+																		/* $('#contact_form').data('bootstrapValidator').resetForm(); */
+													}
+																	});
+												});
+		
+	});
+	</script> --%>
 </body>
 </html>

@@ -231,34 +231,35 @@ jQuery(document).ready(function($) {
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li><a href="<%=request.getContextPath()%>/admin/home"><svg
+			<li><a
+				href="<%=request.getContextPath()%>/admin/home"><svg
 						class="glyph stroked dashboard-dial"> <use
 						xlink:href="#stroked-dashboard-dial"></use></svg> Trang chủ</a></li>
-			<li><a href="widgets.html"><i class="uk-icon-list-alt"
+			<li><a href="<%=request.getContextPath()%>/admin/book"><i class="uk-icon-list-alt"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Vé đặt</a></li>
-			<li><a href="charts.html"><i class="uk-icon-share-square-o"
+			<li><a href="<%=request.getContextPath()%>/admin/cancel-book"><i class="uk-icon-share-square-o"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Hủy vé</a></li>
 			<li class="active"><a href="<%=request.getContextPath()%>/admin/schedule"><i
 					class="uk-icon-calendar" style="font-size: 15px"></i>
 					&nbsp;&nbsp;&nbsp;Quản lý Lịch trình </a></li>
-			<li><a href="forms.html"><i class="uk-icon-road"
+			<li><a href="<%=request.getContextPath()%>/admin/route"><i class="uk-icon-road"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tuyến đường</a></li>
-			<li><a href="forms.html"><i class="uk-icon-user"
+			<li><a href="<%=request.getContextPath()%>/admin/driver"><i class="uk-icon-user"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài xế </a></li>
-			<li><a href="forms.html"><i class="uk-icon-street-view"
+			<li><a href="<%=request.getContextPath()%>/admin/bus-station"><i class="uk-icon-street-view"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Điểm dừng</a></li>
-			<li><a href="forms.html"><i class="uk-icon-bus"
+			<li><a href="<%=request.getContextPath()%>/admin/bus"><i class="uk-icon-bus"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Xe lưu hành</a></li>
-			<li><a href="forms.html"><i class="uk-icon-users"
+			<li><a href="<%=request.getContextPath()%>/admin/account"><i class="uk-icon-users"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài khoản</a></li>
-			<li><a href="forms.html"><i class="uk-icon-line-chart"
+			<li><a href="<%=request.getContextPath()%>/admin/report"><i class="uk-icon-line-chart"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Báo cáo</a></li>
 
 
 			<li role="presentation" class="divider"></li>
-			<!-- <li><a href="login.html"><svg
-						class="glyph stroked male-user">
-					<use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li> -->
+			<li><a href="login.html"><svg
+						class="glyph stroked male-user"> <use
+						xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
 		</ul>
 
 	</div>

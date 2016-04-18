@@ -24,11 +24,18 @@ public class Variables {
 
 	public static final int LOGIN = 19;
 	public static final int LOGOUT = 20;
+
+	public static final int EDIT_BOOK = 21;
+	public static final int PAY_BOOK = 22;
+
+	public static final int EDIT_ACCOUNT = 23;
+	public static final int DELETE_ACCOUNT = 24;
+	public static final int ADD_ACCOUNT = 25;
 	/* Phan quyen */
 	public static final int ADMIN = 1;
 	public static final int BOOKER = 2;
-	
-	/* Thong bao dat ghe*/
-	public static final int SEAT_FAIL=0;
-	public static final int SEAT_SUCCESS=1;
+
+	/* Thong bao dat ghe */
+	public static final int SEAT_FAIL = 0;
+	public static final int SEAT_SUCCESS = 1;
 }

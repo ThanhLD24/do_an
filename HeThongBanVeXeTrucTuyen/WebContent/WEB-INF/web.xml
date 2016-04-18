@@ -141,6 +141,15 @@
 		<url-pattern>/admin/account</url-pattern>
 	</servlet-mapping>
 	
+	<!-- add account -->
+	<servlet>
+		<servlet-name>add-account</servlet-name>
+		<jsp-file>/pages/admin/add-account.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>add-account</servlet-name>
+		<url-pattern>/admin/add-account</url-pattern>
+	</servlet-mapping>
 	<!-- book-manage.jsp -->
 	<servlet>
 		<servlet-name>book</servlet-name>

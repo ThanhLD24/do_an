@@ -2,4 +2,5 @@ eclipse.preferences.version=1
 encoding//WebContent/pages/admin/error.jsp=UTF-8
 encoding//WebContent/pages/customer/error.jsp=UTF-8
 encoding//WebContent/pages/customer/vedemo.jsp=UTF-8
+encoding//src/thanhld/appcode/controller/AdminBusController.java=UTF-8
 encoding//src/thanhld/appcode/utility/Utility.java=UTF-8
