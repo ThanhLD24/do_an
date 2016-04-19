@@ -203,12 +203,20 @@
 							</div>
 						</div>
 
+						<% if(request.getAttribute("check")!=null) {
+						if(request.getAttribute("check").toString().equals("success")){
+						%>
 						<!-- Success message -->
 						<div class="alert alert-success" role="alert" id="success_message">
 							Phản hồi thành công <i class="glyphicon glyphicon-thumbs-up"></i>
 							Cảm ơn bạn đã phản hồi đến chúng tôi!
 						</div>
-
+<%} else {%>
+<div class="alert alert-danger" role="alert" id="fail_message">
+							Phản hồi thất bại <i class="glyphicon glyphicon-remove-circle"></i>
+							Vui lòng phản hồi lại với chúng tôi!
+						</div>
+<%}} %>
 						<!-- Button -->
 						<div class="form-group">
 							<label class="col-md-4 control-label"></label>

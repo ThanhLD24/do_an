@@ -31,6 +31,7 @@ public class Variables {
 	public static final int EDIT_ACCOUNT = 23;
 	public static final int DELETE_ACCOUNT = 24;
 	public static final int ADD_ACCOUNT = 25;
+	public static final int CHECK_ORDER = 26;
 	/* Phan quyen */
 	public static final int ADMIN = 1;
 	public static final int BOOKER = 2;

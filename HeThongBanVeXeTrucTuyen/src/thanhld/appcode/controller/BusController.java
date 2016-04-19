@@ -23,6 +23,8 @@ import com.mysql.jdbc.Util;
 
 import thanhld.appcode.dao.BusStationDAO;
 import thanhld.appcode.dao.BusStationDAOImpl;
+import thanhld.appcode.dao.OrderTicketDAO;
+import thanhld.appcode.dao.OrderTicketDAOImpl;
 import thanhld.appcode.dao.RouteDetailDAO;
 import thanhld.appcode.dao.RouteDetailDAOImpl;
 import thanhld.appcode.dao.SeatOrderDAO;
@@ -155,9 +157,10 @@ public class BusController extends HttpServlet {
 			List<TicketVO> listTicketVO = new ArrayList<TicketVO>();
 			System.out.println("LIST SIZEEEEE" + listTicket.size());
 			Bus bus = new Bus();
+			TicketDetailDAO ticketDetailDAO = new TicketDetailDAOImpl();
+			SeatOrderDAO seatOrderDAO = new SeatOrderDAOImpl();
 			for (Ticket ticket : listTicket) {
-				TicketDetailDAO ticketDetailDAO = new TicketDetailDAOImpl();
-				SeatOrderDAO seatOrderDAO = new SeatOrderDAOImpl();
+
 				bus = (Bus) ObjectManager.getObjectById(ticket.getBusId(), Bus.class);
 				Carrier carrier = (Carrier) ObjectManager.getObjectById(bus.getCarrierId(), Carrier.class);
 				int numberOriginPlace = routeDetailDAO.getNumberOrderByCondition(ticket.getRouteId(),
@@ -249,7 +252,7 @@ public class BusController extends HttpServlet {
 		TicketDAO ticketDAO = new TicketDAOImpl();
 		TicketDetailDAO ticketDetailDAO = new TicketDetailDAOImpl();
 		List<Ticket> listTicket = null;
-
+		SeatOrderDAO seatOrderDAO = null;
 		String orginPlace = "";
 		String destinationPlace = "";
 		String startDate = "";
@@ -267,6 +270,7 @@ public class BusController extends HttpServlet {
 		int numberOriginPlace = 0;
 		int numberDestinationPlace = 0;
 		int totalSeat = 0;
+		String check = null;
 		switch (type) {
 		case Variables.SEARCH_TICKET:
 			listTicket = new ArrayList<Ticket>();
@@ -355,7 +359,7 @@ public class BusController extends HttpServlet {
 			 * dat cung 1 luc
 			 */
 			boolean checkSeat = false;
-			SeatOrderDAO seatOrderDAO = new SeatOrderDAOImpl();
+			seatOrderDAO = new SeatOrderDAOImpl();
 			String listSeatOrder = session.getAttribute("listSeat").toString();
 			List<String> pListSeatOrder = Utility.phanChuoiGheThanhMang(listSeatOrder);
 			List<String> pListSO = new ArrayList<String>();
@@ -443,6 +447,7 @@ public class BusController extends HttpServlet {
 			dispatcher.forward(request, response);
 			break;
 		case Variables.FEEBBACK:
+			check = "fail";
 			String title = request.getParameter("title");
 			String name = request.getParameter("name");
 			email = request.getParameter("email");
@@ -451,11 +456,93 @@ public class BusController extends HttpServlet {
 			Feedback feedback = new Feedback(title, comment, name, email, phone);
 			try {
 				ObjectManager.addObject(feedback);
+				check = "success";
 				/* out.print("<h2>Thanh cong</h2>"); */
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				check = "fail";
 			}
+			request.setAttribute("check", check);
+			dispatcher = request.getRequestDispatcher("/feedback");
+			dispatcher.forward(request, response);
+			break;
+		case Variables.CHECK_ORDER:
+			check = "fail";
+			OrderTicket orderTicket = null;
+			SeatOrder seatOrder = null;
+			List<String> infoOrderTicket = new ArrayList<String>();
+			OrderTicketDAO orderDAO = new OrderTicketDAOImpl();
+			RouteDetailDAO routeDetailDAO = new RouteDetailDAOImpl();
+			TicketDetailDAO ticketDetailDAO1 = new TicketDetailDAOImpl();
+			seatOrderDAO = new SeatOrderDAOImpl();
+			try {
+				orderTicket = orderDAO.getOrderTicketByCondition(request.getParameter("txtOrderTicketId").toString(),
+						request.getParameter("txtInfo").toString());
+				seatOrder = seatOrderDAO.getSeatOrderByOrderTicket(request.getParameter("txtOrderTicketId").toString());
+				
+
+				List<Integer> listThuTu = Utility.layMinMaxThuTuDiemDung(seatOrder.getRoutes());
+				for (Integer i : listThuTu) {
+					System.out.print(i + "==");
+				}
+				ticket = (Ticket) (ObjectManager.getObjectById(orderTicket.getTicketId(), Ticket.class));
+				RouteDetail routeDetailOrigin = routeDetailDAO.getRouteDetailWithNumberOrder(ticket.getRouteId(),
+						listThuTu.get(0));
+				RouteDetail routeDetailDestination = routeDetailDAO.getRouteDetailWithNumberOrder(ticket.getRouteId(),
+						listThuTu.get(listThuTu.size() - 1));
+				Province provinceOrign = (Province) ObjectManager.getObjectById(routeDetailOrigin.getProvinceId(),
+						Province.class);
+				Province provinceDestination = (Province) ObjectManager
+						.getObjectById(routeDetailDestination.getProvinceId(), Province.class);
+				TicketDetail ticketDetailOrigin = ticketDetailDAO1.getTicketDetailByTicketId(orderTicket.getTicketId(),
+						provinceOrign.getProvinceId());
+				TicketDetail ticketDetailDestination = ticketDetailDAO1
+						.getTicketDetailByTicketId(orderTicket.getTicketId(), provinceDestination.getProvinceId());
+				BusStation busStationOrigin = (BusStation) ObjectManager
+						.getObjectById(ticketDetailOrigin.getBusStationId(), BusStation.class);
+				BusStation busStationDestination = (BusStation) ObjectManager
+						.getObjectById(ticketDetailDestination.getBusStationId(), BusStation.class);
+
+				infoOrderTicket.add(provinceOrign.getProvinceName()); // 0 add
+																		// diem
+																		// di
+				infoOrderTicket.add(provinceDestination.getProvinceName()); // 1
+																			// add
+																			// diem
+																			// den
+				infoOrderTicket.add(busStationOrigin.getBusStationName()); // 2
+																			// ben
+																			// xe
+																			// di
+				infoOrderTicket.add(busStationDestination.getBusStationName()); // 3
+																				// ben
+																				// xe
+																				// den
+				infoOrderTicket.add(Utility.replaceString2(seatOrder.getSeat())); // 4
+																					// ghe
+				infoOrderTicket.add(ticketDetailOrigin.getDetailDate() + " " + ticketDetailOrigin.getDetailTime());// 5
+																													// ngay
+																													// di
+				infoOrderTicket
+						.add(ticketDetailDestination.getDetailDate() + " " + ticketDetailDestination.getDetailTime());// 6
+																														// ngay
+																														// den
+				infoOrderTicket.add(ticket.getTicketSale()); // 7
+				infoOrderTicket.add(ticket.getTicketTax()); // 8
+				infoOrderTicket.add(String.valueOf(Utility.getPrice(listThuTu.get(0),
+						listThuTu.get(listThuTu.size() - 1), Utility.splitPrice(ticket.getTicketPrice())))); // 9
+				
+				check = "success";
+				
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			request.setAttribute("info", infoOrderTicket);
+			request.setAttribute("check", check);
+			request.setAttribute("orderTicket", orderTicket);
+			dispatcher = request.getRequestDispatcher("/check");
+			dispatcher.forward(request, response);
 			break;
 		}
 

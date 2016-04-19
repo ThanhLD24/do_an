@@ -84,7 +84,7 @@
 			<ul class="uk-navbar-nav uk-hidden-small">
 				<li class="uk-active"><a href="<%=request.getContextPath()%>/home"><span class="text_menu active">Vé xe</span></a></li>
 				<li><a href="<%=request.getContextPath()%>/feedback"><span class="text_menu">Phản hồi</span></a></li>
-				
+				<li class=""><a href="<%=request.getContextPath()%>/check">Kiểm tra & in vé</a></li>
 			</ul>
 
 			<div class="uk-navbar-content uk-navbar-flip uk-hidden-small">
@@ -92,7 +92,7 @@
 
 					<li class=""><a href="/dang-nhap.html">Đăng nhập</a></li>
 
-					<li class=""><a href="/tim-ve.html">Kiểm tra & in vé</a></li>
+					
 				</ul>
 				<div class="uk-navbar-content hotline">
 					<span class="uk-text-middle">Hỗ trợ:</span> <a

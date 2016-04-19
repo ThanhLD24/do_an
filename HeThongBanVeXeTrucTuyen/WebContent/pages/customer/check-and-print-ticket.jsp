@@ -78,21 +78,23 @@
 		<div class="uk-container uk-container-center">
 			<a data-uk-offcanvas="{target: '#offcanvas-main'}"
 				class="uk-navbar-toggle uk-visible-small" href=""></a> <a
-				class="uk-navbar-brand logo uk-visible-small" href="<%=request.getContextPath() %>/home"><img
+				class="uk-navbar-brand logo uk-visible-small"
+				href="<%=request.getContextPath()%>/home"><img
 				alt="duythanhbus.vn"
 				src="<%=request.getContextPath()%>/img/logo.png" height="90px"
 				width="120px"></a> <a class="uk-navbar-brand logo uk-hidden-small"
-				 href="<%=request.getContextPath() %>/home"><img alt="duythanhbus.vn"
+				href="<%=request.getContextPath()%>/home"><img
+				alt="duythanhbus.vn"
 				src="<%=request.getContextPath()%>/img/logo.png" height="90px"
 				width="120px"></a>
 
 			<ul class="uk-navbar-nav uk-hidden-small">
-				<li class="uk-active"><a
-					href="<%=request.getContextPath()%>/home"><span
+				<li><a href="<%=request.getContextPath()%>/home"><span
 						class="text_menu active">Vé xe</span></a></li>
 				<li><a href="<%=request.getContextPath()%>/feedback"><span
 						class="text_menu">Phản hồi</span></a></li>
-<li class=""><a href="<%=request.getContextPath()%>/check">Kiểm tra & in vé</a></li>
+				<li class="uk-active"><a
+					href="<%=request.getContextPath()%>/check">Kiểm tra & in vé</a></li>
 			</ul>
 
 			<div class="uk-navbar-content uk-navbar-flip uk-hidden-small">
@@ -114,33 +116,60 @@
 		%>
 
 		<div class="container" style="max-width: 940px;">
-			<!-- start process bar -->
-			<div class="tien-trinh">
-				<ul class="progress-indicator">
-					<li class="completed"><span class="bubble"></span> Tìm chuyến
-						<i class="uk-icon-check-circle"></i><br> <small></small></li>
-					<li class="completed"><span class="bubble"></span> Chọn chuyến
-						<i class="uk-icon-check-circle"></i><br> <small></small></li>
-					<li class="completed"><span class="bubble"></span> Chọn chỗ <i
-						class="uk-icon-check-circle"></i><br> <small></small></li>
-					<li class="completed"><span class="bubble"></span> Điền thông
-						tin <i class="uk-icon-check-circle"></i></li>
-					<li class="active"><span class="bubble"></span> Xác nhận <i
-						class="uk-icon-cogs"></i></li>
-				</ul>
-			</div>
-			<!-- end process bar -->
-			<%int seatMessage = Integer.parseInt(request.getAttribute("seat_message").toString()); %>
-			<% if(seatMessage==1) {%>
+
 			<div class="result_form">
-				<div class="alert alert-success" role="alert">
-					<span class="glyphicon glyphicon-ok"></span> &nbsp;&nbsp;&nbsp; Quý
-					khách đã đặt vé thành công, vui lòng xem lại thông tin vé đặt và in
-					vé!
-				</div>
+
 				<main id="main"> <%
- 	OrderTicket orderTicket = (OrderTicket) session.getAttribute("orderTicket");
+ 	if (request.getAttribute("check") == null) {
  %>
+				<form class="well form-horizontal"
+					action="<%=request.getContextPath()%>/BusController?type=<%=Variables.CHECK_ORDER%>"
+					method="post" id="check_form">
+					<fieldset>
+
+						<!-- Form Name -->
+						<legend>Kiểm tra và in vé</legend>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label"></label>
+							<div class="col-md-4 inputGroupContainer">
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-user"></i></span> <input name="txtInfo"
+										id="txtInfo" placeholder="Số điện thoại hoặc Email"
+										class="form-control" type="text">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-4 control-label"></label>
+							<div class="col-md-4 inputGroupContainer">
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-sound-dolby"></i></span> <input
+										name="txtOrderTicketId" id="txtOrderTicketId"
+										placeholder="Mã vé" class="form-control" type="text">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-4 control-label"></label>
+							<div class="col-md-4 ">
+								<button type="submit" class="btn btn-warning" id="bt_search"
+									style="float: right">
+									Kiểm tra vé <span class="glyphicon glyphicon-search"></span>
+								</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+				<%
+					} else {
+						if ("success".equals(request.getAttribute("check").toString())) {
+						List<String> listInfo = (List<String>)request.getAttribute("info");
+						OrderTicket orderTicket = (OrderTicket) request.getAttribute("orderTicket");
+				%>
+				<div class="alert alert-success" role="alert">Tìm kiếm thành công!</div>
 				<div class="section-box" id="printableArea">
 					<div class="uk-container uk-container-center">
 						<div class="uk-grid">
@@ -156,13 +185,14 @@
 												<tbody>
 													<tr>
 														<td class="text-label"><strong>Mã vé:</strong></td>
-														<td><strong class="uk-text-danger"><%=orderTicket.getOrderTicketId()%></td>
+														<td><strong class="uk-text-danger"><%=orderTicket.getOrderTicketId() %></td>
 													</tr>
 													<tr>
 														<td class="text-label"><strong>Tình trạng:</strong></td>
-														<td><strong class="uk-text-danger"><%=Utility.checkPaid(orderTicket.getOrderTicketPaidDate())%><input type="hidden" value="<%=orderTicket.getOrderTicketPaidDate()%>" id="paid_date"></td>
-													
-													
+														<td><strong class="uk-text-danger"><%=Utility.checkPaid(orderTicket.getOrderTicketPaidDate())%><input
+																type="hidden" value="<%=orderTicket.getOrderTicketPaidDate() %>" id="paid_date"></td>
+
+
 													</tr>
 													<tr>
 														<td class="text-label">Ngày đặt vé:</td>
@@ -170,15 +200,15 @@
 													</tr>
 													<tr>
 														<td class="text-label">Họ và Tên:</td>
-														<td><%=orderTicket.getPassengerName()%></td>
+														<td><%=orderTicket.getPassengerName() %></td>
 													</tr>
 													<tr>
 														<td class="text-label">Số điện thoại:</td>
-														<td><%=orderTicket.getPassengerPhone()%></td>
+														<td><%=orderTicket.getPassengerPhone() %></td>
 													</tr>
 													<tr>
-														<td class="text-label">Ghi chú:</td>
-														<td><%=orderTicket.getOrderTicketOther()%></td>
+														<td class="text-label">Email:</td>
+														<td><%=orderTicket.getPassengerEmail() %></td>
 													</tr>
 												</tbody>
 											</table>
@@ -202,17 +232,15 @@
 															<tbody>
 																<tr>
 																	<td class="text-label">Tuyến:</td>
-																	<td><%=session.getAttribute("startName")%> - <%=session.getAttribute("endName")%></td>
+																	<td><%=listInfo.get(0) %> -> <%=listInfo.get(1) %></td>
 																</tr>
 																<tr>
-																	<td class="text-label">Ngày:</td>
-																	<td><%=session.getAttribute("startDateSession")%>
-																		- <%=session.getAttribute("startTimeSession")%></td>
+																	<td class="text-label">Ngày đi:</td>
+																	<td><%=listInfo.get(5) %></td>
 																</tr>
 																<tr>
 																	<td class="text-label">Bến xe:</td>
-																	<td><%=session.getAttribute("busStationSession")%>
-																	</td>
+																	<td><%=listInfo.get(2) %> -> <%=listInfo.get(3) %> </td>
 																</tr>
 
 															</tbody>
@@ -222,16 +250,16 @@
 														<table class="list-basic-info">
 															<tbody>
 																<tr>
-																	<td class="text-label">Số ghế:</td>
-																	<td><%=session.getAttribute("listSeatTachDeHienThi")%></td>
+																	<td class="text-label">Số ghế: </td>
+																	<td><%=listInfo.get(4) %> </td>
 																</tr>
 																<tr>
 																	<td class="text-label">Phụ thu:</td>
-																	<td><%=session.getAttribute("ticketTax")%></td>
+																	<td><%=listInfo.get(8) %></td>
 																</tr>
 																<tr>
 																	<td class="text-label">Giá vé:</td>
-																	<td><%=session.getAttribute("priceTotal")%> VNĐ</td>
+																	<td><%=listInfo.get(9) %> VNĐ</td>
 																</tr>
 															</tbody>
 														</table>
@@ -244,14 +272,14 @@
 
 										<h4 class="uk-margin-remove uk-text-bold">
 											<span class="uk-text-link-hover">Giảm giá: </span> <strong
-												class="uk-text-danger" style="width: 125px; float: right;"><%=session.getAttribute("ticketSale")%>
-												VND</strong>
+												class="uk-text-danger" style="width: 125px; float: right;">
+												<%=listInfo.get(7) %> VND</strong>
 										</h4>
 
 										<h4 class="uk-margin-remove uk-text-bold">
 											<span class="uk-text-link-hover">Tổng thanh toán: </span> <strong
-												class="uk-text-danger" style="width: 125px; float: right;"><%=session.getAttribute("totalMoney")%>
-												VND</strong>
+												class="uk-text-danger" style="width: 125px; float: right;">
+												<%=orderTicket.getOrderTicketTotalPrice() %> VND</strong>
 										</h4>
 										<!--div class="uk-margin-small"><span class="uk-text-link-hover">Người xuất vé:</span> HLINKBUS 15/08/2015 - 14:00</div-->
 
@@ -268,44 +296,81 @@
 
 
 						<div class="col-md-2">
-							<button id="btPrint"	class="uk-button uk-button-primary uk-button-large uk-width-1-1"
-								type="button" onclick="printDiv('printableArea')" >
+							<button id="btPrint"
+								class="uk-button uk-button-primary uk-button-large uk-width-1-1"
+								type="button" onclick="printDiv('printableArea')">
 								In vé <i class="uk-icon-print"></i>
 							</button>
 						</div>
 
 					</div>
 				</div>
-
-
-
+				<%
+					} else {%> 
+					<div class="alert alert-danger" role="alert">Không tìm thấy kết quả, xin vui lòng thử lại!</div>
+					<%} }
+				%> 
+				
 				</main>
 			</div>
-			<%} else{%>
-			<div class="alert alert-danger" role="alert" style="margin-top: 50px;">
-					<span class="glyphicon glyphicon-ban-circle"></span> &nbsp; Thất bại!<br/>Xảy ra lỗi trong quá trình chọn chỗ, vui lòng <a href="<%=request.getContextPath()%>/home">chọn lại</a>!
-				</div>
-			<%} %>
+
 		</div>
+		<script src='<%=request.getContextPath()%>/js/jquery.min.js'></script>
+		<script src='<%=request.getContextPath()%>/js/bootstrap.min.js'></script>
+		<script
+			src='<%=request.getContextPath()%>/js/bootstrapvalidator.min.js'></script>
 		<script>
-		
-		$(document).ready(function() {
-			if($('#paid_date').val()==""){
-				$('#btPrint').prop('disabled', true);
-			}
-			
-		});
-				function printDiv(divName) {
-					var printContents = document.getElementById(divName).innerHTML;
-					var originalContents = document.body.innerHTML;
+			$(document).ready(function() {
+				$('#check_form').bootstrapValidator({
+					feedbackIcons : {
+						valid : 'glyphicon glyphicon-ok',
+						invalid : 'glyphicon glyphicon-remove',
+						validating : 'glyphicon glyphicon-refresh'
+					},
+					fields : {
+						txtOrderTicketId : {
+							validators : {
+								stringLength : {
+									min : 6,
+									max : 6,
+									message : 'Mã vé phải đúng 6 kí tự'
+								},
+								notEmpty : {
+									message : 'Mã vé không được trống'
+								}
+							}
+						},
 
-					document.body.innerHTML = printContents;
+						txtInfo : {
+							validators : {
+								notEmpty : {
+									message : 'Vui lòng nhập thông tin'
+								}
 
-					window.print();
+							/* regexp: {
+							       regexp: /^0\d{9,10}$/,
+							       message: 'Số điện thoại không hợp lệ'
+							   } */
+							}
+						}
+					}
+				});
 
-					document.body.innerHTML = originalContents;
+				if ($('#paid_date').val() == "") {
+					$('#btPrint').prop('disabled', true);
 				}
-				
+
+			});
+			function printDiv(divName) {
+				var printContents = document.getElementById(divName).innerHTML;
+				var originalContents = document.body.innerHTML;
+
+				document.body.innerHTML = printContents;
+
+				window.print();
+
+				document.body.innerHTML = originalContents;
+			}
 		</script>
 		<!-- /#main -->
 	</div>
@@ -356,9 +421,12 @@
 
 				<li class="uk-nav-divider"></li>
 				<li class="uk-nav-header">DuyThanhBus.vn</li>
-				<li class="uk-active"><a href="<%=request.getContextPath()%>/home">Vé xe</a></li>
-				<li class=""><a href="<%=request.getContextPath()%>/feedback">Phản hồi</a></li>
-				<li class=""><a href="<%=request.getContextPath()%>/find">Kiểm tra & in vé</a></li>
+				<li class="uk-active"><a
+					href="<%=request.getContextPath()%>/home">Vé xe</a></li>
+				<li class=""><a href="<%=request.getContextPath()%>/feedback">Phản
+						hồi</a></li>
+				<li class=""><a href="<%=request.getContextPath()%>/check">Kiểm
+						tra & in vé</a></li>
 
 				<li class="uk-nav-divider"></li>
 				<li class="uk-nav-header">THÔNG TIN</li>
@@ -373,6 +441,6 @@
 		</div>
 
 	</div>
-	<script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
+
 </body>
 </html>

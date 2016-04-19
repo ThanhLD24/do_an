@@ -24,41 +24,48 @@ public class Utility {
 		return day + "-" + date;
 
 	}
-	
-	public static String getDateTimeNow(){
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //format theo time 24h
-		//format time 12h 'yyyy-MM-dd hh:mm:ss'
+
+	public static String getDateTimeNow() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // format
+																				// theo
+																				// time
+																				// 24h
+		// format time 12h 'yyyy-MM-dd hh:mm:ss'
 		Date date = new Date();
-		return dateFormat.format(date); //2014/08/06 15:59:48
+		return dateFormat.format(date); // 2014/08/06 15:59:48
 	}
-	
-	public static String getDateNow(){
+
+	public static String getDateNow() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
-		return dateFormat.format(date); //2014/08/06
+		return dateFormat.format(date); // 2014/08/06
 	}
 
 	public static String parse12HoursTo24HoursTime(String hours12) {
-	       SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm:ss",Locale.ENGLISH);
-	       SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a",Locale.ENGLISH);
-	       Date date = null;
+		SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
+		SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+		Date date = null;
 		try {
 			date = parseFormat.parse(hours12);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	       return displayFormat.format(date);
-	   }
-	public static void main(String[] args) throws ParseException {
-		
-	    System.out.println(Utility.getDateTimeNow());
-	    System.out.print(Utility.replaceString2("/1_A/|/10_A/|/1_C/|/10_C/|"));
-	    for(String a:Utility.phanChuoiGheThanhMang("/1_A/|/10_A/|/1_C/|/10_C/|")){
-	    	System.out.println(a);
-	    }
+		return displayFormat.format(date);
 	}
-	
+
+	public static void main(String[] args) throws ParseException {
+
+		System.out.println(Utility.getDateTimeNow());
+		System.out.print(Utility.replaceString2("/1_A/|/10_A/|/1_C/|/10_C/|"));
+		for (String a : Utility.phanChuoiGheThanhMang("/1_A/|/10_A/|/1_C/|/10_C/|")) {
+			System.out.println(a);
+		}
+		for(Integer t: Utility.layMinMaxThuTuDiemDung("(1-2)(2-3)")){
+			System.out.println(t);
+		}
+	}
+
 	public static String parseFormatDate(String dateInput) {
 		SimpleDateFormat fromUser = new SimpleDateFormat("dd-MM-yyyy");
 		SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -73,7 +80,7 @@ public class Utility {
 		return reformattedStr;
 	}
 
-	public static String parseToDateFormat(String dateInput) { 
+	public static String parseToDateFormat(String dateInput) {
 		SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
 		SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
 		String reformattedStr = null;
@@ -86,7 +93,7 @@ public class Utility {
 		}
 		return reformattedStr;
 	}
-	
+
 	public static String parseToDateFormat1(String dateInput) {
 		SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -100,8 +107,6 @@ public class Utility {
 		}
 		return reformattedStr;
 	}
-	
-	
 
 	public static String parseToTimeFormat(String dateInput) {
 		SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
@@ -132,11 +137,11 @@ public class Utility {
 
 		return string2;
 	}
-	
+
 	public static String replaceString2(String stringNeedReplace) {
 		String string1 = stringNeedReplace.replace("/", "");
 		String string2 = string1.replace("|", ", ");
-		return string2.substring(0, string2.length()-2);
+		return string2.substring(0, string2.length() - 2);
 	}
 
 	// tach chuoi price + chuoi id driver ra mang
@@ -151,6 +156,7 @@ public class Utility {
 		}
 		return listPrice;
 	}
+
 	// tach chuoi id driver ra mang
 	public static ArrayList<Integer> splitIdDriver(String str) {
 		int i = 0;
@@ -163,7 +169,7 @@ public class Utility {
 		}
 		return listId;
 	}
-	
+
 	// tinh tong price dua theo so chang di cua khach
 	public static int getPrice(int originNumber, int destinationNumber, ArrayList<Integer> listPrice) {
 		int tong = 0;
@@ -175,134 +181,143 @@ public class Utility {
 
 	// phan chang
 	public static String phanChangDuong(int originNumber, int destinationNumber) {
-		StringBuilder changDuong= new StringBuilder();
-		if(destinationNumber-originNumber==1){
-			changDuong.append("("+originNumber+"-"+destinationNumber+")");
-		}
-		else{
-			int count =0;
-			while(originNumber<destinationNumber){
-				count = originNumber+1;
-				changDuong.append("("+originNumber+"-"+count+")");
+		StringBuilder changDuong = new StringBuilder();
+		if (destinationNumber - originNumber == 1) {
+			changDuong.append("(" + originNumber + "-" + destinationNumber + ")");
+		} else {
+			int count = 0;
+			while (originNumber < destinationNumber) {
+				count = originNumber + 1;
+				changDuong.append("(" + originNumber + "-" + count + ")");
 				originNumber++;
 			}
 		}
 		return changDuong.toString();
 	}
-	
+
 	public static ArrayList<String> phanChangDuongRaMang(int originNumber, int destinationNumber) {
 		ArrayList<String> listChang = new ArrayList<String>();
-		StringBuilder changDuong= new StringBuilder();
-		if(destinationNumber-originNumber==1){
-			//changDuong.append("("+originNumber+"-"+destinationNumber+")");
-			listChang.add("("+originNumber+"-"+destinationNumber+")");
-		}
-		else{
-			int count =0;
-			while(originNumber<destinationNumber){
-				count = originNumber+1;
-				//changDuong.append("("+originNumber+"-"+count+")");
-				listChang.add("("+originNumber+"-"+count+")");
+		StringBuilder changDuong = new StringBuilder();
+		if (destinationNumber - originNumber == 1) {
+			// changDuong.append("("+originNumber+"-"+destinationNumber+")");
+			listChang.add("(" + originNumber + "-" + destinationNumber + ")");
+		} else {
+			int count = 0;
+			while (originNumber < destinationNumber) {
+				count = originNumber + 1;
+				// changDuong.append("("+originNumber+"-"+count+")");
+				listChang.add("(" + originNumber + "-" + count + ")");
 				originNumber++;
 			}
 		}
 		return listChang;
 	}
-	
-	public static String layGheDaDuocDat(List<SeatOrder> listSeat){
+
+	public static String layGheDaDuocDat(List<SeatOrder> listSeat) {
 		StringBuilder chuoiGhe = new StringBuilder();
-		for(SeatOrder so : listSeat){
+		for (SeatOrder so : listSeat) {
 			chuoiGhe.append(so.getSeat());
 		}
 		String chuoi = Utility.replaceString(chuoiGhe.toString());
 		return chuoi;
 	}
-	
-	public static int layTongSoGheDuocDat(String chuoiGhe){
-		int count=0;
-		for(int i=0; i<chuoiGhe.length(); i++){
-			if(String.valueOf(chuoiGhe.charAt(i)).equals(",")){
+
+	public static int layTongSoGheDuocDat(String chuoiGhe) {
+		int count = 0;
+		for (int i = 0; i < chuoiGhe.length(); i++) {
+			if (String.valueOf(chuoiGhe.charAt(i)).equals(",")) {
 				count++;
 			}
 		}
-		
+
 		return count;
-		
+
 	}
-	
-	public static List<String> phanChuoiGheThanhMang(String listSeat){
+
+	public static List<String> phanChuoiGheThanhMang(String listSeat) {
 		List<String> list = new ArrayList<>();
 		String[] arraySeat = listSeat.split("\\|");
-		for(String s : arraySeat){
+		for (String s : arraySeat) {
 			list.add(s);
 		}
 		return list;
 	}
-	
-	public static boolean compareDateTime(String date){
-		boolean check =false;
-		Date dateOrigin =null;
-		Date dateNow =null;
+
+	public static List<Integer> layMinMaxThuTuDiemDung(String listRoutes) {
+		List<Integer> minMax = new ArrayList<Integer>();
+		for (int i = 0; i < (listRoutes.length() - 1); i++) {
+			try{
+				int k = Integer.parseInt(String.valueOf(listRoutes.charAt(i)));
+				minMax.add(k);
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+			}
+		}
+		return minMax;
+
+	}
+
+	public static boolean compareDateTime(String date) {
+		boolean check = false;
+		Date dateOrigin = null;
+		Date dateNow = null;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		Date dateN = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    	try {
+		try {
 			dateOrigin = sdf.parse(date);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	try {
+		try {
 			dateNow = sdf.parse(dateFormat.format(dateN));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	if(dateNow.compareTo(dateOrigin)>=0){
-    		check = true;
-    		//date hien tai sau date han -> het han
-    	}
-    	if(dateNow.compareTo(dateOrigin)<0){
-    		check = false;
-    		// -> van dang ban
-    	}
-    	return check;
-	}
-	
-	public static String checkPaid(String time){
-		String status="";
-		if(time==null||("").equals(time)){
-			status="Chưa thanh toán";
+		if (dateNow.compareTo(dateOrigin) >= 0) {
+			check = true;
+			// date hien tai sau date han -> het han
 		}
-		else{
-			status ="Đã thanh toán";
+		if (dateNow.compareTo(dateOrigin) < 0) {
+			check = false;
+			// -> van dang ban
+		}
+		return check;
+	}
+
+	public static String checkPaid(String time) {
+		String status = "";
+		if (time == null || ("").equals(time)) {
+			status = "<span class=\"label label-warning\">Chưa thanh toán</span>";
+		} else {
+			status = "<span class=\"label label-success\">Đã thanh toán</span>";
 		}
 		return status;
 	}
+
 	public static String encryptMD5(String md5) {
 		try {
-			java.security.MessageDigest md = java.security.MessageDigest
-					.getInstance("MD5");
+			java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
 			byte[] array = md.digest(md5.getBytes());
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < array.length; ++i) {
-				sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100)
-						.substring(1, 3));
+				sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
 			}
 			return sb.toString();
 		} catch (java.security.NoSuchAlgorithmException e) {
 		}
 		return null;
 	}
-		
-/*	public static void main(String[] args) {
-		SeatOrderDAOImpl so = new SeatOrderDAOImpl();
-		System.out.println(Utility.layGheDaDuocDat(so.getSeatOrderByCondition(1, 1, 4)));
-		System.out.println(Utility.phanChangDuong(1, 5));
-		for(String k : Utility.phanChangDuongRaMang(1, 5)){
-			System.out.println(k);
-		}
-	}*/
+
+	/*
+	 * public static void main(String[] args) { SeatOrderDAOImpl so = new
+	 * SeatOrderDAOImpl();
+	 * System.out.println(Utility.layGheDaDuocDat(so.getSeatOrderByCondition(1,
+	 * 1, 4))); System.out.println(Utility.phanChangDuong(1, 5)); for(String k :
+	 * Utility.phanChangDuongRaMang(1, 5)){ System.out.println(k); } }
+	 */
 	/*
 	 * public static void main(String[] args) {
 	 * 

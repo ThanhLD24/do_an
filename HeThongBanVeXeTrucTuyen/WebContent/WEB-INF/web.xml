@@ -79,6 +79,16 @@
 		<url-pattern>/find</url-pattern>
 	</servlet-mapping>
 	
+	<!-- check-and-print-ticket.jsp -->
+	<servlet>
+		<servlet-name>check-and-print-ticket</servlet-name>
+		<jsp-file>/pages/customer/check-and-print-ticket.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>check-and-print-ticket</servlet-name>
+		<url-pattern>/check</url-pattern>
+	</servlet-mapping>
+	
 	<!-- error.jsp -->
 	<servlet>
 		<servlet-name>error_book</servlet-name>

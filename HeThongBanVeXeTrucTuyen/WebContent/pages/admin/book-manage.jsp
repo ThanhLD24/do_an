@@ -235,7 +235,7 @@
 											style="display: inline">
 											<button class="btn btn-danger btn-xs" data-title="Thanh toán"
 												data-toggle="modal" data-target="#pay<%=orderTicketId %>"
-												style="height: 22px" <%if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())) {%>disabled="disabled" <%}%>>
+												style="height: 22px" <%if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())||(!("").equals(orderTicket.getOrderTicketPaidDate()))) {%>disabled="disabled" <%}%>>
 												<span class="glyphicon glyphicon-shopping-cart"></span>
 											</button>
 										</p></td>
