@@ -176,7 +176,7 @@
 									<th data-sortable="true">Tên khách</th>
 									<th data-sortable="true">Email</th>
 									<th data-sortable="true">Số điện thoại</th>
-									<th data-sortable="true">Số ghế</th>
+									<!-- <th data-sortable="true">Số ghế</th> -->
 									<th data-sortable="true">Tiền thanh toán</th>
 									<th data-sortable="true">Ngày đặt</th>
 									<th data-sortable="true">Tình trạng</th>
@@ -200,7 +200,7 @@
 									<td><%=orderTicket.getPassengerName()%></td>
 									<td><%=orderTicket.getPassengerEmail()%></td>
 									<td><%=orderTicket.getPassengerPhone()%></td>
-									<td><%=Utility.replaceString2(seatOrder.getSeat())%></td>
+									<%-- <td><%=Utility.replaceString2(seatOrder.getSeat())%></td> --%>
 									<td><%=orderTicket.getOrderTicketTotalPrice()%></td>
 									<td><%=Utility.parseToDateFormat1(orderTicket.getOrderTicketTime())%></td>
 									<td align="center">
@@ -238,7 +238,17 @@
 												style="height: 22px" <%if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())||(!("").equals(orderTicket.getOrderTicketPaidDate()))) {%>disabled="disabled" <%}%>>
 												<span class="glyphicon glyphicon-shopping-cart"></span>
 											</button>
-										</p></td>
+										</p>
+										<!-- hien thi nut tra ve khi ve da thanh toan -->
+										<p data-placement="top" data-toggle="tooltip" title="Hủy vé"
+											style="display: inline">
+											<button class="btn btn-warning btn-xs" data-title="Hủy vé"
+												data-toggle="modal" data-target="#cancel<%=orderTicketId %>"
+												style="height: 22px" <%if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())||(("").equals(orderTicket.getOrderTicketPaidDate()))) {%>disabled="disabled" <%}%>>
+												<span class="glyphicon glyphicon-new-window"></span>
+											</button>
+										</p>
+										</td>
 
 								</tr>
 								<!-- popup edit -->
@@ -336,6 +346,59 @@
 								</div>
 								
 								<!-- end popup delete -->
+								
+								
+								<!-- popup cancel -->
+								
+								<div class="modal fade" id="cancel<%=orderTicketId %>" tabindex="-1" role="dialog"
+									aria-labelledby="edit" aria-hidden="true">
+									<div class="modal-dialog">
+										<form id="formDeleteBook" action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.REFUND_TICKET%>" method="post">
+										<div class="modal-content">
+										
+											<div class="modal-header">
+											
+												<button type="button" class="close" data-dismiss="modal"
+													aria-hidden="true">
+													<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+												</button>
+												<h4 class="modal-title custom_align" id="Heading">Hoàn trả vé</h4>
+											</div>
+											<div class="modal-body">
+
+												<div class="alert alert-info">
+													<span class="glyphicon glyphicon-usd"></span> Hoàn trả vé có mã: <b><%=orderTicketId %></b>?
+												</div>
+												<div class="form-group">
+
+														<input class="form-control " type="text"
+															placeholder="Ghi chú" name="txtNote"
+															id="txtNote">
+													</div>
+
+											</div>
+											
+											<input class="form-control " type="hidden"
+															value="<%=orderTicketId%>" name="txtOrderTicketId"
+															id="txtOrderTicketId">
+											<div class="modal-footer ">
+												<button type="submit" class="btn btn-success" >
+													<span class="glyphicon glyphicon-ok-sign"></span> Trả vé
+												</button>
+												<button type="button" class="btn btn-default"
+													data-dismiss="modal">
+													<span class="glyphicon glyphicon-remove"></span> Hủy
+												</button>
+											</div>
+											</form>
+										</div>
+										
+										<!-- /.modal-content -->
+									</div>
+									<!-- /.modal-dialog -->
+								</div>
+								
+								<!-- end popup cancel -->
 
 								<%
 									}

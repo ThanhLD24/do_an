@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import thanhld.appcode.dao.AccountDAO;
 import thanhld.appcode.dao.AccountDAOImpl;
 import thanhld.appcode.model.Account;
+import thanhld.appcode.model.CancelOrderTicket;
 import thanhld.appcode.model.EmployeeWorking;
 import thanhld.appcode.model.OrderTicket;
 import thanhld.appcode.model.Province;
@@ -79,6 +80,7 @@ public class AdminBusController extends HttpServlet {
 		RequestDispatcher dispatcher = null;
 		String oId = null;
 		OrderTicket orderTicket = null;
+		CancelOrderTicket cancelOrderTicket = null;
 		List<Province> listProvince = new ArrayList<Province>();
 		String ticketIdBySession = null;
 		String listDriver = null;
@@ -256,7 +258,8 @@ public class AdminBusController extends HttpServlet {
 			break;
 		case Variables.EDIT_ACCOUNT:
 			check = "fail";
-			account  = (Account) ObjectManager.getObjectById(Integer.parseInt(request.getParameter("txtAccountId")), Account.class);
+			account = (Account) ObjectManager.getObjectById(Integer.parseInt(request.getParameter("txtAccountId")),
+					Account.class);
 			account.setAccountName(request.getParameter("txtAccountName"));
 			account.setAccountPassword(request.getParameter("txtAccountPassword"));
 			account.setAccountPermit(Integer.parseInt(request.getParameter("txtAccountPermit")));
@@ -276,7 +279,8 @@ public class AdminBusController extends HttpServlet {
 		case Variables.DELETE_ACCOUNT:
 			check = "fail";
 			try {
-				ObjectManager.deleteObject(Integer.parseInt(request.getParameter("txtAccountId").toString()),Account.class);
+				ObjectManager.deleteObject(Integer.parseInt(request.getParameter("txtAccountId").toString()),
+						Account.class);
 				check = "success";
 			} catch (Exception e) {
 				e.getMessage();
@@ -306,10 +310,39 @@ public class AdminBusController extends HttpServlet {
 			dispatcher = request.getRequestDispatcher("/admin/account");
 			dispatcher.forward(request, response);
 			break;
-
+		case Variables.REFUND_TICKET:
+			check = "fail";
+			oId = request.getParameter("txtOrderTicketId");
+			// dua trang thai ve dat sang false
+			orderTicket = (OrderTicket) ObjectManager.getObjectById(oId, OrderTicket.class);
+			orderTicket.setOrderTicketStatus(false);
+			// them ve dat da duoc tra vao muc ve tra
+			cancelOrderTicket = new CancelOrderTicket();
+			cancelOrderTicket.setOrderTicketId(orderTicket.getOrderTicketId());
+			cancelOrderTicket.setCancelOrderTicketCancelTime(Utility.getDateTimeNow());
+			
+			/* dang set cung tien hoan tra lai la 80% tong so tien mua ve*/
+			int moneyRefund = Integer.parseInt(orderTicket.getOrderTicketTotalPrice().toString()) * 80 / 100;
+			cancelOrderTicket.setCancelOrderTicketRefund(String.valueOf(moneyRefund));
+			/* tien lai = tong tien - tien hoan tra*/
+			cancelOrderTicket.setCancelOrderTickerInterest(String.valueOf(Integer.parseInt(orderTicket.getOrderTicketTotalPrice().toString())-moneyRefund));
+			cancelOrderTicket.setCancelOrderTickerStatus(true);
+			cancelOrderTicket.setCancelOrderTickerNotes(request.getParameter("txtNote"));
+			try {
+				ObjectManager.update(orderTicket);
+				ObjectManager.addObject(cancelOrderTicket);
+				check = "success";
+			} catch (Exception e) {
+				e.getMessage();
+				check = "fail";
+			}
+			request.setAttribute("check", check);
+			request.setAttribute("mess", "Trả vé");
+			dispatcher = request.getRequestDispatcher("/admin/book");
+			dispatcher.forward(request, response);
+			break;
 		}
-		
-		
+
 	}
 
 }

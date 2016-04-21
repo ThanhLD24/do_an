@@ -35,6 +35,7 @@ public class SeatOrderDAOImpl implements SeatOrderDAO {
 				sqlQuery.append(" OR ROUTES LIKE '%" + listChang.get(i) + "%' ");
 			}
 			sqlQuery.append(" ) ");
+			sqlQuery.append(" AND ORDER_TICKET_ID NOT IN (SELECT ORDER_TICKET_ID FROM ORDER_TICKET WHERE ORDER_TICKET_STATUS =0)");//lay nhung ve co trang thai != -> chua huy ve
 			System.out.println(sqlQuery.toString());
 			query = session.createSQLQuery(sqlQuery.toString()).addEntity(SeatOrder.class);
 			listSeatOrder = query.list();

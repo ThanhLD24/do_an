@@ -6,7 +6,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import thanhld.appcode.model.OrderTicket;
 import thanhld.appcode.utility.HibernateUtils;
@@ -21,6 +23,8 @@ public class OrderTicketDAOImpl implements OrderTicketDAO {
 		try {
 			session = HibernateUtils.getSessionFactory().openSession();
 			Criteria criteria = session.createCriteria(OrderTicket.class);
+			Criterion condition1= Restrictions.eq("orderTicketStatus", true);
+			criteria.add(condition1);
 			list = criteria.addOrder(Order.desc("orderTicketTime")).list();
 		} catch (Exception e) {
 		} finally {

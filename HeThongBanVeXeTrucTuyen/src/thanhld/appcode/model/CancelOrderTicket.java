@@ -23,7 +23,7 @@ public class CancelOrderTicket implements Serializable {
 	private Integer cancelOrderTicketId;
 
 	@Column(name = "ORDER_TICKET_ID")
-	private Integer orderTicketId;
+	private String orderTicketId;
 
 	@Column(name = "CANCEL_ORDER_TICKET_CANCEL_TIME")
 	private String cancelOrderTicketCancelTime;
@@ -49,11 +49,11 @@ public class CancelOrderTicket implements Serializable {
 	}
 
 
-	public Integer getOrderTicketId() {
+	public String getOrderTicketId() {
 		return orderTicketId;
 	}
 
-	public void setOrderTicketId(Integer orderTicketId) {
+	public void setOrderTicketId(String orderTicketId) {
 		this.orderTicketId = orderTicketId;
 	}
 
@@ -97,7 +97,7 @@ public class CancelOrderTicket implements Serializable {
 		this.cancelOrderTickerNotes = cancelOrderTickerNotes;
 	}
 
-	public CancelOrderTicket(Integer cancelOrderTicketId,  Integer orderTicketId,
+	public CancelOrderTicket(Integer cancelOrderTicketId,  String orderTicketId,
 			String cancelOrderTicketCancelTime, String cancelOrderTicketRefund, String cancelOrderTickerInterest,
 			Boolean cancelOrderTickerStatus, String cancelOrderTickerNotes) {
 		super();
@@ -110,7 +110,7 @@ public class CancelOrderTicket implements Serializable {
 		this.cancelOrderTickerNotes = cancelOrderTickerNotes;
 	}
 
-	public CancelOrderTicket( Integer orderTicketId, String cancelOrderTicketCancelTime,
+	public CancelOrderTicket( String orderTicketId, String cancelOrderTicketCancelTime,
 			String cancelOrderTicketRefund, String cancelOrderTickerInterest, Boolean cancelOrderTickerStatus,
 			String cancelOrderTickerNotes) {
 		super();
