@@ -8,6 +8,7 @@ import java.util.List;
 import javax.naming.directory.SearchResult;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -55,7 +56,12 @@ import thanhld.appcode.valueobject.TicketVO;
 @WebServlet("/BusController")
 public class BusController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private String host = null;
+	private String port = null;
+	private String user = null;
+	private String pass = null;
 
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -63,14 +69,22 @@ public class BusController extends HttpServlet {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public void init() {
+		// reads SMTP server setting from web.xml file
+		ServletContext context = getServletContext();
+		host = context.getInitParameter("host");
+		port = context.getInitParameter("port");
+		user = context.getInitParameter("user");
+		pass = context.getInitParameter("pass");
+	}
 
 	/**
 	 * @see Servlet#init(ServletConfig)
 	 */
-	public void init(ServletConfig config) throws ServletException {
+	/*public void init(ServletConfig config) throws ServletException {
 		// TODO Auto-generated method stub
 	}
-
+*/
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -427,6 +441,23 @@ public class BusController extends HttpServlet {
 				 */ // tam thoi de ticket count = ""
 				try {
 					ObjectManager.addObject(seatOrder);
+					System.out.println(sessionShortId);
+					/* send email */
+					String recipient = email;
+					String subject = "Xác nhận đặt vé xe khách DuyThanhBus";
+					StringBuilder content = new StringBuilder();
+					content.append("<h3>Mã đặt vé của quý khách là: <b>" + orderTicket.getOrderTicketId()+"</b><br/><h3>");
+					content.append("<div><h3> Quý khách vui lòng thanh toán trước: ...<h3></div>");
+					content.append("<div><h3> Vui lòng vào http://duythanhbus.vn:9999/HeThongBanVeXeTrucTuyen/check để kiểm tra thông tin vé đã đặt!<h3></div>");
+					content.append("<div><h3> Xin cám ơn quý khách!<h3></div>");
+					try {
+						Utility.sendEmail(host, port, user, pass, recipient, subject, content.toString());
+
+					} catch (Exception ex) {
+						ex.printStackTrace();
+
+					}
+					/* end send */
 					request.changeSessionId();
 					pageForward = "/confirm";
 					/* ObjectManager.update(ticket); */
@@ -478,14 +509,13 @@ public class BusController extends HttpServlet {
 			seatOrderDAO = new SeatOrderDAOImpl();
 			try {
 				orderTicket = orderDAO.getOrderTicketByCondition(request.getParameter("txtOrderTicketId").toString(),
-						request.getParameter("txtInfo").toString());
-				seatOrder = seatOrderDAO.getSeatOrderByOrderTicket(request.getParameter("txtOrderTicketId").toString());
-				
+						request.getParameter("txtInfo").toString().trim());
+				seatOrder = seatOrderDAO.getSeatOrderByOrderTicket(request.getParameter("txtOrderTicketId").toString().trim());
 
 				List<Integer> listThuTu = Utility.layMinMaxThuTuDiemDung(seatOrder.getRoutes());
-				for (Integer i : listThuTu) {
+				/*for (Integer i : listThuTu) {
 					System.out.print(i + "==");
-				}
+				}*/
 				ticket = (Ticket) (ObjectManager.getObjectById(orderTicket.getTicketId(), Ticket.class));
 				RouteDetail routeDetailOrigin = routeDetailDAO.getRouteDetailWithNumberOrder(ticket.getRouteId(),
 						listThuTu.get(0));
@@ -532,9 +562,9 @@ public class BusController extends HttpServlet {
 				infoOrderTicket.add(ticket.getTicketTax()); // 8
 				infoOrderTicket.add(String.valueOf(Utility.getPrice(listThuTu.get(0),
 						listThuTu.get(listThuTu.size() - 1), Utility.splitPrice(ticket.getTicketPrice())))); // 9
-				
+
 				check = "success";
-				
+
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}

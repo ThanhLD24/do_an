@@ -58,7 +58,7 @@
 		<servlet-name>info</servlet-name>
 		<url-pattern>/info</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- confirm.jsp -->
 	<servlet>
 		<servlet-name>confirm</servlet-name>
@@ -68,7 +68,7 @@
 		<servlet-name>confirm</servlet-name>
 		<url-pattern>/confirm</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- find.jsp -->
 	<servlet>
 		<servlet-name>find</servlet-name>
@@ -78,7 +78,7 @@
 		<servlet-name>find</servlet-name>
 		<url-pattern>/find</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- check-and-print-ticket.jsp -->
 	<servlet>
 		<servlet-name>check-and-print-ticket</servlet-name>
@@ -88,7 +88,7 @@
 		<servlet-name>check-and-print-ticket</servlet-name>
 		<url-pattern>/check</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- error.jsp -->
 	<servlet>
 		<servlet-name>error_book</servlet-name>
@@ -98,7 +98,7 @@
 		<servlet-name>error_book</servlet-name>
 		<url-pattern>/error_book</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- end config client pages -->
 
 	<!-- config admin pages -->
@@ -150,7 +150,7 @@
 		<servlet-name>account</servlet-name>
 		<url-pattern>/admin/account</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- add account -->
 	<servlet>
 		<servlet-name>add-account</servlet-name>
@@ -169,7 +169,7 @@
 		<servlet-name>book</servlet-name>
 		<url-pattern>/admin/book</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- bus-manage.jsp -->
 	<servlet>
 		<servlet-name>bus</servlet-name>
@@ -179,7 +179,7 @@
 		<servlet-name>bus</servlet-name>
 		<url-pattern>/admin/bus</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- bus-station-manage.jsp -->
 	<servlet>
 		<servlet-name>bus-station</servlet-name>
@@ -189,7 +189,7 @@
 		<servlet-name>bus-station</servlet-name>
 		<url-pattern>/admin/bus-station</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- cancel-book-manage.jsp -->
 	<servlet>
 		<servlet-name>cancel-book</servlet-name>
@@ -199,7 +199,7 @@
 		<servlet-name>cancel-book</servlet-name>
 		<url-pattern>/admin/cancel-book</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- driver-manage.jsp -->
 	<servlet>
 		<servlet-name>driver</servlet-name>
@@ -209,7 +209,7 @@
 		<servlet-name>driver</servlet-name>
 		<url-pattern>/admin/driver</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- report-manage.jsp -->
 	<servlet>
 		<servlet-name>report</servlet-name>
@@ -219,7 +219,7 @@
 		<servlet-name>report</servlet-name>
 		<url-pattern>/admin/report</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- route-manage.jsp -->
 	<servlet>
 		<servlet-name>route</servlet-name>
@@ -264,4 +264,22 @@
 		<servlet-name>BusController</servlet-name>
 		<url-pattern>/BusController/*</url-pattern>
 	</servlet-mapping>
+
+	<!-- config send email -->
+	<context-param>
+		<param-name>host</param-name>
+		<param-value>smtp.gmail.com</param-value>
+	</context-param>
+	<context-param>
+		<param-name>port</param-name>
+		<param-value>587</param-value>
+	</context-param>
+	<context-param>
+		<param-name>user</param-name>
+		<param-value>duythanh.h3t@gmail.com</param-value>
+	</context-param>
+	<context-param>
+		<param-name>pass</param-name>
+		<param-value>ixgtwdtbymkthlpr</param-value>
+	</context-param>
 </web-app>
