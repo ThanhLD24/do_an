@@ -153,13 +153,16 @@ function searchTrip() {
     var start_date =  $('#start_date').val();
     var end_date =  $('#end_date').val();
     if (start_id==0) {
-       alert('Vui lòng chọn điểm đi')
+       alert('Vui lòng chọn điểm đi');
+       return false;
        $('#start_id').focus();
     }else if(end_id==0){
        alert('Vui lòng chọn điểm đến');
+       return false;
        $('#end_id').focus();
     }else if(start_date==''){
        alert('Vui lòng chọn ngày đi');
+       return false;
        $('#start_date').focus();
     }else{
        var url = baseUrl+'/trip/search';

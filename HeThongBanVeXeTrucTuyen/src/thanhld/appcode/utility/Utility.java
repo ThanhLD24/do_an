@@ -65,6 +65,19 @@ public class Utility {
 		return displayFormat.format(date);
 	}
 
+	public static String parse12HoursTo24HoursTimeAndDate(String datetime) {
+		SimpleDateFormat displayFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat parseFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.UK);
+		Date date = null;
+		try {
+			date = parseFormat.parse(datetime);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return displayFormat.format(date);
+	}
+
 	public static void main(String[] args) throws ParseException {
 
 		System.out.println(Utility.getDateTimeNow());

@@ -96,6 +96,7 @@
 				<li class="uk-active"><a
 					href="<%=request.getContextPath()%>/feedback"><span
 						class="text_menu active">Phản hồi</span></a></li>
+				<li class=""><a href="<%=request.getContextPath()%>/check">Kiểm tra & in vé</a></li>
 
 			</ul>
 

@@ -98,7 +98,7 @@
 						<div class="uk-form-icon uk-width-1-1 uk-form" id="ac_start">
 							<i class="uk-icon-map-marker "></i> <a
 								class="uk-icon-times-circle" href="#x"></a> <input type="text"
-								placeholder="Điểm đến" class="uk-width-1-1 uk-form-large"
+								placeholder="Điểm đi" class="uk-width-1-1 uk-form-large"
 								id="start_id" data-id="0" readonly="" />
 								<input type="hidden" id="txtOrgin" name="txtOrgin">
 							<div class="uk-dropdown">
@@ -328,7 +328,7 @@
 							<div class="uk-overflow-hidden">
 								<button
 									class="uk-button uk-button-primary uk-width-1-1 uk-button-large"
-									type="submit" onclick="searchTrip()">
+									type="submit" onclick="return searchTrip();">
 									Tìm chuyến <i class="uk-icon-search"></i>
 								</button>
 								<!-- <input type="submit"

@@ -443,7 +443,9 @@
 
 						</tr>
 					</thead>
+					
 					<tbody class="searchable" id="tbody_search_result">
+					<%if(listTicket.size()>0) {%>
 						<%
 							for (Ticket ticket : listTicket) {
 						%>
@@ -523,9 +525,12 @@
 
 
 						<%
-							}
+							}}else{
 						%>
+						<tr><td colspan="7"><div class="alert alert-danger" role="alert">Không tìm thấy chuyến đi phù hợp, vui lòng <a href="<%=request.getContextPath()%>/home">chọn lại</a>...</div></td></tr>
+						<%} %>
 					</tbody>
+					
 				</table>
 				
 			</div>

@@ -444,12 +444,12 @@ public class BusController extends HttpServlet {
 					System.out.println(sessionShortId);
 					/* send email */
 					String recipient = email;
-					String subject = "Xác nhận đặt vé xe khách DuyThanhBus";
+					String subject = "Xac nhan dat ve xe khach tai DuyThanhBus.vn";
 					StringBuilder content = new StringBuilder();
-					content.append("<h3>Mã đặt vé của quý khách là: <b>" + orderTicket.getOrderTicketId()+"</b><br/><h3>");
-					content.append("<div><h3> Quý khách vui lòng thanh toán trước: ...<h3></div>");
-					content.append("<div><h3> Vui lòng vào http://duythanhbus.vn:9999/HeThongBanVeXeTrucTuyen/check để kiểm tra thông tin vé đã đặt!<h3></div>");
-					content.append("<div><h3> Xin cám ơn quý khách!<h3></div>");
+					content.append("<h4>Ma dat ve cua quy khach la: <b>" + orderTicket.getOrderTicketId()+"</b><br/></h4>");
+					content.append("<div><h4> Quy khach vui long thanh toan truoc: ...</h4></div>");
+					content.append("<div><h4> Vui long vao <a href='http://duythanhbus.vn:9999/HeThongBanVeXeTrucTuyen/check'>DAY</a> de kiem tra thong tin ve da dat!</h4></div>");
+					content.append("<div><h4> Xin cam on quy khach da su dung dich vu!</h4></div>");
 					try {
 						Utility.sendEmail(host, port, user, pass, recipient, subject, content.toString());
 

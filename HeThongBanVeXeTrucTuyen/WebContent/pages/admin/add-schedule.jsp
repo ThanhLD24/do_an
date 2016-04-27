@@ -30,7 +30,8 @@
 	rel="stylesheet">
 <link href="<%=request.getContextPath()%>/css/admin/bootstrap-table.css"
 	rel="stylesheet">
-<link href="<%=request.getContextPath()%>/css/admin/datepicker3.css"
+<link
+	href="<%=request.getContextPath()%>/css/admin/bootstrap-datetimepicker.min.css"
 	rel="stylesheet">
 <link href="<%=request.getContextPath()%>/css/admin/styles.css"
 	rel="stylesheet">
@@ -52,12 +53,10 @@
 		request.setAttribute("error_message", 2);
 		dispatcher = request.getRequestDispatcher("/admin/login");
 		dispatcher.forward(request, response);
-	} 
-	else if(Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN){
+	} else if (Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN) {
 		account = (Account) session.getAttribute("account");
 		employee = (Employee) ObjectManager.getObjectById(account.getEmployeeId(), Employee.class);
-	}
-	else {
+	} else {
 		dispatcher = request.getRequestDispatcher("/admin/error");
 		dispatcher.forward(request, response);
 	}
@@ -215,8 +214,10 @@ jQuery(document).ready(function($) {
 								<use xlink:href="#stroked-male-user"></use></svg> Cá nhân</a></li>
 						<li><a href="#"><svg class="glyph stroked gear"> <use
 									xlink:href="#stroked-gear"></use></svg> Cài đặt</a></li>
-						<li><a href="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.LOGOUT%>"><svg class="glyph stroked cancel">
-								<use xlink:href="#stroked-cancel"></use></svg> Đăng xuất</a></li>
+						<li><a
+							href="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.LOGOUT%>"><svg
+									class="glyph stroked cancel"> <use
+									xlink:href="#stroked-cancel"></use></svg> Đăng xuất</a></li>
 					</ul></li>
 			</ul>
 		</div>
@@ -231,29 +232,37 @@ jQuery(document).ready(function($) {
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li><a
-				href="<%=request.getContextPath()%>/admin/home"><svg
+			<li><a href="<%=request.getContextPath()%>/admin/home"><svg
 						class="glyph stroked dashboard-dial"> <use
 						xlink:href="#stroked-dashboard-dial"></use></svg> Trang chủ</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/book"><i class="uk-icon-list-alt"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Vé đặt</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/cancel-book"><i class="uk-icon-share-square-o"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Hủy vé</a></li>
-			<li class="active"><a href="<%=request.getContextPath()%>/admin/schedule"><i
+			<li><a href="<%=request.getContextPath()%>/admin/book"><i
+					class="uk-icon-list-alt" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Vé đặt</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/cancel-book"><i
+					class="uk-icon-share-square-o" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Hủy vé</a></li>
+			<li class="active"><a
+				href="<%=request.getContextPath()%>/admin/schedule"><i
 					class="uk-icon-calendar" style="font-size: 15px"></i>
 					&nbsp;&nbsp;&nbsp;Quản lý Lịch trình </a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/route"><i class="uk-icon-road"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tuyến đường</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/driver"><i class="uk-icon-user"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài xế </a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/bus-station"><i class="uk-icon-street-view"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Điểm dừng</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/bus"><i class="uk-icon-bus"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Xe lưu hành</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/account"><i class="uk-icon-users"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài khoản</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/report"><i class="uk-icon-line-chart"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Báo cáo</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/route"><i
+					class="uk-icon-road" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Tuyến đường</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/driver"><i
+					class="uk-icon-user" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Tài xế </a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/bus-station"><i
+					class="uk-icon-street-view" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Điểm dừng</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/bus"><i
+					class="uk-icon-bus" style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp;
+					Quản lý Xe lưu hành</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/account"><i
+					class="uk-icon-users" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Tài khoản</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/report"><i
+					class="uk-icon-line-chart" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Báo cáo</a></li>
 
 
 			<li role="presentation" class="divider"></li>
@@ -287,207 +296,256 @@ jQuery(document).ready(function($) {
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-body">
-					<form action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.ADD_SCHEDULE%>" method="post">
-						<div class="row">
-							<div class="panel-body">
-								<div class="form-group">
-									<div class="row">
+						<form
+							action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.ADD_SCHEDULE%>"
+							method="post">
+							<div class="row">
+								<div class="panel-body">
+									<div class="form-group">
+										<div class="row">
 
-										<div class="col-md-6 selectContainer">
-											<label class="control-label">Tuyến đường</label> <select
-												class="form-control" name="route" id="route">
-												<option value="" disabled="disabled" selected="selected">Chọn
-													tuyến đường</option>
-												<%
-													for (Route r : listRoute) {
-												%>
-												<option value="<%=r.getRouteId()%>"><%=r.getRouteDescription()%></option>
-												<%
-													}
-												%>
-											</select>
-										</div>
-										<div class="col-md-6 selectContainer">
-											<label class="control-label">Xe</label> <select
-												class="form-control" name="bus" id="bus">
-												<option value="" disabled="disabled" selected="selected">Chọn
-													xe</option>
-												<%
-													for (Bus b : listBus) {
-												%>
-												<option value="<%=b.getBusId()%>"><%=b.getBusName()%></option>
-												<%
-													}
-												%>
+											<div class="col-md-6 selectContainer">
+												<label class="control-label">Tuyến đường</label> <select
+													class="form-control" name="route" id="route">
+													<option value="" disabled="disabled" selected="selected">Chọn
+														tuyến đường</option>
+													<%
+														for (Route r : listRoute) {
+													%>
+													<option value="<%=r.getRouteId()%>"><%=r.getRouteDescription()%></option>
+													<%
+														}
+													%>
+												</select>
+											</div>
+											<div class="col-md-6 selectContainer">
+												<label class="control-label">Xe</label> <select
+													class="form-control" name="bus" id="bus">
+													<option value="" disabled="disabled" selected="selected">Chọn
+														xe</option>
+													<%
+														for (Bus b : listBus) {
+													%>
+													<option value="<%=b.getBusId()%>"><%=b.getBusName()%></option>
+													<%
+														}
+													%>
 
-											</select>
-										</div>
+												</select>
+											</div>
 
-									</div>
-								</div>
-
-								<div class="form-group" id="div_route_detail"></div>
-								
-								<div class="form-group">
-									<div class="row">
-
-										<div class="col-md-6 selectContainer">
-											<label class="control-label">Giảm giá</label>
-											 <input type="text"   class="form-control" name="txtSale" id="txtSale">
-										</div>
-										<div class="col-md-6 selectContainer">
-											<label class="control-label">Phụ thu</label> 
-											<input type="text"   class="form-control" name="txtTax" id="txtTax">
-											
-										</div>
-
-									</div>
-								</div>
-
-								<label class="control-label">Tài xế</label>
-								<div class="form-group">
-									<div class="row">
-										<div class="col-md-5">
-											<select name="from[]" id="search" class="form-control"
-												size="3" multiple="multiple" style="">
-
-												<%
-													for (Employee emp : listDriver) {
-												%>
-												<option class="option_custom"
-													value="<%=emp.getEmployeeId()%>"
-													style="background-image:url(<%=request.getContextPath()%>/img/avatar.jpg);"><%=emp.getEmployeeName()%></option>
-
-												<%
-													}
-												%>
-											</select>
-
-										</div>
-
-										<div class="col-md-2">
-											<button type="button" id="search_rightAll"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-forward"></i>
-											</button>
-											<button type="button" id="search_rightSelected"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-chevron-right"></i>
-											</button>
-											<button type="button" id="search_leftSelected"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-chevron-left"></i>
-											</button>
-											<button type="button" id="search_leftAll"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-backward"></i>
-											</button>
-										</div>
-
-										<div class="col-md-5">
-											<select name="to[]" id="search_to"
-												class="driver form-control" size="3" multiple="multiple"></select>
-											<input type="hidden" name="listDriver" id="listDriver">
 										</div>
 									</div>
-								</div>
 
-								<label class="control-label">Phụ xe</label>
-								<div class="form-group">
-									<div class="row">
-										<div class="col-md-5">
-											<select name="from[]" id="search1" class="form-control"
-												size="3" multiple="multiple" style="">
+									<div class="form-group" id="div_route_detail"></div>
 
-												<%
-													for (Employee emp : listExtraDriver) {
-												%>
-												<option class="option_custom"
-													value="<%=emp.getEmployeeId()%>"
-													style="background-image:url(<%=request.getContextPath()%>/img/avatar.jpg);"><%=emp.getEmployeeName()%></option>
+									<div class="form-group">
+										<div class="row">
 
-												<%
-													}
-												%>
-											</select>
-										</div>
+											<div class="col-md-6 selectContainer">
+												<label class="control-label">Giảm giá</label> <input
+													type="text" class="form-control" name="txtSale"
+													id="txtSale">
+											</div>
+											<div class="col-md-6 selectContainer">
+												<label class="control-label">Phụ thu</label> <input
+													type="text" class="form-control" name="txtTax" id="txtTax">
 
-										<div class="col-md-2">
-											<button type="button" id="search1_rightAll"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-forward"></i>
-											</button>
-											<button type="button" id="search1_rightSelected"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-chevron-right"></i>
-											</button>
-											<button type="button" id="search1_leftSelected"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-chevron-left"></i>
-											</button>
-											<button type="button" id="search1_leftAll"
-												class="btn btn-block">
-												<i class="glyphicon glyphicon-backward"></i>
-											</button>
-										</div>
+											</div>
 
-										<div class="col-md-5">
-											<select name="to[]" id="search1_to"
-												class="extra_driver form-control" size="3"
-												multiple="multiple"></select>
-										</div>
-										<input type="hidden" name="listExtraDriver"
-											id="listExtraDriver">
-									</div>
-								</div>
-
-
-								<div class="form-group">
-									<div class="row">
-										<div class="col-md-10"></div>
-
-
-										<div class="col-md-2">
-										<input type="hidden" name="priceTicket" id="priceTicket">
-											<button type="submit" class="btn btn-primary"
-												id="bt_continue">
-												Thêm chi tiết <span
-													class="glyphicon glyphicon-chevron-right"
-													aria-hidden="true"></span>
-											</button>
 										</div>
 									</div>
-								</div>
 
+									<label class="control-label">Tài xế</label>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-md-5">
+												<select name="from[]" id="search" class="form-control"
+													size="3" multiple="multiple" style="">
+
+													<%
+														for (Employee emp : listDriver) {
+													%>
+													<option class="option_custom"
+														value="<%=emp.getEmployeeId()%>"
+														style="background-image:url(<%=request.getContextPath()%>/img/avatar.jpg);"><%=emp.getEmployeeName()%></option>
+
+													<%
+														}
+													%>
+												</select>
+
+											</div>
+
+											<div class="col-md-2">
+												<button type="button" id="search_rightAll"
+													class="btn btn-block">
+													<i class="glyphicon glyphicon-forward"></i>
+												</button>
+												<button type="button" id="search_rightSelected"
+													class="btn btn-block">
+													<i class="glyphicon glyphicon-chevron-right"></i>
+												</button>
+												<button type="button" id="search_leftSelected"
+													class="btn btn-block">
+													<i class="glyphicon glyphicon-chevron-left"></i>
+												</button>
+												<button type="button" id="search_leftAll"
+													class="btn btn-block">
+													<i class="glyphicon glyphicon-backward"></i>
+												</button>
+											</div>
+
+											<div class="col-md-5">
+												<select name="to[]" id="search_to"
+													class="driver form-control" size="3" multiple="multiple"></select>
+												<input type="hidden" name="listDriver" id="listDriver">
+											</div>
+										</div>
+									</div>
+
+									<label class="control-label">Phụ xe</label>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-md-5">
+												<select name="from[]" id="search1" class="form-control"
+													size="3" multiple="multiple" style="">
+
+													<%
+														for (Employee emp : listExtraDriver) {
+													%>
+													<option class="option_custom"
+														value="<%=emp.getEmployeeId()%>"
+														style="background-image:url(<%=request.getContextPath()%>/img/avatar.jpg);"><%=emp.getEmployeeName()%></option>
+
+													<%
+														}
+													%>
+												</select>
+											</div>
+
+											<div class="col-md-2">
+												<button type="button" id="search1_rightAll"
+													class="btn btn-block">
+													<i class="glyphicon glyphicon-forward"></i>
+												</button>
+												<button type="button" id="search1_rightSelected"
+													class="btn btn-block">
+													<i class="glyphicon glyphicon-chevron-right"></i>
+												</button>
+												<button type="button" id="search1_leftSelected"
+													class="btn btn-block">
+													<i class="glyphicon glyphicon-chevron-left"></i>
+												</button>
+												<button type="button" id="search1_leftAll"
+													class="btn btn-block">
+													<i class="glyphicon glyphicon-backward"></i>
+												</button>
+											</div>
+
+											<div class="col-md-5">
+												<select name="to[]" id="search1_to"
+													class="extra_driver form-control" size="3"
+													multiple="multiple"></select>
+											</div>
+											<input type="hidden" name="listExtraDriver"
+												id="listExtraDriver">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="row">
+
+											<div class="col-md-6 selectContainer">
+												<label class="control-label">Mở bán vé</label>
+												
+													<div class='input-group date' id='txtNgayMoBan'>
+														<input type='text' class="form-control" name="txtNgayMoBan"/> <span
+															class="input-group-addon"> <span
+															class="glyphicon glyphicon-calendar"></span>
+														</span>
+													</div>
+												
+												<script type="text/javascript">
+            $(function () {
+                $('#txtNgayMoBan').datetimepicker({
+                	format: 'DD-MM-YYYY hh:mm A',
+                });
+            });
+        </script>
+											</div>
+											<div class="col-md-6 selectContainer">
+												<label class="control-label">Đóng bán vé</label>
+												
+													<div class='input-group date' id='txtNgayDongBan'>
+														<input type='text' class="form-control" name="txtNgayDongBan"/> <span
+															class="input-group-addon"> <span
+															class="glyphicon glyphicon-calendar"></span>
+														</span>
+													</div>
+												
+												<script type="text/javascript">
+            $(function () {
+                $('#txtNgayDongBan').datetimepicker({
+                	format: 'DD-MM-YYYY hh:mm A',
+                });
+            });
+        </script>
+											</div>
+
+										</div>
+									</div>
+
+
+
+									<div class="form-group">
+										<div class="row">
+											<div class="col-md-10"></div>
+
+
+											<div class="col-md-2">
+												<input type="hidden" name="priceTicket" id="priceTicket">
+												<button type="submit" class="btn btn-primary"
+													id="bt_continue">
+													Thêm chi tiết <span
+														class="glyphicon glyphicon-chevron-right"
+														aria-hidden="true"></span>
+												</button>
+											</div>
+										</div>
+									</div>
+
+								</div>
 							</div>
-							</div>
-							</form>
-						</div>
-
+						</form>
 					</div>
+
 				</div>
 			</div>
-
-
 		</div>
-		<!--/.main-->
 
 
-		<script
-			src="<%=request.getContextPath()%>/js/admin/jquery-1.11.1.min.js"></script>
-		<script src="<%=request.getContextPath()%>/js/jquery.min.js"></script>
-		<script src="<%=request.getContextPath()%>/js/admin/bootstrap.min.js"></script>
-		<script src="<%=request.getContextPath()%>/js/admin/chart.min.js"></script>
-		<script src="<%=request.getContextPath()%>/js/admin/chart-data.js"></script>
-		<script src="<%=request.getContextPath()%>/js/admin/easypiechart.js"></script>
-		<script
-			src="<%=request.getContextPath()%>/js/admin/easypiechart-data.js"></script>
-		<script
-			src="<%=request.getContextPath()%>/js/admin/bootstrap-datepicker.js"></script>
-		<script
-			src="<%=request.getContextPath()%>/js/admin/bootstrap-table.js"></script>
+	</div>
+	<!--/.main-->
 
-		<script>
+
+	<script
+		src="<%=request.getContextPath()%>/js/admin/jquery-1.11.1.min.js"></script>
+	<script src="<%=request.getContextPath()%>/js/jquery.min.js"></script>
+
+	<script src="<%=request.getContextPath()%>/js/admin/bootstrap.min.js"></script>
+	<script src="<%=request.getContextPath()%>/js/moment-with-locales.js"></script>
+	<script
+		src="<%=request.getContextPath()%>/js/bootstrap-datetimepicker.js"></script>
+	<script src="<%=request.getContextPath()%>/js/admin/chart.min.js"></script>
+	<script src="<%=request.getContextPath()%>/js/admin/chart-data.js"></script>
+	<script src="<%=request.getContextPath()%>/js/admin/easypiechart.js"></script>
+	<script
+		src="<%=request.getContextPath()%>/js/admin/easypiechart-data.js"></script>
+	<script
+		src="<%=request.getContextPath()%>/js/admin/bootstrap-datepicker.js"></script>
+	<script src="<%=request.getContextPath()%>/js/admin/bootstrap-table.js"></script>
+
+	<script>
 		
 		
 			!function($) {

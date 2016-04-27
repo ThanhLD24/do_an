@@ -113,14 +113,15 @@ public class AdminBusController extends HttpServlet {
 			ticket.setTicketSale(sale);
 			ticket.setTicketTax(tax);
 			ticket.setTicketCurrency(Variables.VIET_NAM_DONG); // demo
-			ticket.setTicketStartSellDate("2016-02-20 06:00:00"); // demo
-			ticket.setTicketEndSellDate("2016-09-09 06:00:00"); // demo
+			ticket.setTicketStartSellDate(Utility.parse12HoursTo24HoursTimeAndDate(request.getParameter("txtNgayMoBan").toString())); 
+			ticket.setTicketEndSellDate(Utility.parse12HoursTo24HoursTimeAndDate(request.getParameter("txtNgayDongBan").toString())); 
 
 			/* EmployeeWorking emplWork = new EmployeeWorking(); */
 			// can add employee working HERE
 
 			try {
 				ObjectManager.addObject(ticket);
+				System.out.println("TICKET ID ADDED: "+ticketIdBySession);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

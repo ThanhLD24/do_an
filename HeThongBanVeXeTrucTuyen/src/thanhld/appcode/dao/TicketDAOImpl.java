@@ -20,11 +20,11 @@ public class TicketDAOImpl implements TicketDAO {
 	StringBuilder sqlQuery = null;
 	List<Ticket> listTicket = null;
 	Query query = null;
-
+	String dateTimeNow = null;
 	@Override
 	public List<Ticket> getTicketByCondition(String startPlace, String endPlace, String timeStart) {
 		// TODO Auto-generated method stub
-
+		dateTimeNow = Utility.getDateTimeNow();
 		try {
 			session = HibernateUtils.getSessionFactory().openSession();
 			String date = Utility.parseFormatDate(timeStart);
@@ -45,6 +45,7 @@ public class TicketDAOImpl implements TicketDAO {
 			sqlQuery.append(
 					" AND (SELECT DETAIL_DATE FROM TICKET_DETAIL td WHERE t.TICKET_ID=td.TICKET_ID AND td.PROVINCE_ID= "
 							+ startPlace + " )= '" + date + "'");
+			sqlQuery.append(" AND t.TICKET_START_SELL_DATE<='"+dateTimeNow+"' AND t.TICKET_END_SELL_DATE>='"+dateTimeNow+"' ");
 			System.out.println(sqlQuery.toString());
 			query = session.createSQLQuery(sqlQuery.toString()).addEntity(Ticket.class);
 			listTicket = new ArrayList<Ticket>();
@@ -59,6 +60,7 @@ public class TicketDAOImpl implements TicketDAO {
 	}
 
 	public List<Ticket> getTicketByConditionOnePath(String startPlace, String endPlace, String timeStart) {
+		dateTimeNow = Utility.getDateTimeNow();
 		try{
 		session = HibernateUtils.getSessionFactory().openSession();
 		String date = Utility.parseFormatDate(timeStart);
@@ -78,6 +80,7 @@ public class TicketDAOImpl implements TicketDAO {
 		sqlQuery.append(
 				" AND (SELECT DETAIL_DATE FROM TICKET_DETAIL td WHERE t.TICKET_ID=td.TICKET_ID AND td.PROVINCE_ID= "
 						+ startPlace + " )= '" + date + "'");
+		sqlQuery.append(" AND t.TICKET_START_SELL_DATE<='"+dateTimeNow+"' AND t.TICKET_END_SELL_DATE>='"+dateTimeNow+"' ");
 		System.out.println(sqlQuery.toString());
 		query = session.createSQLQuery(sqlQuery.toString()).addEntity(Ticket.class);
 		listTicket = new ArrayList<Ticket>();

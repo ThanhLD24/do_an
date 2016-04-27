@@ -188,8 +188,9 @@
 									<td></td>
 									<td align="center">
 									<%if(Utility.compareDateTime(t.getTicketEndSellDate())) {%>
-									<h4><span class="label label-default">Hết hạn</span></h4><% } else{%>
-									<h4><span class="label label-success">Đang bán</span></h4><%} %>
+									<h4><span class="label label-default">Hết hạn</span></h4><% } else if(!Utility.compareDateTime(t.getTicketStartSellDate())){%>
+									<h4><span class="label label-warning">Chưa mở bán</span></h4><%} else {%>
+									<h4><span class="label label-success">Đang bán</span></h4><%}%>
 									</td>
 									<td align="center"><p data-placement="top" data-toggle="tooltip"
 											title="Sửa" style="display: inline">
