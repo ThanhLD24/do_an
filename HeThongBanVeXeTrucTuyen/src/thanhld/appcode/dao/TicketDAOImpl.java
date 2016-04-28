@@ -30,10 +30,10 @@ public class TicketDAOImpl implements TicketDAO {
 			String date = Utility.parseFormatDate(timeStart);
 			transaction = session.beginTransaction();
 			sqlQuery = new StringBuilder();
-			sqlQuery.append(" select * from ticket t ");
-			sqlQuery.append(" WHERE T.ROUTE_ID IN (SELECT rd1.ROUTE_ID FROM ROUTE_DETAIL rd1 WHERE rd1.PROVINCE_ID ="
+			sqlQuery.append(" select * from TICKET t ");
+			sqlQuery.append(" WHERE t.ROUTE_ID IN (SELECT rd1.ROUTE_ID FROM ROUTE_DETAIL rd1 WHERE rd1.PROVINCE_ID ="
 					+ endPlace + ") ");
-			sqlQuery.append(" AND T.ROUTE_ID IN (SELECT rd2.ROUTE_ID FROM ROUTE_DETAIL rd2 WHERE rd2.PROVINCE_ID ="
+			sqlQuery.append(" AND t.ROUTE_ID IN (SELECT rd2.ROUTE_ID FROM ROUTE_DETAIL rd2 WHERE rd2.PROVINCE_ID ="
 					+ startPlace + ") ");
 			sqlQuery.append(" AND (SELECT rd3.NUMBERCIAL_ORDER FROM ROUTE_DETAIL rd3 ");
 			sqlQuery.append(" WHERE rd3.ROUTE_ID =t.ROUTE_ID AND rd3.PROVINCE_ID =" + endPlace
@@ -66,10 +66,10 @@ public class TicketDAOImpl implements TicketDAO {
 		String date = Utility.parseFormatDate(timeStart);
 		transaction = session.beginTransaction();
 		sqlQuery = new StringBuilder();
-		sqlQuery.append(" select * from ticket t ");
-		sqlQuery.append(" WHERE T.ROUTE_ID IN (SELECT rd1.ROUTE_ID FROM ROUTE_DETAIL rd1 WHERE rd1.PROVINCE_ID ="
+		sqlQuery.append(" select * from TICKET t ");
+		sqlQuery.append(" WHERE t.ROUTE_ID IN (SELECT rd1.ROUTE_ID FROM ROUTE_DETAIL rd1 WHERE rd1.PROVINCE_ID ="
 				+ endPlace + ") ");
-		sqlQuery.append(" AND T.ROUTE_ID IN (SELECT rd2.ROUTE_ID FROM ROUTE_DETAIL rd2 WHERE rd2.PROVINCE_ID ="
+		sqlQuery.append(" AND t.ROUTE_ID IN (SELECT rd2.ROUTE_ID FROM ROUTE_DETAIL rd2 WHERE rd2.PROVINCE_ID ="
 				+ startPlace + ") ");
 		sqlQuery.append(" AND (SELECT rd3.NUMBERCIAL_ORDER FROM ROUTE_DETAIL rd3 ");
 		sqlQuery.append(" WHERE rd3.ROUTE_ID =t.ROUTE_ID AND rd3.PROVINCE_ID =" + endPlace

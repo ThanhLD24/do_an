@@ -5,9 +5,17 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+       <!-- local config -->
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/bus_managerment?useUnicode=true&amp;characterEncoding=utf8</property>
         <property name="hibernate.connection.username">root</property>
         <property name="connection.password">12345</property>
+        
+        <!-- server config -->
+        <!-- <property name="hibernate.connection.url">jdbc:mysql://mysql32818-duythanhbus.jelastic.skali.net/Bus_Managerment?useUnicode=true&amp;characterEncoding=utf8</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="connection.password">ZZStvo93563</property> -->
+        
+        
         <property name="connection.pool_size">1</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.defaultNChar">true</property>  
