@@ -61,7 +61,6 @@ public class BusController extends HttpServlet {
 	private String user = null;
 	private String pass = null;
 
-	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -69,6 +68,7 @@ public class BusController extends HttpServlet {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public void init() {
 		// reads SMTP server setting from web.xml file
 		ServletContext context = getServletContext();
@@ -81,10 +81,10 @@ public class BusController extends HttpServlet {
 	/**
 	 * @see Servlet#init(ServletConfig)
 	 */
-	/*public void init(ServletConfig config) throws ServletException {
-		// TODO Auto-generated method stub
-	}
-*/
+	/*
+	 * public void init(ServletConfig config) throws ServletException { // TODO
+	 * Auto-generated method stub }
+	 */
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -103,6 +103,7 @@ public class BusController extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		BusStationDAO busStationDAO = new BusStationDAOImpl();
 		RouteDetailDAO routeDetailDAO = new RouteDetailDAOImpl();
+		OrderTicketDAO orderTicketDAO = new OrderTicketDAOImpl();
 		List<List<BusStation>> listOfListBusStation = new ArrayList<>();
 		if (type == 0) {
 			int id = Integer.parseInt(request.getParameter("id").toString());
@@ -224,6 +225,47 @@ public class BusController extends HttpServlet {
 			Gson gson = new Gson();
 			JsonElement element = gson.toJsonTree(listTicketVO, new TypeToken<List<TicketVO>>() {
 			}.getType());
+			JsonArray jsonArray = element.getAsJsonArray();
+			response.setContentType("application/json");
+			response.getWriter().print(jsonArray);
+		}
+		if (type == 4) {
+			int num1;
+			int num2;
+			int num3;
+			int totalOrderTicketUnPaid =0;
+			int totalOrderTicketPaid = 0;
+			int totalOrderTicketReturn = 0;
+			int year = Integer.parseInt(request.getParameter("year").toString());
+			List<Integer> listCountTotalOrderTicketUnPaidInMonth = new ArrayList<Integer>();
+			List<Integer> listCountTotalOrderTicketPaidedInMonth = new ArrayList<Integer>();
+			List<Integer> listCountTotalOrderTicketReturnInMonth = new ArrayList<Integer>();
+			List<Integer> listCountTotalOrderTicketInYear = new ArrayList<Integer>();
+			for(int i=1; i<=12; i++){
+				num1 = orderTicketDAO.getTotalOrderTicketUnPaidInMonthOfYear(i, year);
+				num2 =orderTicketDAO.getTotalOrderTicketPaidedInMonthOfYear(i, year);
+				num3 =orderTicketDAO.getTotalOrderTicketReturnInMonthOfYear(i,year);
+				listCountTotalOrderTicketUnPaidInMonth.add(num1);
+				System.out.println("=====1");
+				listCountTotalOrderTicketPaidedInMonth.add(num2);
+				System.out.println("=====2");
+				listCountTotalOrderTicketReturnInMonth.add(num3);
+				System.out.println("=====3");
+				totalOrderTicketUnPaid+=num1;
+				totalOrderTicketPaid+=num2;
+				totalOrderTicketReturn+=num3;
+				System.out.println("=====4");
+			}
+			listCountTotalOrderTicketInYear.add(totalOrderTicketUnPaid);
+			listCountTotalOrderTicketInYear.add(totalOrderTicketPaid);
+			listCountTotalOrderTicketInYear.add(totalOrderTicketReturn);
+			List<List<Integer>> list = new ArrayList<>();
+			list.add(listCountTotalOrderTicketUnPaidInMonth);
+			list.add(listCountTotalOrderTicketPaidedInMonth);
+			list.add(listCountTotalOrderTicketReturnInMonth);
+			list.add(listCountTotalOrderTicketInYear);
+			Gson gson = new Gson();
+			JsonElement element = gson.toJsonTree(list, new TypeToken<List<List<Integer>>>() {}.getType());
 			JsonArray jsonArray = element.getAsJsonArray();
 			response.setContentType("application/json");
 			response.getWriter().print(jsonArray);
@@ -446,9 +488,11 @@ public class BusController extends HttpServlet {
 					String recipient = email;
 					String subject = "Xac nhan dat ve xe khach tai DuyThanhBus.vn";
 					StringBuilder content = new StringBuilder();
-					content.append("<h4>Ma dat ve cua quy khach la: <b>" + orderTicket.getOrderTicketId()+"</b><br/></h4>");
+					content.append(
+							"<h4>Ma dat ve cua quy khach la: <b>" + orderTicket.getOrderTicketId() + "</b><br/></h4>");
 					content.append("<div><h4> Quy khach vui long thanh toan truoc: ...</h4></div>");
-					content.append("<div><h4> Vui long vao <a href='http://duythanhbus.vn:9999/HeThongBanVeXeTrucTuyen/check'>DAY</a> de kiem tra thong tin ve da dat!</h4></div>");
+					content.append(
+							"<div><h4> Vui long vao <a href='http://duythanhbus.vn:9999/HeThongBanVeXeTrucTuyen/check'>DAY</a> de kiem tra thong tin ve da dat!</h4></div>");
 					content.append("<div><h4> Xin cam on quy khach da su dung dich vu!</h4></div>");
 					try {
 						Utility.sendEmail(host, port, user, pass, recipient, subject, content.toString());
@@ -510,12 +554,13 @@ public class BusController extends HttpServlet {
 			try {
 				orderTicket = orderDAO.getOrderTicketByCondition(request.getParameter("txtOrderTicketId").toString(),
 						request.getParameter("txtInfo").toString().trim());
-				seatOrder = seatOrderDAO.getSeatOrderByOrderTicket(request.getParameter("txtOrderTicketId").toString().trim());
+				seatOrder = seatOrderDAO
+						.getSeatOrderByOrderTicket(request.getParameter("txtOrderTicketId").toString().trim());
 
 				List<Integer> listThuTu = Utility.layMinMaxThuTuDiemDung(seatOrder.getRoutes());
-				/*for (Integer i : listThuTu) {
-					System.out.print(i + "==");
-				}*/
+				/*
+				 * for (Integer i : listThuTu) { System.out.print(i + "=="); }
+				 */
 				ticket = (Ticket) (ObjectManager.getObjectById(orderTicket.getTicketId(), Ticket.class));
 				RouteDetail routeDetailOrigin = routeDetailDAO.getRouteDetailWithNumberOrder(ticket.getRouteId(),
 						listThuTu.get(0));

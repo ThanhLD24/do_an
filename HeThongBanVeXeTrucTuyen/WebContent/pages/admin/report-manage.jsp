@@ -154,32 +154,72 @@
 				<div class="panel-body tabs">
 
 					<ul class="nav nav-pills">
-						<li class="active"><a href="#pilltab1" data-toggle="tab">Biểu đồ thống kê</a></li>
-						<li><a href="#pilltab2" data-toggle="tab">Báo cáo thống kê</a></li>
+						<li class="active"><a href="#pilltab1" data-toggle="tab">Biểu
+								đồ thống kê</a></li>
+						<li><a href="#pilltab2" data-toggle="tab">Báo cáo thống
+								kê</a></li>
 					</ul>
 
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="pilltab1">
-							<h4>Tab 1</h4>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Donec eget rutrum purus. Donec hendrerit ante ac metus sagittis
-								elementum. Mauris feugiat nisl sit amet neque luctus, a
-								tincidunt odio auctor.</p>
+							<div class="form-group">
+								<div class="row">
+
+
+									<div class="col-md-4 selectContainer">
+
+										<label class="control-label">Chọn năm</label> <select
+											id="txtYear" name="txtYear" class="form-control">
+											<option value="2016">2016</option>
+											<option value="2015">2015</option>
+											<option value="2014">2014</option>
+										</select>
+										<button class="btn btn-primary" id="btCreate" name="btCreate"
+											value="Tạo biểu đồ" style="margin-top: 10px;">
+											Tạo biểu đồ <span class="glyphicon glyphicon-stats"
+												aria-hidden="true"></span>
+										</button>
+									</div>
+									<div class="col-md-8 selectContainer"></div>
+								</div>
+							</div>
+
+							<div class="form-group">
+
+								<div class="row">
+									<div class="col-md-12">
+										<div id="container1"
+											style="min-width: 310px; height: 400px; margin: 0 auto">
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="row">
+									<div class="col-md-6">
+										<div id="pie"
+											style="min-width: 200px; height: 400px; max-width: 700px; margin: 0 auto"></div>
+									</div>
+									<div class="col-md-6">
+										<div id="pie1"
+											style="min-width: 200px; height: 400px; max-width: 700px; margin: 0 auto"></div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="tab-pane fade" id="pilltab2">
-							<h4>Tab 2</h4>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Donec eget rutrum purus. Donec hendrerit ante ac metus sagittis
-								elementum. Mauris feugiat nisl sit amet neque luctus, a
-								tincidunt odio auctor.</p>
-						</div>
+					</div>
+					<div class="tab-pane fade" id="pilltab2">
+						<p>Báo cáo thống kê hiện đang được phát triển</p>
 
 					</div>
 				</div>
+
 			</div>
-			<!--/.panel-->
 		</div>
-		<!--/.row-->
+		<!--/.panel-->
+	</div>
+	<!--/.row-->
 
 
 
@@ -200,7 +240,8 @@
 	<script
 		src="<%=request.getContextPath()%>/js/admin/bootstrap-datepicker.js"></script>
 	<script src="<%=request.getContextPath()%>/js/admin/bootstrap-table.js"></script>
-
+	<script src="<%=request.getContextPath()%>/js/highcharts.js"></script>
+	<script src="<%=request.getContextPath()%>/js/exporting.js"></script>
 	<script>
 		!function($) {
 			$(document)
@@ -227,23 +268,174 @@
 		$(document)
 				.ready(
 						function() {
-	<%try {
+							
+							$('#btCreate').click(function(){
+							var year = $('#txtYear').val();
+							$.ajax({
+							     url:'<%=request.getContextPath()%>/BusController?type=4',
+															data : {
+																year : year
+															},
+															success : function(
+																	data_total) {
+																$('#container1')
+																		.highcharts(
+																				{
+																					chart : {
+																						type : 'column'
+																					},
+																					colors: ['#f7ff1c','#36a53a' ,'#7530FF'],
+																					title : {
+																						text : 'Thống kê vé bán theo tháng'
+																					},
+																					subtitle : {
+																						text : ''
+																					},
+																					xAxis : {
+																						categories : [
+																								'Tháng 1',
+																								'Tháng 2',
+																								'Tháng 3',
+																								'Tháng 4',
+																								'Tháng 5',
+																								'Tháng 6',
+																								'Tháng 7',
+																								'Tháng 8',
+																								'Tháng 9',
+																								'Tháng 10',
+																								'Tháng 11',
+																								'Tháng 12' ],
+																						crosshair : false
+																					},
+																					yAxis : {
+																						min : 0,
+																						title : {
+																							text : 'Tổng vé'
+																						}
+																					},
+																					tooltip : {
+																						headerFormat : '<span style="font-size:10px">{point.key}</span><table>',
+																						pointFormat : '<tr><td style="color:{series.color};padding:0">{series.name}: </td>'
+																								+ '<td style="padding:0"><b>{point.y} vé</b></td></tr>',
+																						footerFormat : '</table>',
+																						shared : true,
+																						useHTML : true
+																					},
+																					plotOptions : {
+																						column : {
+																							pointPadding : 0.2,
+																							borderWidth : 0
+																						}
+																					},
+																					series : [
+																							{
+																								name : 'Số vé đặt chưa thanh toán',
+																								data : data_total[0]
 
-				if (Integer.parseInt(request.getAttribute("add-detail-schedule-success").toString()) == 1) {%>
-		$("#message").addClass("in");
-							$('#message').fadeIn(700);
-							$("#message").css({
-								'display' : 'block'
-							});
+																							},
+																							{
+																								name : 'Số vé đã thanh toán',
+																								data : data_total[1]
 
-							$('#close_message').click(function() {
-								$('#message').fadeOut(700);
-							});
-	<%}
-			} catch (Exception e) {
-				e.getMessage();
-			}%>
-		});
+																							},
+																							{
+																								name : 'Số vé bị trả lại',
+																								data : data_total[2]
+
+																							} ]
+																				});
+
+																$('#pie')
+																		.highcharts(
+																				{
+																					chart : {
+																						plotBackgroundColor : null,
+																						plotBorderWidth : null,
+																						plotShadow : false,
+																						type : 'pie'
+																					},
+																					colors: ['#f7ff1c','#36a53a','#7530FF'],
+																					title : {
+																						text : 'Thống kê vé bán theo năm'
+																					},
+																					tooltip : {
+																						pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+																					},
+																					plotOptions : {
+																						pie : {
+																							allowPointSelect : true,
+																							cursor : 'pointer',
+																							dataLabels : {
+																								enabled : false
+																							},
+																							showInLegend : true
+																						}
+																					},
+																					series : [ {
+																						name : 'Chiếm',
+																						colorByPoint : true,
+																						data : [
+																								{
+																									name : 'Số vé đặt chưa thanh toán',
+																									y : data_total[3][0]
+																								},
+																								{
+																									name : 'Số vé đã thanh toán',
+																									y : data_total[3][1],
+
+																								},
+																								{
+																									name : 'Số vé bị trả lại',
+																									y : data_total[3][2]
+																								} ]
+																					} ]
+																				});
+
+																$('#pie1')
+																		.highcharts(
+																				{
+																					chart : {
+																						plotBackgroundColor : null,
+																						plotBorderWidth : null,
+																						plotShadow : false,
+																						type : 'pie'
+																					},
+																					colors: ['#ef3700', '#f7ff1c'],
+																					title : {
+																						text : 'Thống kê doanh thu theo năm'
+																					},
+																					tooltip : {
+																						pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+																					},
+																					plotOptions : {
+																						pie : {
+																							allowPointSelect : true,
+																							cursor : 'pointer',
+																							dataLabels : {
+																								enabled : false
+																							},
+																							showInLegend : true
+																						}
+																					},
+																					series : [ {
+																						name : 'Chiếm',
+																						colorByPoint : true,
+																						data : [
+																								{
+																									name : 'Tổng số tiền thu được từ bán vé',
+																									y : data_total[3][0]
+																								},
+																								{
+																									name : 'Tổng số tiền thu được từ trả vé',
+																									y : data_total[3][1],
+
+																								} ]
+																					} ]
+																				});
+															}
+														});
+											});
+						});
 	</script>
 </body>
 </html>

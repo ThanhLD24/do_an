@@ -5,7 +5,10 @@ package thanhld.appcode.valueobject;
  * 28/04/2016
  */
 public class ServerInfo {
-	/* info to config project in server */
+	/* info to config project in server 
+	 * choose server tomcat 8
+	 * mysql 5.6
+	 * */
 	private static String SERVER_NAME = "https://app.jelastic.skali.net/";
 	private static String HOST_NAME = "http://duythanhbus.jelastic.skali.net";
 	private static String USER_NAME = "koy.zinzin.0204@gmail.com";
