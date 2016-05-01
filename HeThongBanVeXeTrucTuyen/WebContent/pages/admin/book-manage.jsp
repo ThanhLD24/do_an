@@ -44,7 +44,7 @@
 		request.setAttribute("error_message", 2);
 		dispatcher = request.getRequestDispatcher("/admin/login");
 		dispatcher.forward(request, response);
-	} else if (Integer.parseInt(session.getAttribute("permit").toString()) == Variables.BOOKER) {
+	} else if (Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN_BOOKER || Integer.parseInt(session.getAttribute("permit").toString()) == Variables.FULL_CONTROL) {
 		account = (Account) session.getAttribute("account");
 		employee = (Employee) ObjectManager.getObjectById(account.getEmployeeId(), Employee.class);
 	} else {
@@ -118,18 +118,22 @@
 			<li><a href="<%=request.getContextPath()%>/admin/bus"><i
 					class="uk-icon-bus" style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp;
 					Quản lý Xe lưu hành</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/account"><i
-					class="uk-icon-users" style="font-size: 15px"></i>
-					&nbsp;&nbsp;&nbsp; Quản lý Tài khoản</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/report"><i
-					class="uk-icon-line-chart" style="font-size: 15px"></i>
-					&nbsp;&nbsp;&nbsp; Quản lý Báo cáo</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/feedback"><i class="uk-icon-envelope-o"
+					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý phản hồi</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/report"><i class="uk-icon-line-chart"
+					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Báo cáo</a></li>
+			
+			<li><a href="<%=request.getContextPath()%>/admin/employee"><i class="uk-icon-user-plus"
+					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý nhân viên</a></li>
+			<li ><a href="<%=request.getContextPath()%>/admin/account"><i class="uk-icon-users"
+					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài khoản</a></li>
+			
 
 
 			<li role="presentation" class="divider"></li>
-			<li><a href="login.html"><svg
+			<!-- <li><a href="login.html"><svg
 						class="glyph stroked male-user"> <use
-						xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
+						xlink:href="#stroked-male-user"></use></svg> Login Page</a></li> -->
 		</ul>
 
 	</div>
@@ -205,17 +209,17 @@
 									<td><%=Utility.parseToDateFormat1(orderTicket.getOrderTicketTime())%></td>
 									<td align="center">
 										<%
-											if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())) {
+											if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())&& (("").equals(orderTicket.getOrderTicketPaidDate())) ) {
 										%>
 										<h4>
 											<span class="label label-danger">Hết hạn</span>
 										</h4> <%
- 	} else if (("").equals(orderTicket.getOrderTicketPaidDate())) {
+ 	} else if (("").equals(orderTicket.getOrderTicketPaidDate())&& !Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())) {
  %>
 										<h4>
 											<span class="label label-warning">Chưa thanh toán</span>
 										</h4> <%
- 	} else {
+ 	} else if (!("").equals(orderTicket.getOrderTicketPaidDate())){
  %>
 										<h4>
 											<span class="label label-success">Đã thanh toán</span>
@@ -228,14 +232,14 @@
 											data-toggle="tooltip" title="Cập nhật"
 											style="display: inline">
 											<button class="btn btn-primary btn-xs" data-title="Edit"
-												data-toggle="modal" data-target="#edit<%=orderTicketId %>" style="height: 22px" <%if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())) {%>disabled="disabled" <%}%>>
+												data-toggle="modal" data-target="#edit<%=orderTicketId %>" style="height: 22px" <%if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())&& (("").equals(orderTicket.getOrderTicketPaidDate())) )  {%>disabled="disabled" <%}%>>
 												<span class="glyphicon glyphicon-pencil"></span>
 											</button>
 										</p> <p data-placement="top" data-toggle="tooltip" title="Thanh toán"
 											style="display: inline">
 											<button class="btn btn-danger btn-xs" data-title="Thanh toán"
 												data-toggle="modal" data-target="#pay<%=orderTicketId %>"
-												style="height: 22px" <%if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())||(!("").equals(orderTicket.getOrderTicketPaidDate()))) {%>disabled="disabled" <%}%>>
+												style="height: 22px" <%if (!("").equals(orderTicket.getOrderTicketPaidDate()) || (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())&& (("").equals(orderTicket.getOrderTicketPaidDate())) )) {%>disabled="disabled" <%}%>>
 												<span class="glyphicon glyphicon-shopping-cart"></span>
 											</button>
 										</p>
@@ -244,7 +248,7 @@
 											style="display: inline">
 											<button class="btn btn-warning btn-xs" data-title="Hủy vé"
 												data-toggle="modal" data-target="#cancel<%=orderTicketId %>"
-												style="height: 22px" <%if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())||(("").equals(orderTicket.getOrderTicketPaidDate()))) {%>disabled="disabled" <%}%>>
+												style="height: 22px" <%if ((("").equals(orderTicket.getOrderTicketPaidDate())&& !Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime()))||(Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())&& (("").equals(orderTicket.getOrderTicketPaidDate())) )) {%>disabled="disabled" <%}%>>
 												<span class="glyphicon glyphicon-new-window"></span>
 											</button>
 										</p>

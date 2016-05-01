@@ -66,13 +66,7 @@
 <link rel='stylesheet prefetch'
 	href='<%=request.getContextPath()%>/css/bootstrapValidator.min.css'>
 
-<style>
-#success_message {
-	display: none;
-}
 
-/*  .hide { position:absolute; top:-1px; left:-1px; width:1px; height:1px; } */
-</style>
 </head>
 <iframe name="hiddenFrame" class="hide"></iframe>
 <body style="margin-bottom: 139px;">

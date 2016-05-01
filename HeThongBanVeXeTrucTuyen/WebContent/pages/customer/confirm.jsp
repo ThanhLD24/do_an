@@ -169,6 +169,11 @@
 														<td><%=orderTicket.getOrderTicketTime()%></td>
 													</tr>
 													<tr>
+														<td class="text-label">Hạn thanh toán</td>
+														<td><%=session.getAttribute("expiredTime")%></td>
+													</tr>
+													
+													<tr>
 														<td class="text-label">Họ và Tên:</td>
 														<td><%=orderTicket.getPassengerName()%></td>
 													</tr>

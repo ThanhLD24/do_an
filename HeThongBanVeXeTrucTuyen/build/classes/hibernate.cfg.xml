@@ -11,7 +11,7 @@
         <property name="connection.password">12345</property>
         
         <!-- server config -->
-        <!-- <property name="hibernate.connection.url">jdbc:mysql://mysql32818-duythanhbus.jelastic.skali.net/Bus_Managerment?useUnicode=true&amp;characterEncoding=utf8</property>
+       <!--  <property name="hibernate.connection.url">jdbc:mysql://mysql32818-duythanhbus.jelastic.skali.net/bus_managerment?useUnicode=true&amp;characterEncoding=utf8</property>
         <property name="hibernate.connection.username">root</property>
         <property name="connection.password">ZZStvo93563</property> -->
         

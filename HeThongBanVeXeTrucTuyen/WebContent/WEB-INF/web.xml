@@ -230,8 +230,25 @@
 		<url-pattern>/admin/route</url-pattern>
 	</servlet-mapping>
 
-	<!-- home.jsp -->
-	<!-- home.jsp -->
+	<!-- feedback-manager.jsp -->
+	<servlet>
+		<servlet-name>feedback-manager</servlet-name>
+		<jsp-file>/pages/admin/feedback-manager.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>feedback-manager</servlet-name>
+		<url-pattern>/admin/feedback</url-pattern>
+	</servlet-mapping>
+	
+	<!-- employee-manager.jsp -->
+	<servlet>
+		<servlet-name>employee-manager</servlet-name>
+		<jsp-file>/pages/admin/employee-manager.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>employee-manager</servlet-name>
+		<url-pattern>/admin/employee</url-pattern>
+	</servlet-mapping>
 	<!-- home.jsp -->
 
 

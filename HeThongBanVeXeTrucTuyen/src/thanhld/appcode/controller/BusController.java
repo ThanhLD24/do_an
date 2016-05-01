@@ -438,6 +438,7 @@ public class BusController extends HttpServlet {
 			/* end ham check */
 
 			if (!checkSeat) {
+				String expiredTime = Utility.getExpiredDate();
 				TicketDetail ticketDetail = ticketDetailDAO.getTicketDetailByTicketId(ticketId);
 				sessionShortId = session.getId().substring(0, 6);
 
@@ -454,17 +455,19 @@ public class BusController extends HttpServlet {
 				orderTicket.setOrderTicketTotalSeat(Integer.parseInt(session.getAttribute("seatCount").toString()));
 				orderTicket.setOrderTicketTotalPrice(session.getAttribute("totalMoney").toString());
 				orderTicket.setOrderTicketTime(Utility.getDateTimeNow());
-				orderTicket
-						.setOrderTicketExpiredTime(ticketDetail.getDetailDate() + " " + ticketDetail.getDetailTime());
+				/*orderTicket
+						.setOrderTicketExpiredTime(ticketDetail.getDetailDate() + " " + ticketDetail.getDetailTime());*/
+				orderTicket.setOrderTicketExpiredTime(expiredTime);
 				orderTicket.setOrderTicketPaidDate(""); // hien tai dang set
 														// cung
-														// ngay thanh toan = ""
+														// ngay thanh toan = "" vi thanh toan sau
 				orderTicket.setOrderTicketStatus(true);
 				orderTicket.setOrderTicketOther(notes);
 
 				try {
 					ObjectManager.addObject((Object) orderTicket);
 					session.setAttribute("orderTicket", orderTicket);
+					session.setAttribute("expiredTime", expiredTime);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					pageForward = "/error_book";
@@ -490,7 +493,7 @@ public class BusController extends HttpServlet {
 					StringBuilder content = new StringBuilder();
 					content.append(
 							"<h4>Ma dat ve cua quy khach la: <b>" + orderTicket.getOrderTicketId() + "</b><br/></h4>");
-					content.append("<div><h4> Quy khach vui long thanh toan truoc: ...</h4></div>");
+					content.append("<div><h4> Quy khach vui long thanh toan truoc: <b>"+expiredTime+"</b>, qua han ve se tu huy!</h4></div>");
 					content.append(
 							"<div><h4> Vui long vao <a href='http://duythanhbus.vn:9999/HeThongBanVeXeTrucTuyen/check'>DAY</a> de kiem tra thong tin ve da dat!</h4></div>");
 					content.append("<div><h4> Xin cam on quy khach da su dung dich vu!</h4></div>");
@@ -528,7 +531,7 @@ public class BusController extends HttpServlet {
 			email = request.getParameter("email");
 			String phone = request.getParameter("phone");
 			String comment = request.getParameter("comment");
-			Feedback feedback = new Feedback(title, comment, name, email, phone);
+			Feedback feedback = new Feedback(title, comment, name, email, phone, Utility.getDateTimeNow(), Variables.VALID);
 			try {
 				ObjectManager.addObject(feedback);
 				check = "success";

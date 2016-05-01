@@ -19,6 +19,7 @@ import thanhld.appcode.dao.AccountDAOImpl;
 import thanhld.appcode.model.Account;
 import thanhld.appcode.model.CancelOrderTicket;
 import thanhld.appcode.model.EmployeeWorking;
+import thanhld.appcode.model.Feedback;
 import thanhld.appcode.model.OrderTicket;
 import thanhld.appcode.model.Province;
 import thanhld.appcode.model.Ticket;
@@ -81,6 +82,7 @@ public class AdminBusController extends HttpServlet {
 		String oId = null;
 		OrderTicket orderTicket = null;
 		CancelOrderTicket cancelOrderTicket = null;
+		Feedback feedback = null;
 		List<Province> listProvince = new ArrayList<Province>();
 		String ticketIdBySession = null;
 		String listDriver = null;
@@ -341,6 +343,30 @@ public class AdminBusController extends HttpServlet {
 			request.setAttribute("mess", "Trả vé");
 			dispatcher = request.getRequestDispatcher("/admin/book");
 			dispatcher.forward(request, response);
+			break;
+		case Variables.MARK_READED:
+			feedback = (Feedback) ObjectManager.getObjectById(Integer.parseInt(request.getParameter("txtFeedbackId")), Feedback.class);
+			feedback.setMarkSpam(Variables.READED);
+			try{
+				ObjectManager.update(feedback);
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+				
+			}
+			response.sendRedirect(request.getContextPath()+"/admin/feedback");
+			break;
+		case Variables.MARK_SPAM:
+			feedback = (Feedback) ObjectManager.getObjectById(Integer.parseInt(request.getParameter("txtFeedbackId")), Feedback.class);
+			feedback.setMarkSpam(Variables.SPAM);
+			try{
+				ObjectManager.update(feedback);
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+				
+			}
+			response.sendRedirect(request.getContextPath()+"/admin/feedback");
 			break;
 		}
 

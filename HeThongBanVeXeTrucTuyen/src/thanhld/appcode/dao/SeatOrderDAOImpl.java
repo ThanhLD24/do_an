@@ -35,7 +35,8 @@ public class SeatOrderDAOImpl implements SeatOrderDAO {
 				sqlQuery.append(" OR ROUTES LIKE '%" + listChang.get(i) + "%' ");
 			}
 			sqlQuery.append(" ) ");
-			sqlQuery.append(" AND ORDER_TICKET_ID NOT IN (SELECT ORDER_TICKET_ID FROM ORDER_TICKET WHERE ORDER_TICKET_STATUS =0)");//lay nhung ve co trang thai != -> chua huy ve
+			sqlQuery.append(" AND ORDER_TICKET_ID NOT IN (SELECT ORDER_TICKET_ID FROM ORDER_TICKET WHERE ORDER_TICKET_STATUS =0 OR (ORDER_TICKET_EXPIRED_TIME < NOW() AND ORDER_TICKET_PAIDDATE = ''))");
+			//lay nhung ve co trang thai != 0 -> chua huy ve va nhung ve chua het han time hien tai > time het han
 			System.out.println(sqlQuery.toString());
 			query = session.createSQLQuery(sqlQuery.toString()).addEntity(SeatOrder.class);
 			listSeatOrder = query.list();
@@ -69,12 +70,12 @@ public class SeatOrderDAOImpl implements SeatOrderDAO {
 		return seatOrder;
 	}
 
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		SeatOrderDAOImpl sc = new SeatOrderDAOImpl();
 		for (SeatOrder so : sc.getSeatOrderByCondition("ABCKA1", 1, 2)) {
 			System.out.println(so.getSeat());
 		}
 		System.out.println(sc.getSeatOrderByOrderTicket("0D024B"));
-	}*/
+	}
 
 }

@@ -33,13 +33,23 @@ public class Variables {
 	public static final int ADD_ACCOUNT = 25;
 	public static final int CHECK_ORDER = 26;
 	public static final int REFUND_TICKET = 27;
+
+	public static final int CAL_REPORT = 28;
 	
-	public static final int CAL_REPORT =28;
+	public static final int MARK_SPAM = 29;
+	public static final int MARK_READED = 30;
 	/* Phan quyen */
-	public static final int ADMIN = 1;
-	public static final int BOOKER = 2;
+	public static final int ADMIN_SYSTEM = 1;
+	public static final int ADMIN_BOOKER = 2;
+	public static final int ADMIN_MANAGER = 3;
+	public static final int FULL_CONTROL = 4;
 
 	/* Thong bao dat ghe */
 	public static final int SEAT_FAIL = 0;
 	public static final int SEAT_SUCCESS = 1;
+
+	public static final int VALID = 1;
+	public static final int INVALID = 0;
+	public static final int READED = 2;
+	public static final int SPAM = 0;
 }

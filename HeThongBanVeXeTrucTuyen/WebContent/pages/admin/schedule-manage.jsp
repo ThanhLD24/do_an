@@ -48,12 +48,10 @@
 		request.setAttribute("error_message", 2);
 		dispatcher = request.getRequestDispatcher("/admin/login");
 		dispatcher.forward(request, response);
-	} 
-	else if(Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN){
+	} else if (Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN_MANAGER || Integer.parseInt(session.getAttribute("permit").toString()) == Variables.FULL_CONTROL) {
 		account = (Account) session.getAttribute("account");
 		employee = (Employee) ObjectManager.getObjectById(account.getEmployeeId(), Employee.class);
-	}
-	else {
+	} else {
 		dispatcher = request.getRequestDispatcher("/admin/error");
 		dispatcher.forward(request, response);
 	}
@@ -116,16 +114,22 @@
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Điểm dừng</a></li>
 			<li><a href="<%=request.getContextPath()%>/admin/bus"><i class="uk-icon-bus"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Xe lưu hành</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/account"><i class="uk-icon-users"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài khoản</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/feedback"><i class="uk-icon-envelope-o"
+					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý phản hồi</a></li>
 			<li><a href="<%=request.getContextPath()%>/admin/report"><i class="uk-icon-line-chart"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Báo cáo</a></li>
+			
+			<li><a href="<%=request.getContextPath()%>/admin/employee"><i class="uk-icon-user-plus"
+					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý nhân viên</a></li>
+			<li ><a href="<%=request.getContextPath()%>/admin/account"><i class="uk-icon-users"
+					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài khoản</a></li>
+			
 
 
 			<li role="presentation" class="divider"></li>
-			<li><a href="login.html"><svg
+			<!-- <li><a href="login.html"><svg
 						class="glyph stroked male-user"> <use
-						xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
+						xlink:href="#stroked-male-user"></use></svg> Login Page</a></li> -->
 		</ul>
 
 	</div>
@@ -188,8 +192,8 @@
 									<td></td>
 									<td align="center">
 									<%if(Utility.compareDateTime(t.getTicketEndSellDate())) {%>
-									<h4><span class="label label-default">Hết hạn</span></h4><% } else if(!Utility.compareDateTime(t.getTicketStartSellDate())){%>
-									<h4><span class="label label-warning">Chưa mở bán</span></h4><%} else {%>
+									<h4><span class="label label-default">Hết hạn</span></h4><% }  if(!Utility.compareDateTime(t.getTicketStartSellDate())){%>
+									<h4><span class="label label-warning">Chưa mở bán</span></h4><%}  if(Utility.compareDateTime(t.getTicketStartSellDate()) && !Utility.compareDateTime(t.getTicketEndSellDate()) ) {%>
 									<h4><span class="label label-success">Đang bán</span></h4><%}%>
 									</td>
 									<td align="center"><p data-placement="top" data-toggle="tooltip"

@@ -37,6 +37,12 @@ public class Feedback implements Serializable{
 	@Column(name = "FEEDBACK_PERSON_PHONE")
 	private String feedbackPersonPhone;
 
+	@Column(name = "FEEDBACK_DATE")
+	private String feedbackDate;
+	
+	@Column(name = "MARK_SPAM")
+	private Integer markSpam;
+
 	public Integer getFeedbackId() {
 		return feedbackId;
 	}
@@ -85,8 +91,37 @@ public class Feedback implements Serializable{
 		this.feedbackPersonPhone = feedbackPersonPhone;
 	}
 
+	
+	public String getFeedbackDate() {
+		return feedbackDate;
+	}
+
+	public void setFeedbackDate(String feedbackDate) {
+		this.feedbackDate = feedbackDate;
+	}
+
+	public Integer getMarkSpam() {
+		return markSpam;
+	}
+
+	public void setMarkSpam(Integer markSpam) {
+		this.markSpam = markSpam;
+	}
+
+	public Feedback(String feedbackTitle, String feedbackContent, String feedbackPersonName, String feedbackPersonEmail,
+			String feedbackPersonPhone, String feedbackDate, Integer markSpam) {
+		super();
+		this.feedbackTitle = feedbackTitle;
+		this.feedbackContent = feedbackContent;
+		this.feedbackPersonName = feedbackPersonName;
+		this.feedbackPersonEmail = feedbackPersonEmail;
+		this.feedbackPersonPhone = feedbackPersonPhone;
+		this.feedbackDate = feedbackDate;
+		this.markSpam = markSpam;
+	}
+
 	public Feedback(Integer feedbackId, String feedbackTitle, String feedbackContent, String feedbackPersonName,
-			String feedbackPersonEmail, String feedbackPersonPhone) {
+			String feedbackPersonEmail, String feedbackPersonPhone, String feedbackDate, Integer markSpam) {
 		super();
 		this.feedbackId = feedbackId;
 		this.feedbackTitle = feedbackTitle;
@@ -94,16 +129,8 @@ public class Feedback implements Serializable{
 		this.feedbackPersonName = feedbackPersonName;
 		this.feedbackPersonEmail = feedbackPersonEmail;
 		this.feedbackPersonPhone = feedbackPersonPhone;
-	}
-
-	public Feedback(String feedbackTitle, String feedbackContent, String feedbackPersonName, String feedbackPersonEmail,
-			String feedbackPersonPhone) {
-		super();
-		this.feedbackTitle = feedbackTitle;
-		this.feedbackContent = feedbackContent;
-		this.feedbackPersonName = feedbackPersonName;
-		this.feedbackPersonEmail = feedbackPersonEmail;
-		this.feedbackPersonPhone = feedbackPersonPhone;
+		this.feedbackDate = feedbackDate;
+		this.markSpam = markSpam;
 	}
 
 	public Feedback() {

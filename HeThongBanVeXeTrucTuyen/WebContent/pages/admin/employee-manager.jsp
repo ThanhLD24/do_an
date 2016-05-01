@@ -31,7 +31,7 @@
 		request.setAttribute("error_message", 2);
 		dispatcher = request.getRequestDispatcher("/admin/login");
 		dispatcher.forward(request, response);
-	} else if (Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN_MANAGER || Integer.parseInt(session.getAttribute("permit").toString()) == Variables.FULL_CONTROL) {
+	} else if (Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN_SYSTEM || Integer.parseInt(session.getAttribute("permit").toString()) == Variables.FULL_CONTROL) {
 		account = (Account) session.getAttribute("account");
 		employee = (Employee) ObjectManager.getObjectById(account.getEmployeeId(), Employee.class);
 	} else {
@@ -95,14 +95,14 @@
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài xế </a></li>
 			<li><a href="<%=request.getContextPath()%>/admin/bus-station"><i class="uk-icon-street-view"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Điểm dừng</a></li>
-			<li class="active"><a href="<%=request.getContextPath()%>/admin/bus"><i class="uk-icon-bus"
+			<li><a href="<%=request.getContextPath()%>/admin/bus"><i class="uk-icon-bus"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Xe lưu hành</a></li>
 			<li><a href="<%=request.getContextPath()%>/admin/feedback"><i class="uk-icon-envelope-o"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý phản hồi</a></li>
 			<li><a href="<%=request.getContextPath()%>/admin/report"><i class="uk-icon-line-chart"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Báo cáo</a></li>
 			
-			<li><a href="<%=request.getContextPath()%>/admin/employee"><i class="uk-icon-user-plus"
+			<li class="active"><a href="<%=request.getContextPath()%>/admin/employee"><i class="uk-icon-user-plus"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý nhân viên</a></li>
 			<li ><a href="<%=request.getContextPath()%>/admin/account"><i class="uk-icon-users"
 					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài khoản</a></li>
@@ -123,7 +123,7 @@
 			<ol class="breadcrumb">
 				<li><a href="#"><svg class="glyph stroked home"> <use
 							xlink:href="#stroked-home"></use></svg></a></li>
-				<li class="active">Quản lý xe lưu hành</li>
+				<li class="active">Quản lý nhân viên</li>
 			</ol>
 		</div>
 		<!--/.row-->

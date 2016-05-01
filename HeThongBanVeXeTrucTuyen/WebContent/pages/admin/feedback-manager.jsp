@@ -1,4 +1,5 @@
-<%@page import="thanhld.appcode.model.CancelOrderTicket"%>
+<%@page import="thanhld.appcode.model.Feedback"%>
+<%@page import="thanhld.appcode.model.Permit"%>
 <%@page import="thanhld.appcode.dao.OrderTicketDAO"%>
 <%@page import="thanhld.appcode.dao.OrderTicketDAOImpl"%>
 <%@page import="thanhld.appcode.dao.SeatOrderDAOImpl"%>
@@ -35,7 +36,7 @@
 	href="<%=request.getContextPath()%>/css/uikit.min.css">
 <!--Icons-->
 <script src="<%=request.getContextPath()%>/js/admin/lumino.glyphs.js"></script>
-<title>Quản lý Vé đặt</title>
+<title>Quản lý Phản hồi</title>
 
 <%
 	RequestDispatcher dispatcher = null;
@@ -45,7 +46,8 @@
 		request.setAttribute("error_message", 2);
 		dispatcher = request.getRequestDispatcher("/admin/login");
 		dispatcher.forward(request, response);
-	} else if (Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN_BOOKER || Integer.parseInt(session.getAttribute("permit").toString()) == Variables.FULL_CONTROL) {
+	} else if (Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN_MANAGER
+			|| Integer.parseInt(session.getAttribute("permit").toString()) == Variables.FULL_CONTROL) {
 		account = (Account) session.getAttribute("account");
 		employee = (Employee) ObjectManager.getObjectById(account.getEmployeeId(), Employee.class);
 	} else {
@@ -100,8 +102,7 @@
 			<li><a href="<%=request.getContextPath()%>/admin/book"><i
 					class="uk-icon-list-alt" style="font-size: 15px"></i>
 					&nbsp;&nbsp;&nbsp; Quản lý Vé đặt</a></li>
-			<li class="active"><a
-				href="<%=request.getContextPath()%>/admin/cancel-book"><i
+			<li><a href="<%=request.getContextPath()%>/admin/cancel-book"><i
 					class="uk-icon-share-square-o" style="font-size: 15px"></i>
 					&nbsp;&nbsp;&nbsp; Quản lý Hủy vé</a></li>
 			<li><a href="<%=request.getContextPath()%>/admin/schedule"><i
@@ -119,16 +120,21 @@
 			<li><a href="<%=request.getContextPath()%>/admin/bus"><i
 					class="uk-icon-bus" style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp;
 					Quản lý Xe lưu hành</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/feedback"><i class="uk-icon-envelope-o"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý phản hồi</a></li>
-			<li><a href="<%=request.getContextPath()%>/admin/report"><i class="uk-icon-line-chart"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Báo cáo</a></li>
-			
-			<li><a href="<%=request.getContextPath()%>/admin/employee"><i class="uk-icon-user-plus"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý nhân viên</a></li>
-			<li ><a href="<%=request.getContextPath()%>/admin/account"><i class="uk-icon-users"
-					style="font-size: 15px"></i> &nbsp;&nbsp;&nbsp; Quản lý Tài khoản</a></li>
-			
+			<li class="active"><a
+				href="<%=request.getContextPath()%>/admin/feedback"><i
+					class="uk-icon-envelope-o" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý phản hồi</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/report"><i
+					class="uk-icon-line-chart" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Báo cáo</a></li>
+
+			<li><a href="<%=request.getContextPath()%>/admin/employee"><i
+					class="uk-icon-user-plus" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý nhân viên</a></li>
+			<li><a href="<%=request.getContextPath()%>/admin/account"><i
+					class="uk-icon-users" style="font-size: 15px"></i>
+					&nbsp;&nbsp;&nbsp; Quản lý Tài khoản</a></li>
+
 
 
 			<li role="presentation" class="divider"></li>
@@ -145,7 +151,7 @@
 			<ol class="breadcrumb">
 				<li><a href="#"><svg class="glyph stroked home"> <use
 							xlink:href="#stroked-home"></use></svg></a></li>
-				<li class="active">Quản lý Vé hoàn trả</li>
+				<li class="active">Quản lý phản hồi</li>
 			</ol>
 		</div>
 		<!--/.row-->
@@ -154,33 +160,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading" style="line-height: 0px;">
-						<%
-							if ((request.getAttribute("check") != null) && (request.getAttribute("mess") != null)) {
-						%>
-						<%-- <button type="button" class="btn btn-primary" onclick="location.href = '<%=request.getContextPath()%>/admin/add-schedule';">Thêm lịch
-							trình</button> --%>
-						<%
-							if (request.getAttribute("check").toString().equals("success")) {
-						%>
-						<div class="alert alert-success" role="alert" id="success_message"
-							style="max-height: 50px;">
-							<%=request.getAttribute("mess").toString()%>
-							thành công! <i class="glyphicon glyphicon-ok-circle"></i>
-						</div>
-						<%
-							} else if (request.getAttribute("check").toString().equals("fail")) {
-						%>
-						<div class="alert alert-danger" role="alert" id="success_message"
-							style="max-height: 50px;">
-							<%=request.getAttribute("mess").toString()%>
-							thất bại! <i class="glyphicon glyphicon-thumbs-up"></i>
-						</div>
-						<%
-							}
-							}
-						%>
-					</div>
+					
 					<div class="panel-body">
 						<table data-toggle="table" data-show-refresh="false"
 							data-show-toggle="false" data-show-columns="true"
@@ -189,98 +169,169 @@
 							data-sort-order="desc">
 							<thead>
 								<tr>
-									<th data-sortable="true">Mã hủy vé</th>
-									<th data-sortable="true">Mã đặt vé</th>
-									<th data-sortable="true">Ngày hủy vé</th>
-									<th data-sortable="true">Tiền trả lại</th>
-									<th data-sortable="true">Tiền lãi</th>
-									<th data-sortable="true">Ghi chú</th>
 
+									<th data-sortable="true">Tiêu đề</th>
+									<th data-sortable="true">Tên khách</th>
+									<th data-sortable="true">Số điện thoại</th>
+									<th data-sortable="true">Email</th>
+									<th data-sortable="true">Thời gian</th>
+									<th data-sortable="true">Trạng thái</th>
 									<th data-sortable="true" style="width: 100px">Tác vụ</th>
-
 								</tr>
 							</thead>
 							<tbody>
 								<%
-									List<CancelOrderTicket> listCancelOrderTicket = ObjectManager.listObject(CancelOrderTicket.class);
-									for (CancelOrderTicket cancelOrderTicket : listCancelOrderTicket) {
+									List<Feedback> listFeedback = ObjectManager.listObject(Feedback.class);
+									Employee emp = null;
+									Permit permit = null;
+									for (Feedback fb : listFeedback) {
 								%>
 								<tr>
-									<td><%=cancelOrderTicket.getCancelOrderTicketId()%></td>
-									<td><%=cancelOrderTicket.getOrderTicketId()%></td>
-									<td><%=cancelOrderTicket.getCancelOrderTicketCancelTime()%></td>
-									<td><%=cancelOrderTicket.getCancelOrderTicketRefund()%></td>
-									<td><%=cancelOrderTicket.getCancelOrderTickerInterest()%></td>
-									<td><%=cancelOrderTicket.getCancelOrderTickerNotes()%></td>
-									
-
+									<td><%=fb.getFeedbackTitle()%></td>
+									<td><%=fb.getFeedbackPersonName()%></td>
+									<td><%=fb.getFeedbackPersonPhone()%></td>
+									<td><%=fb.getFeedbackPersonEmail()%></td>
+									<td><%=fb.getFeedbackDate()%></td>
+									<td>
+										<%
+											if (fb.getMarkSpam() == Variables.SPAM) {
+										%><h4>
+											<span class="label label-warning">Spam</span>
+										</h4>
+										<%
+											} if (fb.getMarkSpam() == Variables.READED) {
+										%> <span class="label label-success">Đã xem</span><%
+ 	}
+ %>
+									</td>
 									<td align="center"><p data-placement="top"
-											data-toggle="tooltip" title="Xem chi tiết"
+											data-toggle="tooltip" title="Xem chi tiết phản hồi"
 											style="display: inline">
 											<button class="btn btn-primary btn-xs" data-title="Edit"
-												data-toggle="modal" data-target="#edit<%=cancelOrderTicket.getCancelOrderTicketId()%>"
-												style="height: 22px"
-												>
-												<span class="glyphicon glyphicon-info-sign"></span>
+												data-toggle="modal"
+												data-target="#edit<%=fb.getFeedbackId()%>"
+												style="height: 22px">
+												<span class="glyphicon glyphicon-plus-sign"></span>
 											</button>
 										</p>
-										<%-- <p data-placement="top" data-toggle="tooltip"
-											title="Thanh toán" style="display: inline">
-											<button class="btn btn-danger btn-xs" data-title="Thanh toán"
-												data-toggle="modal" data-target="#pay<%=cancelOrderTicket.getCancelOrderTicketId()%>"
+										<p data-placement="top" data-toggle="tooltip" title="Spam"
+											style="display: inline">
+											<button class="btn btn-danger btn-xs" data-title="Spam"
+												data-toggle="modal"
+												data-target="#delete<%=fb.getFeedbackId()%>"
 												style="height: 22px">
-												<span class="glyphicon glyphicon-shopping-cart"></span>
+												<span class="glyphicon glyphicon-ban-circle"></span>
 											</button>
-										</p> --%></td>
+										</p></td>
 
 								</tr>
 								<!-- popup edit -->
-								<%-- <div class="modal fade" id="edit<%=cancelOrderTicket.getCancelOrderTicketId()%>"
+								<div class="modal fade" id="edit<%=fb.getFeedbackId()%>"
 									tabindex="-1" role="dialog" aria-labelledby="edit"
 									aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
-											<form id="formEditBook"
-												action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.EDIT_BOOK%>"
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal"
+													aria-hidden="true">
+													<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+												</button>
+												<h4 class="modal-title custom_align" id="Heading">Chi
+													tiết phản hồi</h4>
+											</div>
+											<form id="formDeleteBook"
+												action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.MARK_READED%>"
 												method="post">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal"
-														aria-hidden="true">
-														<span class="glyphicon glyphicon-remove"
-															aria-hidden="true"></span>
-													</button>
-													<h4 class="modal-title custom_align" id="Heading">Sửa
-														sai thông tin đặt vé</h4>
-												</div>
+												<input class="form-control " type="hidden"
+																	value="<%=fb.getFeedbackId()%>" name="txtFeedbackId"
+																	id="txtFeedbackId">
 												<div class="modal-body">
-													<div class="form-group">
-														<input class="form-control " type="hidden"
-															value="<%=orderTicketId%>" name="txtOrderTicketId"
-															id="txtOrderTicketId"> <input
-															class="form-control " type="text"
-															placeholder="Tên khách hàng" name="txtPassengerName"
-															id="txtPassengerName"
-															value="<%=orderTicket.getPassengerName()%>">
-													</div>
-													<div class="form-group">
 
-														<input class="form-control " type="text"
-															placeholder="Email" name="txtPassengerEmail"
-															id="txtPassengerEmail"
-															value="<%=orderTicket.getPassengerEmail()%>">
+													<div class="form-group">
+														<div class="row">
+															<div class="col-md-2">
+																Tiêu đề
+															</div>
+															<div class="col-md-10">
+																<input class="form-control" type="text"
+																	value="<%=fb.getFeedbackTitle()%>" readonly>
+															</div>
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<div class="row">
+															<div class="col-md-2">
+																Người gửi
+															</div>
+															<div class="col-md-10">
+																<input class="form-control" type="text"
+																	value="<%=fb.getFeedbackPersonName()%>" readonly>
+															</div>
+														</div>
 													</div>
 													<div class="form-group">
-
-														<input class="form-control " type="text"
-															placeholder="Số điện thoại" name="txtPassengerPhone"
-															id="txtPassengerPhone"
-															value="<%=orderTicket.getPassengerPhone()%>">
+														<div class="row">
+															<div class="col-md-2">
+																Số điện thoại
+															</div>
+															<div class="col-md-10">
+																<input class="form-control" type="text"
+																	value="<%=fb.getFeedbackPersonPhone()%>" readonly>
+															</div>
+														</div>
 													</div>
+													<div class="form-group">
+														<div class="row">
+															<div class="col-md-2">
+																Email
+															</div>
+															<div class="col-md-10">
+																<input class="form-control" type="text"
+																	value="<%=fb.getFeedbackPersonEmail()%>" readonly>
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="row">
+															<div class="col-md-2">
+																Tiêu đề
+															</div>
+															<div class="col-md-10">
+																<input class="form-control" type="text"
+																	value="<%=fb.getFeedbackTitle()%>" readonly>
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="row">
+															<div class="col-md-2">
+																Thời gian
+															</div>
+															<div class="col-md-10">
+																<input class="form-control" type="text"
+																	value="<%=fb.getFeedbackDate()%>" readonly>
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="row">
+															<div class="col-md-2">
+																Nội dung
+															</div>
+															<div class="col-md-10">
+															<textarea rows="" cols="" class="form-control" readonly><%=fb.getFeedbackContent()%></textarea>
+																
+															</div>
+														</div>
+													</div>
+													
+													
 												</div>
 												<div class="modal-footer ">
-													<button type="submit" class="btn btn-warning btn-lg"
-														style="width: 100%;" id="btEdit">
-														<span class="glyphicon glyphicon-ok-sign"></span> Update
+													<button type="submit" class="btn btn-success btn-lg"
+														style="width: 100%;" id="btEdit" >
+														<span class="glyphicon glyphicon-ok-sign"></span> Đã xem
 													</button>
 												</div>
 											</form>
@@ -293,7 +344,7 @@
 
 								<!-- popup delete -->
 
-								<div class="modal fade" id="pay<%=orderTicketId%>"
+								<div class="modal fade" id="delete<%=fb.getFeedbackId()%>"
 									tabindex="-1" role="dialog" aria-labelledby="edit"
 									aria-hidden="true">
 									<div class="modal-dialog">
@@ -305,27 +356,26 @@
 													aria-hidden="true">
 													<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 												</button>
-												<h4 class="modal-title custom_align" id="Heading">Thanh
-													toán</h4>
+												<h4 class="modal-title custom_align" id="Heading">Đánh
+													dấu là spam</h4>
 											</div>
 											<div class="modal-body">
 
 												<div class="alert alert-info">
-													<span class="glyphicon glyphicon-usd"></span> Thanh toán
-													cho mã đặt hàng <b><%=orderTicketId%></b>?
+													<span class="glyphicon glyphicon-info-sign"></span> Đánh
+													dấu phản hồi này là Spam?
 												</div>
 
 											</div>
 											<form id="formDeleteBook"
-												action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.PAY_BOOK%>"
+												action="<%=request.getContextPath()%>/AdminBusController?type=<%=Variables.MARK_SPAM%>"
 												method="post">
 												<input class="form-control " type="hidden"
-													value="<%=orderTicketId%>" name="txtOrderTicketId"
-													id="txtOrderTicketId">
+													value="<%=fb.getFeedbackId()%>" name="txtFeedbackId"
+													id="txtFeedbackId">
 												<div class="modal-footer ">
 													<button type="submit" class="btn btn-success">
-														<span class="glyphicon glyphicon-ok-sign"></span> Thanh
-														toán
+														<span class="glyphicon glyphicon-ok-sign"></span> Đánh dấu
 													</button>
 													<button type="button" class="btn btn-default"
 														data-dismiss="modal">
@@ -333,7 +383,7 @@
 													</button>
 												</div>
 											</form>
-										</div> --%>
+										</div>
 
 										<!-- /.modal-content -->
 									</div>

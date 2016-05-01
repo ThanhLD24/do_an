@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -27,7 +28,7 @@ public class Utility {
 		DateFormat formatDay = new SimpleDateFormat("dd");
 		Date now = new Date();
 		String date = formatDate.format(now);
-		String day = String.valueOf((Integer.parseInt(formatDay.format(now)) + 2));
+		String day = String.valueOf((Integer.parseInt(formatDay.format(now)) + 1));
 		int dayNumber = Integer.parseInt(day);
 		if ((dayNumber >= 1) && (dayNumber <= 9)) {
 			day = "0" + day;
@@ -51,7 +52,27 @@ public class Utility {
 		Date date = new Date();
 		return dateFormat.format(date); // 2014/08/06
 	}
+	
+/**
+ * @return time now + 12hour
+ */
+public static String getExpiredDate(){
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	String currentDateandTime = sdf.format(new Date());
 
+	Date date = null;
+	try {
+		date = sdf.parse(currentDateandTime);
+	} catch (ParseException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	calendar.add(Calendar.HOUR, 12);
+
+	return sdf.format(calendar.getTime());
+}
 	public static String parse12HoursTo24HoursTime(String hours12) {
 		SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
 		SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
@@ -80,14 +101,26 @@ public class Utility {
 
 	public static void main(String[] args) throws ParseException {
 
-		System.out.println(Utility.getDateTimeNow());
+		/*System.out.println(Utility.getDateTimeNow());
 		System.out.print(Utility.replaceString2("/1_A/|/10_A/|/1_C/|/10_C/|"));
 		for (String a : Utility.phanChuoiGheThanhMang("/1_A/|/10_A/|/1_C/|/10_C/|")) {
 			System.out.println(a);
 		}
 		for (Integer t : Utility.layMinMaxThuTuDiemDung("(1-2)(2-3)")) {
 			System.out.println(t);
-		}
+		}*/
+		/*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String currentDateandTime = sdf.format(new Date());
+
+		Date date = sdf.parse(currentDateandTime);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.HOUR, 5);
+
+		System.out.println("Time here "+sdf.format(calendar.getTime()));*/
+		System.out.println(Utility.getExpiredDate());
+		
+		System.out.println(Utility.compareDateTime("2016-05-01 06:05:41"));
 	}
 
 	public static String parseFormatDate(String dateInput) {
@@ -285,9 +318,9 @@ public class Utility {
 		boolean check = false;
 		Date dateOrigin = null;
 		Date dateNow = null;
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date dateN = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
 			dateOrigin = sdf.parse(date);
 		} catch (ParseException e) {
