@@ -59,7 +59,7 @@ public class Employee implements Serializable {
 	private Integer employeeJobId;
 	
 	@Column(name = "EMPLOYEE_APPLYYEAR")
-	private Integer employeeApplyYear;
+	private String employeeApplyYear;
 	
 	@Column(name = "EMPLOYEE_IDENTITY_NUMBER")
 	private String employeeIdentityNumber;
@@ -174,11 +174,11 @@ public class Employee implements Serializable {
 		this.employeeJobId = employeeJobId;
 	}
 
-	public Integer getEmployeeApplyYear() {
+	public String getEmployeeApplyYear() {
 		return employeeApplyYear;
 	}
 
-	public void setEmployeeApplyYear(Integer employeeApplyYear) {
+	public void setEmployeeApplyYear(String employeeApplyYear) {
 		this.employeeApplyYear = employeeApplyYear;
 	}
 
@@ -209,7 +209,7 @@ public class Employee implements Serializable {
 	public Employee(Integer employeeId, String employeeNameTitle, String employeeName, String employeeBirthday,
 			String employeeEmail, String employeeImage, String employeeAddress, String employeeNationality,
 			String employeeGender, String employeePhone, String employeeHomePhone, String employeeOfficePhone,
-			Integer employeeJobId, Integer employeeApplyYear, String employeeIdentityNumber, String employeeNotes,
+			Integer employeeJobId, String employeeApplyYear, String employeeIdentityNumber, String employeeNotes,
 			Boolean employeeState) {
 		super();
 		this.employeeId = employeeId;
@@ -234,7 +234,7 @@ public class Employee implements Serializable {
 	public Employee(String employeeNameTitle, String employeeName, String employeeBirthday, String employeeEmail,
 			String employeeImage, String employeeAddress, String employeeNationality, String employeeGender,
 			String employeePhone, String employeeHomePhone, String employeeOfficePhone, Integer employeeJobId,
-			Integer employeeApplyYear, String employeeIdentityNumber, String employeeNotes, Boolean employeeState) {
+			String employeeApplyYear, String employeeIdentityNumber, String employeeNotes, Boolean employeeState) {
 		super();
 		this.employeeNameTitle = employeeNameTitle;
 		this.employeeName = employeeName;

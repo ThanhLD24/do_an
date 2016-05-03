@@ -249,8 +249,15 @@
 		<servlet-name>employee-manager</servlet-name>
 		<url-pattern>/admin/employee</url-pattern>
 	</servlet-mapping>
-	<!-- home.jsp -->
-
+	<!-- add-employee.jsp -->
+<servlet>
+		<servlet-name>add-employee</servlet-name>
+		<jsp-file>/pages/admin/add-employee.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>add-employee</servlet-name>
+		<url-pattern>/admin/add-employee</url-pattern>
+	</servlet-mapping>
 
 	<!-- login.jsp -->
 	<servlet>
@@ -270,6 +277,16 @@
 	<servlet-mapping>
 		<servlet-name>error</servlet-name>
 		<url-pattern>/admin/error</url-pattern>
+	</servlet-mapping>
+
+<!-- add-schedule.jsp -->
+	<servlet>
+		<servlet-name>add bus</servlet-name>
+		<jsp-file>/pages/admin/add-bus.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>add bus</servlet-name>
+		<url-pattern>/admin/add-bus</url-pattern>
 	</servlet-mapping>
 
 	<!-- Servlet mapping -->

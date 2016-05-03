@@ -164,6 +164,20 @@ public static String getExpiredDate(){
 		}
 		return reformattedStr;
 	}
+	
+	public static String parseToDateFormat2(String dateInput) {
+		SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String reformattedStr = null;
+
+		try {
+
+			reformattedStr = myFormat.format(fromUser.parse(dateInput));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return reformattedStr;
+	}
 
 	public static String parseToTimeFormat(String dateInput) {
 		SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
@@ -235,6 +249,16 @@ public static String getExpiredDate(){
 		}
 		return tong;
 	}
+	
+	// tinh tong price trong chuyen di
+	public static int getTotalPrice(String price){
+		ArrayList<Integer> listPrice = Utility.splitPrice(price);
+		int tong = 0;
+		for(Integer i:listPrice){
+			tong+=i;
+		}
+		return tong;
+	}
 
 	// phan chang
 	public static String phanChangDuong(int originNumber, int destinationNumber) {
@@ -252,6 +276,11 @@ public static String getExpiredDate(){
 		return changDuong.toString();
 	}
 
+	/**
+	 * @param originNumber so thu tu cua diem di trong route detail
+	 * @param destinationNumber so thu tu cua diem den trong routedetail
+	 * @return list
+	 */
 	public static ArrayList<String> phanChangDuongRaMang(int originNumber, int destinationNumber) {
 		ArrayList<String> listChang = new ArrayList<String>();
 		StringBuilder changDuong = new StringBuilder();

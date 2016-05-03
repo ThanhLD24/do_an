@@ -209,8 +209,8 @@
 									<td><%=cancelOrderTicket.getCancelOrderTicketId()%></td>
 									<td><%=cancelOrderTicket.getOrderTicketId()%></td>
 									<td><%=cancelOrderTicket.getCancelOrderTicketCancelTime()%></td>
-									<td><%=cancelOrderTicket.getCancelOrderTicketRefund()%></td>
-									<td><%=cancelOrderTicket.getCancelOrderTickerInterest()%></td>
+									<td><%=cancelOrderTicket.getCancelOrderTicketRefund()%> <%=Variables.VIET_NAM_DONG %></td>
+									<td><%=cancelOrderTicket.getCancelOrderTickerInterest()%> <%=Variables.VIET_NAM_DONG %></td>
 									<td><%=cancelOrderTicket.getCancelOrderTickerNotes()%></td>
 									
 

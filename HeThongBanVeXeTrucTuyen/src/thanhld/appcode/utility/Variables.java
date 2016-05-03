@@ -38,6 +38,10 @@ public class Variables {
 	
 	public static final int MARK_SPAM = 29;
 	public static final int MARK_READED = 30;
+	
+	public static final int DELETE_EMPLOYEE = 31;
+	public static final int CHANGE_BUS_STATUS=32;
+	public static final int ADD_BUS=33;
 	/* Phan quyen */
 	public static final int ADMIN_SYSTEM = 1;
 	public static final int ADMIN_BOOKER = 2;

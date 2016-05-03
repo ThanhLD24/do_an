@@ -596,14 +596,14 @@
 					$total = $('#total'),
 					
 					sc = $('#seat-map').seatCharts({
-					map: [
-						'f_f_f',
+					map: [<%=Utility.replaceString(bus.getBusMap())%> 
+						/* 'f_f_f',
 						'f_f_f',
 						'f_f_f',
 						'f_f_f',
 						'f_f_f',
 						'fff_f',
-						'fff_f',
+						'fff_f', */
 						
 					],
 					seats: {
@@ -698,14 +698,14 @@
 				
 				sb = $('#seat-map1').seatCharts({
 					map: [
-						<%-- <%=Utility.replaceString(bus.getBusMap())%> --%>
-						'f_f_f',
+						<%=Utility.replaceString(bus.getBusMap())%> 
+						/* 'f_f_f',
 						'f_f_f',
 						'f_f_f',
 						'f_f_f',
 						'f_f_f',
 						'fff_f',
-						'fff_f',
+						'fff_f', */
 					],
 					seats: {
 						f: {

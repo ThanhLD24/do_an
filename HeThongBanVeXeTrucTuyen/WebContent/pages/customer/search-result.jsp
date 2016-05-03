@@ -477,7 +477,7 @@
 						<tr class="tr_second">
 							<td align="center"><div>
 									<img
-										src="<%=request.getContextPath()%>/img/carrier/duythanh.jpg"
+										src="<%=request.getContextPath()%>/img/carrier/<%=carrier.getCarrierImage() %>"
 										style="max-width: 50px; max-height: 50px;">
 								</div>
 								<div><%=carrier.getCarrierName()%></div></td>
@@ -494,7 +494,7 @@
 								<div><%=busStationDestination.getBusStationName()%></div>
 							</td>
 							<td align="center" style="vertical-align: center;"><%=bus.getBusCapacity() - tongGheDaDat%>/<%=bus.getBusCapacity()%></td>
-							<td align="center"><div><%=priceTotal%></div>
+							<td align="center"><div><%=priceTotal%> <%=Variables.VIET_NAM_DONG %></div>
 								<div class="button_selectseat">
 									<form name="formSelectBus"
 										action="<%=request.getContextPath()%>/BusController?type=<%=Variables.SELECT_BUS%>"
@@ -527,7 +527,7 @@
 						<%
 							}}else{
 						%>
-						<tr><td colspan="7"><div class="alert alert-danger" role="alert">Không tìm thấy chuyến đi phù hợp, vui lòng <a href="<%=request.getContextPath()%>/home">chọn lại</a>...</div></td></tr>
+						<tr><td colspan="7"><div class="alert alert-danger" role="alert">Không tìm thấy chuyến đi phù hợp, quý khách vui lòng quay lại sau, hoặc vào <a href="<%=request.getContextPath()%>/home"> đây để chọn lại</a>...</div></td></tr>
 						<%} %>
 					</tbody>
 					

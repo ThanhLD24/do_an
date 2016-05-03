@@ -177,12 +177,14 @@
 								<tr>
 
 									<th data-sortable="true">Mã đặt vé</th>
+									<th data-sortable="true">Mã chuyến đi</th>
 									<th data-sortable="true">Tên khách</th>
 									<th data-sortable="true">Email</th>
 									<th data-sortable="true">Số điện thoại</th>
 									<!-- <th data-sortable="true">Số ghế</th> -->
 									<th data-sortable="true">Tiền thanh toán</th>
 									<th data-sortable="true">Ngày đặt</th>
+									
 									<th data-sortable="true">Tình trạng</th>
 									<th data-sortable="true" style="width: 100px">Tác vụ</th>
 
@@ -201,12 +203,14 @@
 								%>
 								<tr>
 									<td><%=orderTicketId%></td>
+									<td><%=orderTicket.getTicketId()%></td>
 									<td><%=orderTicket.getPassengerName()%></td>
 									<td><%=orderTicket.getPassengerEmail()%></td>
 									<td><%=orderTicket.getPassengerPhone()%></td>
 									<%-- <td><%=Utility.replaceString2(seatOrder.getSeat())%></td> --%>
-									<td><%=orderTicket.getOrderTicketTotalPrice()%></td>
+									<td><%=orderTicket.getOrderTicketTotalPrice()%> <%=Variables.VIET_NAM_DONG %></td>
 									<td><%=Utility.parseToDateFormat1(orderTicket.getOrderTicketTime())%></td>
+									
 									<td align="center">
 										<%
 											if (Utility.compareDateTime(orderTicket.getOrderTicketExpiredTime())&& (("").equals(orderTicket.getOrderTicketPaidDate())) ) {

@@ -258,8 +258,7 @@
 														<span class="glyphicon glyphicon-remove"
 															aria-hidden="true"></span>
 													</button>
-													<h4 class="modal-title custom_align" id="Heading">Sửa
-														sai thông tin đặt vé</h4>
+													<h4 class="modal-title custom_align" id="Heading">Sửa thông tin tài khoản</h4>
 												</div>
 												<div class="modal-body">
 													<div class="form-group">

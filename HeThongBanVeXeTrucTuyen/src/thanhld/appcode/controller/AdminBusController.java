@@ -17,7 +17,9 @@ import com.google.gson.Gson;
 import thanhld.appcode.dao.AccountDAO;
 import thanhld.appcode.dao.AccountDAOImpl;
 import thanhld.appcode.model.Account;
+import thanhld.appcode.model.Bus;
 import thanhld.appcode.model.CancelOrderTicket;
+import thanhld.appcode.model.Employee;
 import thanhld.appcode.model.EmployeeWorking;
 import thanhld.appcode.model.Feedback;
 import thanhld.appcode.model.OrderTicket;
@@ -76,6 +78,7 @@ public class AdminBusController extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
+		request.setCharacterEncoding("UTF-8");
 		int type = Integer.parseInt(request.getParameter("type"));
 		HttpSession session = request.getSession(true);
 		RequestDispatcher dispatcher = null;
@@ -83,6 +86,7 @@ public class AdminBusController extends HttpServlet {
 		OrderTicket orderTicket = null;
 		CancelOrderTicket cancelOrderTicket = null;
 		Feedback feedback = null;
+		Bus bus = null;
 		List<Province> listProvince = new ArrayList<Province>();
 		String ticketIdBySession = null;
 		String listDriver = null;
@@ -115,15 +119,17 @@ public class AdminBusController extends HttpServlet {
 			ticket.setTicketSale(sale);
 			ticket.setTicketTax(tax);
 			ticket.setTicketCurrency(Variables.VIET_NAM_DONG); // demo
-			ticket.setTicketStartSellDate(Utility.parse12HoursTo24HoursTimeAndDate(request.getParameter("txtNgayMoBan").toString())); 
-			ticket.setTicketEndSellDate(Utility.parse12HoursTo24HoursTimeAndDate(request.getParameter("txtNgayDongBan").toString())); 
+			ticket.setTicketStartSellDate(
+					Utility.parse12HoursTo24HoursTimeAndDate(request.getParameter("txtNgayMoBan").toString()));
+			ticket.setTicketEndSellDate(
+					Utility.parse12HoursTo24HoursTimeAndDate(request.getParameter("txtNgayDongBan").toString()));
 
 			/* EmployeeWorking emplWork = new EmployeeWorking(); */
 			// can add employee working HERE
 
 			try {
 				ObjectManager.addObject(ticket);
-				System.out.println("TICKET ID ADDED: "+ticketIdBySession);
+				System.out.println("TICKET ID ADDED: " + ticketIdBySession);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -323,12 +329,13 @@ public class AdminBusController extends HttpServlet {
 			cancelOrderTicket = new CancelOrderTicket();
 			cancelOrderTicket.setOrderTicketId(orderTicket.getOrderTicketId());
 			cancelOrderTicket.setCancelOrderTicketCancelTime(Utility.getDateTimeNow());
-			
-			/* dang set cung tien hoan tra lai la 80% tong so tien mua ve*/
+
+			/* dang set cung tien hoan tra lai la 80% tong so tien mua ve */
 			int moneyRefund = Integer.parseInt(orderTicket.getOrderTicketTotalPrice().toString()) * 80 / 100;
 			cancelOrderTicket.setCancelOrderTicketRefund(String.valueOf(moneyRefund));
-			/* tien lai = tong tien - tien hoan tra*/
-			cancelOrderTicket.setCancelOrderTickerInterest(String.valueOf(Integer.parseInt(orderTicket.getOrderTicketTotalPrice().toString())-moneyRefund));
+			/* tien lai = tong tien - tien hoan tra */
+			cancelOrderTicket.setCancelOrderTickerInterest(
+					String.valueOf(Integer.parseInt(orderTicket.getOrderTicketTotalPrice().toString()) - moneyRefund));
 			cancelOrderTicket.setCancelOrderTickerStatus(true);
 			cancelOrderTicket.setCancelOrderTickerNotes(request.getParameter("txtNote"));
 			try {
@@ -345,28 +352,88 @@ public class AdminBusController extends HttpServlet {
 			dispatcher.forward(request, response);
 			break;
 		case Variables.MARK_READED:
-			feedback = (Feedback) ObjectManager.getObjectById(Integer.parseInt(request.getParameter("txtFeedbackId")), Feedback.class);
+			feedback = (Feedback) ObjectManager.getObjectById(Integer.parseInt(request.getParameter("txtFeedbackId")),
+					Feedback.class);
 			feedback.setMarkSpam(Variables.READED);
-			try{
+			try {
 				ObjectManager.update(feedback);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				System.out.println(e.getMessage());
-				
+
 			}
-			response.sendRedirect(request.getContextPath()+"/admin/feedback");
+			response.sendRedirect(request.getContextPath() + "/admin/feedback");
 			break;
 		case Variables.MARK_SPAM:
-			feedback = (Feedback) ObjectManager.getObjectById(Integer.parseInt(request.getParameter("txtFeedbackId")), Feedback.class);
+			feedback = (Feedback) ObjectManager.getObjectById(Integer.parseInt(request.getParameter("txtFeedbackId")),
+					Feedback.class);
 			feedback.setMarkSpam(Variables.SPAM);
-			try{
+			try {
 				ObjectManager.update(feedback);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				System.out.println(e.getMessage());
-				
+
 			}
-			response.sendRedirect(request.getContextPath()+"/admin/feedback");
+			response.sendRedirect(request.getContextPath() + "/admin/feedback");
+			break;
+		case Variables.DELETE_EMPLOYEE:
+			check = "fail";
+			try {
+				ObjectManager.deleteObject(Integer.parseInt(request.getParameter("txtEmployeeId").toString()),
+						Employee.class); // dang bi loi vi lien ket voi bang
+											// employee_working
+				// vi co rollback ham delete nen he thong van bao success
+				check = "success";
+			} catch (Exception e) {
+				e.getMessage();
+				check = "fail";
+			}
+			request.setAttribute("check", check);
+			request.setAttribute("mess", "Xóa");
+			dispatcher = request.getRequestDispatcher("/admin/employee");
+			dispatcher.forward(request, response);
+			break;
+		case Variables.CHANGE_BUS_STATUS:
+			check = "fail";
+			try {
+				bus = (Bus) ObjectManager.getObjectById(Integer.parseInt(request.getParameter("txtBusId").toString()),
+						Bus.class);
+				bus.setBusState(0); // chuyen trang thai sang khong su dung
+
+				ObjectManager.update(bus);
+				check = "success";
+			} catch (Exception e) {
+				e.getMessage();
+				check = "fail";
+			}
+			request.setAttribute("check", check);
+			request.setAttribute("mess", "Cập nhật");
+			dispatcher = request.getRequestDispatcher("/admin/bus");
+			dispatcher.forward(request, response);
+			break;
+		case Variables.ADD_BUS:
+			bus = new Bus();
+			bus.setBusCapacity(Integer.parseInt(request.getParameter("txtCapacity").toString()));
+			bus.setBusFeature(request.getParameter("txtFeature"));
+			bus.setBusLicensePlate(request.getParameter("txtLicensePlate"));
+			bus.setBusManufacturer(request.getParameter("txtManufac"));
+			bus.setBusMap(request.getParameter("txtBusMap"));
+			bus.setBusName(request.getParameter("txtBusName"));
+			bus.setBusType(request.getParameter("txtBusType"));
+			bus.setCarrierId(Integer.parseInt(request.getParameter("txtCarrierId").toString()));
+			bus.setBusState(Variables.VALID);
+System.out.println("TIEN NGHI====="+request.getParameter("txtFeature"));
+			check = "fail";
+			try {
+				ObjectManager.addObject(bus);
+				check = "success";
+			} catch (Exception e) {
+				e.getMessage();
+				check = "fail";
+			}
+			request.setAttribute("check", check);
+			request.setAttribute("mess", "Thêm mới");
+			dispatcher = request.getRequestDispatcher("/admin/bus");
+			dispatcher.forward(request, response);
 			break;
 		}
 

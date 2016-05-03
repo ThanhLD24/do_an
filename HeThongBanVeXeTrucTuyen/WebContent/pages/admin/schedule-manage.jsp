@@ -168,7 +168,9 @@
 									<th data-sortable="true">Mã vé</th>
 									<th data-sortable="true">Tuyến đường</th>
 									<th data-sortable="true">Ngày đi</th>
-									<th data-sortable="true">Số vé đã bán</th>
+									<th data-sortable="true">Giá vé</th>
+									<th data-sortable="true">Giảm giá</th>
+									<th data-sortable="true">Nhân viên</th>
 									<th data-sortable="true">Trạng thái bán</th>
 									<th data-sortable="true" style="width:100px">Tác vụ</th>
 
@@ -182,17 +184,18 @@
 										Route route = (Route) ObjectManager.getObjectById(t.getRouteId(), Route.class);
 										RouteDetail routeDetail = routeDetailDAO.getRouteDetailWithNumberOrder(route.getRouteId(), Variables.FIRST_NUMBERCIAL);
 										TicketDetail ticketDetail = ticketDetailDAO.getTicketDetailByTicketId(t.getTicketId(), routeDetail.getProvinceId());
-									
-										
+										Employee em = (Employee) ObjectManager.getObjectById(t.getEmployeeId(), Employee.class);
 								%>
 								<tr>
 									<td><%=t.getTicketId()%></td>
 									<td><%=route.getRouteDescription()%></td>
-									<td><%=ticketDetail.getDetailDate() %></td>
-									<td></td>
+									<td><%=Utility.parseToDateFormat2(ticketDetail.getDetailDate())%></td>
+									<td><%=Utility.getTotalPrice(t.getTicketPrice())%>  <%=t.getTicketCurrency() %></td>
+									<td><%=t.getTicketSale() %> <%=t.getTicketCurrency() %></td>
+									<td><%=em.getEmployeeName() %></td>
 									<td align="center">
 									<%if(Utility.compareDateTime(t.getTicketEndSellDate())) {%>
-									<h4><span class="label label-default">Hết hạn</span></h4><% }  if(!Utility.compareDateTime(t.getTicketStartSellDate())){%>
+									<h4><span class="label label-info">Hết hạn</span></h4><% }  if(!Utility.compareDateTime(t.getTicketStartSellDate())){%>
 									<h4><span class="label label-warning">Chưa mở bán</span></h4><%}  if(Utility.compareDateTime(t.getTicketStartSellDate()) && !Utility.compareDateTime(t.getTicketEndSellDate()) ) {%>
 									<h4><span class="label label-success">Đang bán</span></h4><%}%>
 									</td>
@@ -223,22 +226,21 @@
 													aria-hidden="true">
 													<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 												</button>
-												<h4 class="modal-title custom_align" id="Heading">Edit
-													Your Detail</h4>
+												<h4 class="modal-title custom_align" id="Heading">Sửa lịch trình</h4>
 											</div>
 											<div class="modal-body">
 												<div class="form-group">
 													<input class="form-control " type="text"
-														placeholder="Mohsin">
+														placeholder="">
 												</div>
 												<div class="form-group">
 
 													<input class="form-control " type="text"
-														placeholder="Irshad">
+														placeholder="">
 												</div>
 												<div class="form-group">
 													<textarea rows="2" class="form-control"
-														placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
+														placeholder=""></textarea>
 
 
 												</div>
@@ -246,7 +248,7 @@
 											<div class="modal-footer ">
 												<button type="button" class="btn btn-warning btn-lg"
 													style="width: 100%;">
-													<span class="glyphicon glyphicon-ok-sign"></span> Update
+													<span class="glyphicon glyphicon-ok-sign"></span> Cập nhật
 												</button>
 											</div>
 										</div>
@@ -266,14 +268,12 @@
 													aria-hidden="true">
 													<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 												</button>
-												<h4 class="modal-title custom_align" id="Heading">Delete
-													this entry</h4>
+												<h4 class="modal-title custom_align" id="Heading">Xóa lịch trình</h4>
 											</div>
 											<div class="modal-body">
 
 												<div class="alert alert-danger">
-													<span class="glyphicon glyphicon-warning-sign"></span> Are
-													you sure you want to delete this Record?
+													<span class="glyphicon glyphicon-warning-sign"></span> Bạn có chắc xóa lịch trình này không?
 												</div>
 
 											</div>

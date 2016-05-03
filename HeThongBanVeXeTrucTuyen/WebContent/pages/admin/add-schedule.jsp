@@ -372,7 +372,7 @@ jQuery(document).ready(function($) {
 													%>
 													<option class="option_custom"
 														value="<%=emp.getEmployeeId()%>"
-														style="background-image:url(<%=request.getContextPath()%>/img/avatar.jpg);"><%=emp.getEmployeeName()%></option>
+														style="background-image:url(<%=request.getContextPath()%>/img/avatar.JPG);"><%=emp.getEmployeeName()%></option>
 
 													<%
 														}
@@ -420,7 +420,7 @@ jQuery(document).ready(function($) {
 													%>
 													<option class="option_custom"
 														value="<%=emp.getEmployeeId()%>"
-														style="background-image:url(<%=request.getContextPath()%>/img/avatar.jpg);"><%=emp.getEmployeeName()%></option>
+														style="background-image:url(<%=request.getContextPath()%>/img/avatar.JPG);"><%=emp.getEmployeeName()%></option>
 
 													<%
 														}

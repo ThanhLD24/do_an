@@ -45,7 +45,7 @@ public class Bus implements Serializable {
 	private Integer carrierId;
 	
 	@Column(name = "BUS_STATE")
-	private Boolean busState;
+	private Integer busState;
 
 	public Integer getBusId() {
 		return busId;
@@ -119,16 +119,16 @@ public class Bus implements Serializable {
 		this.carrierId = carrierId;
 	}
 
-	public Boolean getBusState() {
+	public Integer getBusState() {
 		return busState;
 	}
 
-	public void setBusState(Boolean busState) {
+	public void setBusState(Integer busState) {
 		this.busState = busState;
 	}
 
 	public Bus(Integer busId, String busName, String busType, Integer busCapacity, String busMap, String busFeature,
-			String busLicensePlate, String busManufacturer, Integer carrierId, Boolean busState) {
+			String busLicensePlate, String busManufacturer, Integer carrierId, Integer busState) {
 		super();
 		this.busId = busId;
 		this.busName = busName;
@@ -143,7 +143,7 @@ public class Bus implements Serializable {
 	}
 
 	public Bus(String busName, String busType, Integer busCapacity, String busMap, String busFeature,
-			String busLicensePlate, String busManufacturer, Integer carrierId, Boolean busState) {
+			String busLicensePlate, String busManufacturer, Integer carrierId, Integer busState) {
 		super();
 		this.busName = busName;
 		this.busType = busType;
