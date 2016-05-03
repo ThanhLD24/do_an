@@ -32,5 +32,22 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		}
 		return listEmployee;
 	}
+	
+	@Override
+	public List<Employee> getListEmployeeByDriver(int jobDriverId, int jobExtraDriverId) {
+		try {
+			session = HibernateUtils.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			sqlQuery = new StringBuilder();
+			sqlQuery.append(" select * from EMPLOYEE where EMPLOYEE_JOB_ID=" + jobDriverId + " or EMPLOYEE_JOB_ID=" + jobExtraDriverId+"");
+			query = session.createSQLQuery(sqlQuery.toString()).addEntity(Employee.class);
+			listEmployee = (List<Employee>) query.list();
+			transaction.commit();
+		} catch (Exception e) {
+		} finally {
+			session.close();
+		}
+		return listEmployee;
+	}
 
 }

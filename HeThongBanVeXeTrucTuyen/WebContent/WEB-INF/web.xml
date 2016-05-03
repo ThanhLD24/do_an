@@ -279,7 +279,7 @@
 		<url-pattern>/admin/error</url-pattern>
 	</servlet-mapping>
 
-<!-- add-schedule.jsp -->
+<!-- add-bus.jsp -->
 	<servlet>
 		<servlet-name>add bus</servlet-name>
 		<jsp-file>/pages/admin/add-bus.jsp</jsp-file>
@@ -288,7 +288,15 @@
 		<servlet-name>add bus</servlet-name>
 		<url-pattern>/admin/add-bus</url-pattern>
 	</servlet-mapping>
-
+<!-- add-driver.jsp -->
+	<servlet>
+		<servlet-name>add driver</servlet-name>
+		<jsp-file>/pages/admin/add-driver.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>add driver</servlet-name>
+		<url-pattern>/admin/add-driver</url-pattern>
+	</servlet-mapping>
 	<!-- Servlet mapping -->
 	<servlet>
 		<servlet-name>BusController</servlet-name>

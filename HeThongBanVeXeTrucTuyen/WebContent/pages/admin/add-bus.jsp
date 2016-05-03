@@ -58,7 +58,7 @@
 		request.setAttribute("error_message", 2);
 		dispatcher = request.getRequestDispatcher("/admin/login");
 		dispatcher.forward(request, response);
-	} else if (Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN_SYSTEM
+	} else if (Integer.parseInt(session.getAttribute("permit").toString()) == Variables.ADMIN_MANAGER
 			|| Integer.parseInt(session.getAttribute("permit").toString()) == Variables.FULL_CONTROL) {
 		account = (Account) session.getAttribute("account");
 		employee = (Employee) ObjectManager.getObjectById(account.getEmployeeId(), Employee.class);

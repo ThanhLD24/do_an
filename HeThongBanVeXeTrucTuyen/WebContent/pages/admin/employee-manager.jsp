@@ -36,7 +36,7 @@
 	href="<%=request.getContextPath()%>/css/uikit.min.css">
 <!--Icons-->
 <script src="<%=request.getContextPath()%>/js/admin/lumino.glyphs.js"></script>
-<title>Quản lý Tài khoản</title>
+<title>Quản lý Nhân viên</title>
 
 <%
 	RequestDispatcher dispatcher = null;
