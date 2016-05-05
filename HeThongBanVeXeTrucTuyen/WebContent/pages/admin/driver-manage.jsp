@@ -160,7 +160,7 @@
 					<div class="form-group">
 					<div class="row">
 						<div class="col-md-3">
-					<button type="button" class="btn btn-primary" onclick="location.href = '<%=request.getContextPath()%>/admin/add-bus';">Thêm nhân viên</button>
+					<button type="button" class="btn btn-primary" onclick="location.href = '<%=request.getContextPath()%>/admin/add-driver';">Thêm nhân viên</button>
 							</div>
 							<div class="col-md-4"></div>
 							<div class="col-md-5">

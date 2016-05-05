@@ -313,20 +313,19 @@
 							aria-hidden="true">
 							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 						</button>
-						<h4 class="modal-title custom_align" id="Heading">Edit Your
-							Detail</h4>
+						<h4 class="modal-title custom_align" id="Heading">Sửa lịch trình</h4>
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<input class="form-control " type="text" placeholder="Mohsin">
+							<input class="form-control " type="text" placeholder="">
 						</div>
 						<div class="form-group">
 
-							<input class="form-control " type="text" placeholder="Irshad">
+							<input class="form-control " type="text" placeholder="">
 						</div>
 						<div class="form-group">
 							<textarea rows="2" class="form-control"
-								placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
+								placeholder=""></textarea>
 
 
 						</div>
@@ -334,7 +333,7 @@
 					<div class="modal-footer ">
 						<button type="button" class="btn btn-warning btn-lg"
 							style="width: 100%;">
-							<span class="glyphicon glyphicon-ok-sign"></span> Update
+							<span class="glyphicon glyphicon-ok-sign"></span> Cập nhật
 						</button>
 					</div>
 				</div>
@@ -354,14 +353,12 @@
 							aria-hidden="true">
 							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 						</button>
-						<h4 class="modal-title custom_align" id="Heading">Delete this
-							entry</h4>
+						<h4 class="modal-title custom_align" id="Heading">Xóa lịch trình</h4>
 					</div>
 					<div class="modal-body">
 
 						<div class="alert alert-danger">
-							<span class="glyphicon glyphicon-warning-sign"></span> Are you
-							sure you want to delete this Record?
+							<span class="glyphicon glyphicon-warning-sign"></span>Xóa lịch trình
 						</div>
 
 					</div>

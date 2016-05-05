@@ -210,6 +210,18 @@
 									</div>
 								</div>
 							</div>
+							
+							<div class="form-group">
+								<div class="row">
+									<div class="col-md-6">
+										<div id="pie2"
+											style="min-width: 200px; height: 400px; max-width: 700px; margin: 0 auto"></div>
+									</div>
+									<div class="col-md-6">
+										
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="tab-pane fade" id="pilltab2">
 						<p>Báo cáo thống kê hiện đang được phát triển</p>
@@ -282,6 +294,23 @@
 															},
 															success : function(
 																	data_total) {
+																
+																
+																var processed_json = new Array();
+																$.map(data_total[4], function(obj, i) {
+																    processed_json.push([obj.name, parseInt(obj.y)]);
+																});
+																
+																var jsonMoney1=  data_total[5];
+																var jsonMoney2=  data_total[6];
+																jsonMoney1=jsonMoney1.concat(jsonMoney2);
+																var processed_json1 = new Array();
+																$.map(jsonMoney1, function(obj, i) {
+																    processed_json1.push([obj.name, parseInt(obj.y)]);
+																});
+																
+																
+																
 																$('#container1')
 																		.highcharts(
 																				{
@@ -380,16 +409,16 @@
 																						colorByPoint : true,
 																						data : [
 																								{
-																									name : 'Số vé đặt chưa thanh toán',
+																									name : 'Số vé đặt chưa thanh toán:<b> '+ data_total[3][0]+'</b>',
 																									y : data_total[3][0]
 																								},
 																								{
-																									name : 'Số vé đã thanh toán',
+																									name : 'Số vé đã thanh toán: <b>'+ data_total[3][1]+'</b>',
 																									y : data_total[3][1],
 
 																								},
 																								{
-																									name : 'Số vé bị trả lại',
+																									name : 'Số vé bị trả lại:<b> '+  data_total[3][2]+'</b>',
 																									y : data_total[3][2]
 																								} ]
 																					} ]
@@ -422,20 +451,53 @@
 																						}
 																					},
 																					series : [ {
-																						name : 'Chiếm',
+																						name : 'Chiếm: ',
 																						colorByPoint : true,
+																						
 																						data : [
 																								{
-																									name : 'Tổng số tiền thu được từ bán vé',
-																									y : data_total[3][0]
+																									name : ""+jsonMoney1[0]["name"]+':<b> '+ jsonMoney1[0]["y"]+' VND</b>',
+																									y : parseInt(jsonMoney1[0]["y"])
 																								},
 																								{
-																									name : 'Tổng số tiền thu được từ trả vé',
-																									y : data_total[3][1],
-
-																								} ]
+																									name : ""+jsonMoney1[1]["name"]+':<b> '+ jsonMoney1[1]["y"]+' VND</b>',
+																									y : parseInt(jsonMoney1[1]["y"])
+																								}]
 																					} ]
 																				});
+																$('#pie2')
+																.highcharts(
+																		{
+																			chart : {
+																				plotBackgroundColor : null,
+																				plotBorderWidth : null,
+																				plotShadow : false,
+																				type : 'pie'
+																			},
+																			
+																			title : {
+																				text : 'Thống kê vé bán theo tuyến đi'
+																			},
+																			tooltip : {
+																				pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+																			},
+																			plotOptions : {
+																				pie : {
+																					allowPointSelect : true,
+																					cursor : 'pointer',
+																					dataLabels : {
+																						enabled : false
+																					},
+																					showInLegend : true
+																				}
+																			},
+																			series : [ {
+																				name : 'Chiếm: ',
+																				colorByPoint : true,
+																				data : processed_json
+																			} ]
+																		});
+																
 															}
 														});
 											});

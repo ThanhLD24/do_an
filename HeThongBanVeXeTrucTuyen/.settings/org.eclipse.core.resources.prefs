@@ -4,4 +4,5 @@ encoding//WebContent/pages/customer/error.jsp=UTF-8
 encoding//WebContent/pages/customer/vedemo.jsp=UTF-8
 encoding//src/thanhld/appcode/controller/AdminBusController.java=UTF-8
 encoding//src/thanhld/appcode/controller/BusController.java=UTF-8
+encoding//src/thanhld/appcode/dao/OrderTicketDAOImpl.java=UTF-8
 encoding//src/thanhld/appcode/utility/Utility.java=UTF-8

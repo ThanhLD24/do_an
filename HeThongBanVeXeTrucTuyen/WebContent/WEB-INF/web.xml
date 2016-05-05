@@ -297,6 +297,17 @@
 		<servlet-name>add driver</servlet-name>
 		<url-pattern>/admin/add-driver</url-pattern>
 	</servlet-mapping>
+	
+	<!-- add-driver.jsp -->
+	<servlet>
+		<servlet-name>add route</servlet-name>
+		<jsp-file>/pages/admin/add-route.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>add route</servlet-name>
+		<url-pattern>/admin/add-route</url-pattern>
+	</servlet-mapping>
+	
 	<!-- Servlet mapping -->
 	<servlet>
 		<servlet-name>BusController</servlet-name>

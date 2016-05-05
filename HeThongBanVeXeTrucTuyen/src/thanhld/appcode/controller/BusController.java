@@ -48,6 +48,7 @@ import thanhld.appcode.model.TicketDetail;
 import thanhld.appcode.utility.ObjectManager;
 import thanhld.appcode.utility.Utility;
 import thanhld.appcode.utility.Variables;
+import thanhld.appcode.valueobject.JsonObjectVO;
 import thanhld.appcode.valueobject.TicketVO;
 
 /**
@@ -237,10 +238,15 @@ public class BusController extends HttpServlet {
 			int totalOrderTicketPaid = 0;
 			int totalOrderTicketReturn = 0;
 			int year = Integer.parseInt(request.getParameter("year").toString());
-			List<Integer> listCountTotalOrderTicketUnPaidInMonth = new ArrayList<Integer>();
-			List<Integer> listCountTotalOrderTicketPaidedInMonth = new ArrayList<Integer>();
-			List<Integer> listCountTotalOrderTicketReturnInMonth = new ArrayList<Integer>();
-			List<Integer> listCountTotalOrderTicketInYear = new ArrayList<Integer>();
+			List<Object> listCountTotalOrderTicketUnPaidInMonth = new ArrayList<Object>();
+			List<Object> listCountTotalOrderTicketPaidedInMonth = new ArrayList<Object>();
+			List<Object> listCountTotalOrderTicketReturnInMonth = new ArrayList<Object>();
+			List<Object> listCountTotalOrderTicketInYear = new ArrayList<Object>();
+			/*moi them*/
+			List<Object> listCountRoute = (List<Object>)orderTicketDAO.countRouteOrder(request.getParameter("year").toString());
+			List<Object> moneyTotal1 = (List<Object>)orderTicketDAO.getTotalMoneyByYear(request.getParameter("year").toString());
+			List<Object> moneyTotal2 = (List<Object>)orderTicketDAO.getTotalMoneyByYearTicketRefund(request.getParameter("year").toString());
+			/*end*/
 			for(int i=1; i<=12; i++){
 				num1 = orderTicketDAO.getTotalOrderTicketUnPaidInMonthOfYear(i, year);
 				num2 =orderTicketDAO.getTotalOrderTicketPaidedInMonthOfYear(i, year);
@@ -259,13 +265,25 @@ public class BusController extends HttpServlet {
 			listCountTotalOrderTicketInYear.add(totalOrderTicketUnPaid);
 			listCountTotalOrderTicketInYear.add(totalOrderTicketPaid);
 			listCountTotalOrderTicketInYear.add(totalOrderTicketReturn);
-			List<List<Integer>> list = new ArrayList<>();
+			List<List<Object>> list = new ArrayList<>();
 			list.add(listCountTotalOrderTicketUnPaidInMonth);
 			list.add(listCountTotalOrderTicketPaidedInMonth);
 			list.add(listCountTotalOrderTicketReturnInMonth);
 			list.add(listCountTotalOrderTicketInYear);
+			list.add(listCountRoute);
+			list.add(moneyTotal1);
+			list.add(moneyTotal2);
 			Gson gson = new Gson();
-			JsonElement element = gson.toJsonTree(list, new TypeToken<List<List<Integer>>>() {}.getType());
+			JsonElement element = gson.toJsonTree(list, new TypeToken<List<List<Object>>>() {}.getType());
+			JsonArray jsonArray = element.getAsJsonArray();
+			response.setContentType("application/json");
+			response.getWriter().print(jsonArray);
+		}
+		
+		if (type == 5) {
+			List<Object> listJVO = orderTicketDAO.countRouteOrder("2016");
+			Gson gson = new Gson();
+			JsonElement element = gson.toJsonTree(listJVO, new TypeToken<List<JsonObjectVO>>() {}.getType());
 			JsonArray jsonArray = element.getAsJsonArray();
 			response.setContentType("application/json");
 			response.getWriter().print(jsonArray);

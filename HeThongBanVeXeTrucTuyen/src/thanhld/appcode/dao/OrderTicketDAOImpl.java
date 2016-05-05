@@ -11,7 +11,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import thanhld.appcode.model.OrderTicket;
+import thanhld.appcode.model.RouteDetail;
 import thanhld.appcode.utility.HibernateUtils;
+import thanhld.appcode.valueobject.JsonObjectVO;
 
 public class OrderTicketDAOImpl implements OrderTicketDAO {
 	List<OrderTicket> list = null;
@@ -128,8 +130,68 @@ public class OrderTicketDAOImpl implements OrderTicketDAO {
 		}
 		return list.size();
 	}
-	public static void main(String[] args) {
-		OrderTicketDAOImpl o = new OrderTicketDAOImpl();
-		System.out.println(o.getTotalOrderTicketInMonthOfYear(5, 2016));
+	
+
+	
+	public List<Object> countRouteOrder(String year) {
+		Session session = null;
+		Transaction transaction = null;
+		StringBuilder sqlQuery;
+		List<Object> listJson = null;
+		try {
+			session = HibernateUtils.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			sqlQuery = new StringBuilder();
+			sqlQuery.append(" SELECT (SELECT ROUTE_DESCRIPTION FROM ROUTE r WHERE r.ROUTE_ID=t.ROUTE_ID) AS JSON_NAME, COUNT(*) AS JSON_VALUE FROM ORDER_TICKET o INNER JOIN TICKET t ON t.TICKET_ID=o.TICKET_ID WHERE YEAR(o.ORDER_TICKET_TIME)="+year+" GROUP BY ROUTE_ID ");
+			Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(JsonObjectVO.class);
+			listJson = query.list();
+			transaction.commit();
+		} catch (Exception e) {
+		} finally {
+			session.close();
+		}
+		return listJson;
 	}
+	
+	public List<Object> getTotalMoneyByYear(String year) {
+		Session session = null;
+		Transaction transaction = null;
+		StringBuilder sqlQuery;
+		List<Object> listJson = null;
+		try {
+			session = HibernateUtils.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			sqlQuery = new StringBuilder();
+			sqlQuery.append(" SELECT 'Tổng tiền thu được qua bán vé' as JSON_NAME, SUM(ORDER_TICKET_TOTAL_PRICE) as JSON_VALUE FROM ORDER_TICKET od WHERE YEAR(od.ORDER_TICKET_TIME) = "+year+" AND ORDER_TICKET_PAIDDATE != '' ");
+			Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(JsonObjectVO.class);
+			listJson = query.list();
+			transaction.commit();
+		} catch (Exception e) {
+		} finally {
+			session.close();
+		}
+		return listJson;
+	}
+	public List<Object> getTotalMoneyByYearTicketRefund(String year) {
+		Session session = null;
+		Transaction transaction = null;
+		StringBuilder sqlQuery;
+		List<Object> listJson = null;
+		try {
+			session = HibernateUtils.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			sqlQuery = new StringBuilder();
+			sqlQuery.append(" SELECT 'Tổng tiền thu được qua trả vé' as JSON_NAME,SUM(CANCEL_ORDER_TICKET_INTEREST) as JSON_VALUE FROM CANCEL_ORDER_TICKET od WHERE YEAR(od.CANCEL_ORDER_TICKET_CANCEL_TIME) = "+year+" ");
+			Query query = session.createSQLQuery(sqlQuery.toString()).addEntity(JsonObjectVO.class);
+			listJson = query.list();
+			transaction.commit();
+		} catch (Exception e) {
+		} finally {
+			session.close();
+		}
+		return listJson;
+	}
+	
+	
+	
 }

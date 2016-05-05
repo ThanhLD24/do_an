@@ -3,6 +3,7 @@ package thanhld.appcode.dao;
 import java.util.List;
 
 import thanhld.appcode.model.OrderTicket;
+import thanhld.appcode.valueobject.JsonObjectVO;
 
 public interface OrderTicketDAO {
 	public List<OrderTicket> getListOrderTicketDESC();
@@ -11,4 +12,7 @@ public interface OrderTicketDAO {
 	public int getTotalOrderTicketPaidedInMonthOfYear(int month, int year);
 	public int getTotalOrderTicketReturnInMonthOfYear(int month, int year);
 	public int getTotalOrderTicketUnPaidInMonthOfYear(int month, int year);
+	public List<Object> countRouteOrder(String year);
+	public List<Object> getTotalMoneyByYear(String year);
+	public List<Object> getTotalMoneyByYearTicketRefund(String year);
 }

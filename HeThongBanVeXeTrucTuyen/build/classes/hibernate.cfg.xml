@@ -39,6 +39,7 @@
 		<mapping class="thanhld.appcode.model.TicketDetail" />
 		<mapping class="thanhld.appcode.model.SeatOrder" />	
 		<mapping class="thanhld.appcode.model.EmployeeWorking" />	
-		<mapping class="thanhld.appcode.model.Permit" />			
+		<mapping class="thanhld.appcode.model.Permit" />	
+		<mapping class="thanhld.appcode.valueobject.JsonObjectVO" />			
     </session-factory>
 </hibernate-configuration>
